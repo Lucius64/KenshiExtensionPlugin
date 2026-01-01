@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{fe171b31-ca8b-4609-894c-5f360c29f329}</ProjectGuid>
+    <RootNamespace>KenshiExtensionPlugin</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(BOOST_INCLUDE_PATH);$(KENSHILIB_DIR)/Include;$(ProjectDir)/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_INCLUDE_PATH)/stage/lib;$(KENSHILIB_DIR)/Libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(BOOST_INCLUDE_PATH);$(KENSHILIB_DIR)/Include/ogre;$(KENSHILIB_DIR)/Include;$(ProjectDir)/include;$(SolutionDir)thirdparty/rapidjson\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_INCLUDE_PATH)/stage/lib;$(KENSHILIB_DIR)/Libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>KenshiLib.lib;OgreMain_x64.lib;libboost_thread-vc100-mt-1_60.lib;libboost_system-vc100-mt-1_60.lib;libboost_date_time-vc100-mt-1_60.lib;libboost_chrono-vc100-mt-1_60.lib;libboost_filesystem-vc100-mt-1_60.lib;libboost_locale-vc100-mt-1_60.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>KenshiLib.lib;OgreMain_x64.lib;MyGUIEngine_x64.lib;libboost_thread-vc100-mt-1_60.lib;libboost_system-vc100-mt-1_60.lib;libboost_date_time-vc100-mt-1_60.lib;libboost_chrono-vc100-mt-1_60.lib;libboost_filesystem-vc100-mt-1_60.lib;libboost_locale-vc100-mt-1_60.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\AppearanceExtension.h" />
+    <ClInclude Include="include\bugfix\AppearanceFix.h" />
+    <ClInclude Include="include\bugfix\StatsFix.h" />
+    <ClInclude Include="include\bugfix\ItemFix.h" />
+    <ClInclude Include="include\bugfix\MedicalFix.h" />
+    <ClInclude Include="include\bugfix\MiscFix.h" />
+    <ClInclude Include="include\bugfix\UniqueCharacterFix.h" />
+    <ClInclude Include="include\AnimationExtension.h" />
+    <ClInclude Include="include\DialogueExtension.h" />
+    <ClInclude Include="include\CharacterExtension.h" />
+    <ClInclude Include="include\ExternalFunctions.h" />
+    <ClInclude Include="include\extern\AI.h" />
+    <ClInclude Include="include\extern\AnimationClass.h" />
+    <ClInclude Include="include\extern\AnimsListsManager.h" />
+    <ClInclude Include="include\extern\AppearanceBase.h" />
+    <ClInclude Include="include\extern\AppearanceManager.h" />
+    <ClInclude Include="include\extern\AreaBiomeGroup.h" />
+    <ClInclude Include="include\extern\BasePopulationManager.h" />
+    <ClInclude Include="include\extern\Blackboard.h" />
+    <ClInclude Include="include\extern\BlueprintItem.h" />
+    <ClInclude Include="include\extern\BuildingInterior.h" />
+    <ClInclude Include="include\extern\DatapanelGUI.h" />
+    <ClInclude Include="include\extern\FactionRelations.h" />
+    <ClInclude Include="include\extern\FactionWarMgr.h" />
+    <ClInclude Include="include\extern\GunClass.h" />
+    <ClInclude Include="include\extern\OptionsWindow.h" />
+    <ClInclude Include="include\extern\PortraitManager.h" />
+    <ClInclude Include="include\extern\ProductionBuilding.h" />
+    <ClInclude Include="include\extern\RangedCombatClass.h" />
+    <ClInclude Include="include\extern\Renderer.h" />
+    <ClInclude Include="include\extern\Research.h" />
+    <ClInclude Include="include\extern\RobotLimbItem.h" />
+    <ClInclude Include="include\extern\SquadManagementScreen.h" />
+    <ClInclude Include="include\extern\StateBroadcastData.h" />
+    <ClInclude Include="include\extern\StorageBuilding.h" />
+    <ClInclude Include="include\extern\TemporaryLimbInterface.h" />
+    <ClInclude Include="include\extern\TownBase.h" />
+    <ClInclude Include="include\extern\UniqueNPCManager.h" />
+    <ClInclude Include="include\extern\UseableStuff.h" />
+    <ClInclude Include="include\ItemFurnaceExtension.h" />
+    <ClInclude Include="include\PluginMenu.h" />
+    <ClInclude Include="include\RaceLimiterExtension.h" />
+    <ClInclude Include="include\ScytheFileExtension.h" />
+    <ClInclude Include="include\Settings.h" />
+    <ClInclude Include="include\WarCampaignExtension.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AnimationExtension.cpp" />
+    <ClCompile Include="src\AppearanceExtension.cpp" />
+    <ClCompile Include="src\bugfix\AppearanceFix.cpp" />
+    <ClCompile Include="src\bugfix\StatsFix.cpp" />
+    <ClCompile Include="src\bugfix\ItemFix.cpp" />
+    <ClCompile Include="src\bugfix\MedicalFix.cpp" />
+    <ClCompile Include="src\bugfix\MiscFix.cpp" />
+    <ClCompile Include="src\bugfix\UniqueCharacterFix.cpp" />
+    <ClCompile Include="src\DialogueExtension.cpp" />
+    <ClCompile Include="src\CharacterExtension.cpp" />
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\ExternalFunctions.cpp" />
+    <ClCompile Include="src\ItemFurnaceExtension.cpp" />
+    <ClCompile Include="src\PluginMenu.cpp" />
+    <ClCompile Include="src\RaceLimiterExtension.cpp" />
+    <ClCompile Include="src\ScytheFileExtension.cpp" />
+    <ClCompile Include="src\Settings.cpp" />
+    <ClCompile Include="src\WarCampaignExtension.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

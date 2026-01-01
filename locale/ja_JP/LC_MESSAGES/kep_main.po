@@ -1,0 +1,477 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: KenshiExtensionPlugin\n"
+"POT-Creation-Date: 2026-01-01 18:50+0900\n"
+"PO-Revision-Date: 2026-01-01 18:50+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../../KenshiExtensionPlugin/src\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: PluginMenu.cpp:39
+msgid "Plugins"
+msgstr "プラグイン"
+
+#: PluginMenu.cpp:47
+msgid "[Kenshi Extension Plugin Settings]"
+msgstr "[Kenshi Extension Pluginの設定]"
+
+#: PluginMenu.cpp:49
+msgid "Fix NPC faces"
+msgstr "NPCの顔を修正"
+
+#: PluginMenu.cpp:50
+msgid "NPC shape keys are applied correctly."
+msgstr "NPCのシェイプキーが正しく適用されます。"
+
+#: PluginMenu.cpp:52
+msgid "Fix hair display in the character editor"
+msgstr "キャラクターエディター画面での髪の表示を修正"
+
+#: PluginMenu.cpp:53
+msgid ""
+"Characters equipped with bandanas and similar items will now display "
+"correctly in the Character Editor window."
+msgstr ""
+"バンダナ等を装備したキャラクターの髪がキャラクターエディターウィンドウでも正"
+"常に表示されます。"
+
+#: PluginMenu.cpp:55
+msgid "Fix portrait"
+msgstr "ポートレートを修正"
+
+#: PluginMenu.cpp:56
+msgid ""
+"The idle animations added or overwritten by Mods will be reflected in the "
+"portrait. Additionally, the positions of the shoulders and neck will be "
+"displayed correctly."
+msgstr ""
+"MODで追加・上書きした待機アニメーションがポートレートに反映されます。また、肩"
+"と首の位置が正しく表示されます。"
+
+#: PluginMenu.cpp:58
+msgid "Fix animation override"
+msgstr "アニメーションのオーバーライドを修正"
+
+#: PluginMenu.cpp:59
+msgid "The animation will be overridden correctly."
+msgstr "アニメーションが正常にオーバーライドされます。"
+
+#: PluginMenu.cpp:61
+msgid "Fix spawning of unique characters"
+msgstr "ユニークキャラクターのスポーンを修正"
+
+#: PluginMenu.cpp:62
+msgid ""
+"Prevents the loss of unique characters due to town overrides or squad "
+"regeneration."
+msgstr ""
+"街のオーバーライドや部隊の再生成によるユニークキャラクターの消失を防ぎます。"
+
+#: PluginMenu.cpp:64
+msgid "Fix unloading of unique characters"
+msgstr "ユニークキャラクターのアンロードを修正"
+
+#: PluginMenu.cpp:65
+msgid ""
+"Prevents unique characters participating in town raid events from "
+"teleporting hometown."
+msgstr ""
+"街の襲撃イベントに参加中のユニークキャラクターがホームタウンへテレポートする"
+"のを防ぎます。"
+
+#: PluginMenu.cpp:67
+msgid "Fix importing of unique prisoners"
+msgstr "ユニーク囚人のインポートを修正"
+
+#: PluginMenu.cpp:68
+msgid ""
+"Prevents unique prisoners that have already appeared from disappearing after "
+"import."
+msgstr "出現済みのユニーク囚人がインポート後に消失するのを防ぎます。"
+
+#: PluginMenu.cpp:70
+msgid "Fix the unique leader for the Town Raid event"
+msgstr "街の襲撃イベントのユニークリーダーを修正"
+
+#: PluginMenu.cpp:71
+msgid ""
+"Prevents imprisoned unique characters from becoming leaders of town raid "
+"events."
+msgstr ""
+"収監されたユニークキャラクターが街の襲撃イベントのリーダーになるのを防ぎま"
+"す。"
+
+#: PluginMenu.cpp:73
+msgid "Fix melee combat XP"
+msgstr "近接戦闘の経験値を修正"
+
+#: PluginMenu.cpp:74
+msgid ""
+"Race bonuses for martial arts and weapon skills apply to melee combat XP. "
+"Additionally, SOL for weapon skills etc. functions correctly."
+msgstr ""
+"武術と武器スキルの種族ボーナスが近接戦闘の経験値に適用されます。また、武器ス"
+"キル等のSOLが正しく動作します。"
+
+#: PluginMenu.cpp:76
+msgid "Fix lockpicking XP"
+msgstr "ピッキングの経験値を修正"
+
+#: PluginMenu.cpp:77
+msgid "The \"exp gain multiplier\" is applied to lockpicking XP."
+msgstr "「exp gain multiplier」がピッキングの経験値に適用されます。"
+
+#: PluginMenu.cpp:79
+msgid "Fix unarmed damage bonus"
+msgstr "非武装ダメージボーナスを修正"
+
+#: PluginMenu.cpp:80
+msgid "The \"Unarmed Damage Bonus\" applies to martial arts skills."
+msgstr "「非武装ダメージボーナス」が武術スキルに適用されます。"
+
+#: PluginMenu.cpp:82
+msgid "Fix stat name display"
+msgstr "ステータス名の表示を修正"
+
+#: PluginMenu.cpp:83
+msgid "Prevents Polearm from failing to display in certain GUIs."
+msgstr "特定の GUI で長柄武器が表示されないのを防ぎます。"
+
+#: PluginMenu.cpp:85
+msgid "Fix the prosthetic leg movement animation"
+msgstr "義足の移動アニメーションを修正"
+
+#: PluginMenu.cpp:86
+msgid ""
+"Prevents limping when the maximum HP of the left and right legs differs "
+"significantly."
+msgstr "左右の足の最大HPが大きく異なる場合に足を引きずるのを防ぎます。"
+
+#: PluginMenu.cpp:88
+msgid "Fix pet recovery speed"
+msgstr "ペットの回復速度を修正"
+
+#: PluginMenu.cpp:89
+msgid "Pet recovery speed prioritizes the bed's effect over the stun effect."
+msgstr "ペットの回復速度が気絶の効果よりもベッドの効果が優先されます。"
+
+#: PluginMenu.cpp:91
+msgid "Fix order of HP bar"
+msgstr "HPバーの順序を修正"
+
+#: PluginMenu.cpp:92
+msgid "Prevents the HP bars for the chest and stomach from being reversed."
+msgstr "胸部と下腹部のHPバーが反転するのを防ぎます。"
+
+#: PluginMenu.cpp:94
+msgid "Fix the injury calculation"
+msgstr "負傷具合の計算を修正"
+
+#: PluginMenu.cpp:95
+msgid ""
+"Prevents Hive from becoming bedridden at the base when it takes a very small "
+"cut damage."
+msgstr ""
+"ごくわずかな切断ダメージを受けたときに、ハイブが拠点で寝たきりになるのを防ぎ"
+"ます。"
+
+#: PluginMenu.cpp:97
+msgid "Fix the blood when spawning"
+msgstr "スポーン時の血液の値を修正"
+
+#: PluginMenu.cpp:98
+msgid "Prevents characters from spawning with low blood."
+msgstr "キャラクターが血液量が少ない状態でスポーンするのを防ぎます。"
+
+#: PluginMenu.cpp:100
+msgid "Change the order of armor damage reduction"
+msgstr "防具のダメージ軽減の順序を変更"
+
+#: PluginMenu.cpp:101
+msgid ""
+"Damage is reduced in order of armor with the highest slash resistance "
+"efficiency. Changing settings during play requires saving and reloading."
+msgstr ""
+"ダメージが斬耐性効率の高い防具から順に軽減されます。プレイ中に設定を変更する"
+"場合はセーブとリロードが必要です。"
+
+#: PluginMenu.cpp:103
+msgid "Fix global damage multiplier for Crossbow"
+msgstr "クロスボウの全体ダメージ乗数を修正"
+
+#: PluginMenu.cpp:104
+msgid ""
+"The global damage multiplier will no longer significantly affect crossbows."
+msgstr "全体ダメージ乗数がクロスボウに大きく影響しないようになります。"
+
+#: PluginMenu.cpp:106
+msgid "Fix item becoming sltolen goods from player bug"
+msgstr "アイテムがプレイヤーからの盗品になるバグを修正"
+
+#: PluginMenu.cpp:107
+msgid ""
+"Prevents an issue where taking items out of a backpack placed on the ground "
+"halves their selling price."
+msgstr ""
+"地面に置いたバックパックからアイテムを取り出すと売値が半額になる不具合を回避"
+"します。"
+
+#: PluginMenu.cpp:109
+msgid "Fix housemates inventory refresh"
+msgstr "ハウスメイトのインベントリ更新を修正"
+
+#: PluginMenu.cpp:110
+msgid ""
+"Prevents an issue where Waystation bars, etc., do not refresh their "
+"inventory."
+msgstr "ウェイステーションのバーなどの品揃えが更新されない不具合を防ぎます。"
+
+#: PluginMenu.cpp:112
+msgid "Fix blueprint texture"
+msgstr "ブループリントのテクスチャを修正"
+
+#: PluginMenu.cpp:113
+msgid "Materials can be applied to blueprints."
+msgstr "マテリアルをブループリントに設定できます。"
+
+#: PluginMenu.cpp:115
+msgid "Enable player involvement"
+msgstr "プレイヤーの関与を有効化"
+
+#: PluginMenu.cpp:116
+msgid "World State player involvement functions correctly."
+msgstr "ワールドステートのプレイヤーの関与が正常に動作します。"
+
+#: PluginMenu.cpp:118
+msgid "Enable Navigation Mesh cache"
+msgstr "ナビゲーションメッシュのキャッシュを有効化"
+
+#: PluginMenu.cpp:119
+msgid ""
+"Accelerates zone loading and prevents falling through walls. Kenshi CTD fix "
+"patch takes precedence, so option changes will be disabled while it is in "
+"use."
+msgstr ""
+"ゾーンの読み込みを高速化し、壁からの落下を防ぎます。Kenshi CTD fix patchが優"
+"先されるため、使用中はオプションの変更が無効になります。"
+
+#: PluginMenu.cpp:121
+msgid "Fix town override"
+msgstr "街のオーバーライドを修正"
+
+#: PluginMenu.cpp:122
+msgid ""
+"Prevents overridden town settings from reverting to their original values."
+msgstr "オーバーライドされた街の設定値が元に戻るのを防ぎます。"
+
+#: PluginMenu.cpp:124
+msgid "Fix display for distant towns"
+msgstr "遠方の街の表示を修正"
+
+#: PluginMenu.cpp:125
+msgid ""
+"Prevents the town loaded during loading from occasionally failing to switch "
+"to the distant mesh."
+msgstr ""
+"ロード中に読み込まれた町が遠方メッシュへの切り替えに失敗することがあるのを防"
+"ぎます。"
+
+#: PluginMenu.cpp:127
+msgid "Enable duplicate research on building improvements"
+msgstr "建物改善の研究を重複可能にする"
+
+#: PluginMenu.cpp:128
+msgid ""
+"The effects of research to increase building output can be applied multiple "
+"times."
+msgstr "建物の出力を高める研究の効果は、複数回適用できます。"
+
+#: PluginMenu.cpp:130
+msgid "Fix crossbow locker"
+msgstr "クロスボウロッカーを修正"
+
+#: PluginMenu.cpp:131
+msgid "Item type limits will be enforced."
+msgstr "アイテムタイプの制限が適用されます。"
+
+#: PluginMenu.cpp:133
+msgid "Enable raid events from factions not displayed in the list"
+msgstr "リストに表示されていない勢力からの襲撃イベントを有効化"
+
+#: PluginMenu.cpp:134
+msgid ""
+"Raid events will occur from factions such as Fogmen and Fishmen. Changing "
+"settings during play requires saving and reloading."
+msgstr ""
+"フォグマンやフィッシュマン等の勢力からの襲撃イベントが発生します。プレイ中に"
+"設定を変更する場合はセーブとリロードが必要です。"
+
+#: PluginMenu.cpp:136
+msgid "Sort idle stances"
+msgstr "待機ポーズをソート"
+
+#: PluginMenu.cpp:137
+msgid ""
+"Sort idle stances by Mod load order and dictionary order of names. (REQURIES "
+"RESTART)"
+msgstr ""
+"待機ポーズをMODの読み込み順、名前の辞書順にソートします。 (再起動が必要)"
+
+#: PluginMenu.cpp:139
+msgid "Extension: Character Dismissal"
+msgstr "拡張機能: キャラクター解雇"
+
+#: PluginMenu.cpp:140
+msgid "Enable extension function for Character Dismissal."
+msgstr "キャラクター解雇の拡張機能を有効化します。"
+
+#: PluginMenu.cpp:142
+msgid "Extension: Item Furnace"
+msgstr "拡張機能: アイテム炉"
+
+#: PluginMenu.cpp:143
+msgid "Enable extension function for Item Furnaces. (REQURIES RESTART)"
+msgstr "アイテム炉の拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:145
+msgid "Extension: Race Equipment Limits"
+msgstr "拡張機能: 種族の装備制限"
+
+#: PluginMenu.cpp:146
+msgid "Enable extension function for Race Equipment Limits. (REQURIES RESTART)"
+msgstr "種族の装備制限の拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:148
+msgid "Extension: Scythe Path"
+msgstr "拡張機能: Scytheパス"
+
+#: PluginMenu.cpp:149
+msgid "Enable extension function for Scythe Path."
+msgstr "Scytheパスの拡張機能を有効化します。"
+
+#: PluginMenu.cpp:151
+msgid "Extension: Bulk Limits"
+msgstr "拡張機能: 体格制限"
+
+#: PluginMenu.cpp:152
+msgid "Enable extension function for Bulk Limits."
+msgstr "体格制限の拡張機能を有効化します。"
+
+#: PluginMenu.cpp:154
+msgid "Max Bulk Stat for Males"
+msgstr "男性の体格の最大ステータス"
+
+#: PluginMenu.cpp:155 PluginMenu.cpp:163
+msgid "Sets the max value for stats affecting bulk."
+msgstr "バルクに影響するステータスの最大値を設定します。"
+
+#: PluginMenu.cpp:158
+msgid "Min Bulk Stat for Males"
+msgstr "男性の体格の最小ステータス"
+
+#: PluginMenu.cpp:159 PluginMenu.cpp:167
+msgid "Sets the min value for stats affecting bulk."
+msgstr "バルクに影響するステータスの最小値を設定します。"
+
+#: PluginMenu.cpp:162
+msgid "Max Bulk Stat for Females"
+msgstr "女性の体格の最大ステータス"
+
+#: PluginMenu.cpp:166
+msgid "Min Bulk Stat for Females"
+msgstr "女性の体格の最小ステータス"
+
+#: PluginMenu.cpp:170
+msgid "Extension: Idle Stance"
+msgstr "拡張機能: 待機ポーズ"
+
+#: PluginMenu.cpp:171
+msgid "Enable extension function for Idle Stance."
+msgstr "待機ポーズの拡張機能を有効化します。"
+
+#: PluginMenu.cpp:173
+msgid "Extension: Animation SkillType"
+msgstr "拡張機能: アニメーションのスキルタイプ"
+
+#: PluginMenu.cpp:174
+msgid "Enable extension function for Animation SkillType. (REQURIES RESTART)"
+msgstr "アニメーションのスキルタイプの拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:176
+msgid "Extension: Aim Animation"
+msgstr "拡張機能: エイムアニメーション"
+
+#: PluginMenu.cpp:177
+msgid "Enable extension function for Aim Animation."
+msgstr "エイムアニメーションの拡張機能を有効化します。"
+
+#: PluginMenu.cpp:179
+msgid "Player portrait capacity cap"
+msgstr "ポートレートの上限人数"
+
+#: PluginMenu.cpp:180
+msgid ""
+"Select player portrait capacity caps. Default is 256 people. (REQURIES "
+"RESTART)"
+msgstr ""
+"プレイヤーのポートレートの上限人数を選択します。デフォルトは256人です。 (再起"
+"動が必要)"
+
+#: PluginMenu.cpp:185
+msgid "Save reputation points"
+msgstr "名声値を保存"
+
+#: PluginMenu.cpp:186
+msgid "Saving reputation points."
+msgstr "名声値を保存します。"
+
+#~ msgid "Extension: NPC Class"
+#~ msgstr "拡張機能: NPCクラス"
+
+#~ msgid "Enable extension function for NPC Class."
+#~ msgstr "NPCクラスの拡張機能を有効化します。"
+
+#~ msgid "Extension: Dialogue"
+#~ msgstr "拡張機能: ダイアログ"
+
+#~ msgid "Enable extension function for Dialogue."
+#~ msgstr "ダイアログの拡張機能を有効化します。"
+
+#~ msgid "Enable character dismissal function extension."
+#~ msgstr "キャラクター解雇の拡張機能を有効化します。"
+
+#~ msgid "Enable item furnace function extension."
+#~ msgstr "アイテム炉の拡張機能を有効化します。"
+
+#~ msgid "Raid events will occur from factions such as Fogmen and Fishmen."
+#~ msgstr "フォグマンやフィッシュマン等の勢力からの襲撃イベントが発生します。"
+
+#~ msgid ""
+#~ "Accelerates zone loading. This feature is disabled when using the Kenshi "
+#~ "CTD fix patch."
+#~ msgstr ""
+#~ "ゾーンの読み込みを高速化します。Kenshi CTD fix patchを使用している場合、こ"
+#~ "の機能は無効になります。"
+
+#~ msgid "PLUGIN"
+#~ msgstr "プラグイン"
+
+#~ msgid "Fixed an issue where NPC facial features were incorrect."
+#~ msgstr "NPCの顔つきが正しくない問題を修正する。"
+
+#~ msgid ""
+#~ "Fixed an issue where hair would not display correctly when opening the "
+#~ "Character Editor window while wearing items like bandanas."
+#~ msgstr ""
+#~ "バンダナ等を装備してキャラクターエディターウィンドウを開くと髪が正常に表示"
+#~ "されない不具合を修正します。"
+
+#~ msgid "[KEP Settings]"
+#~ msgstr "[Kenshi Extension Pluginの設定]"
