@@ -53,5 +53,5 @@ public:
 	void* cameraManager;
 	void* _0x18;
 	TitleScreen* title;
-	ogre_unordered_map<Ogre::IdString, MeshDataLookup*> _0x28;
+	ogre_unordered_map<Ogre::IdString, MeshDataLookup*>::type _0x28;
 };

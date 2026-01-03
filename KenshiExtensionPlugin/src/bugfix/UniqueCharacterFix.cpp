@@ -395,7 +395,8 @@ void KEP::UniqueCharacterFix::UniqueNPCManager_FUN_009A93A0_hook(UniqueNPCManage
 
 	externalFunctions->FUN_009A7AA0(*self);
 
-	if (savedata == nullptr) return;
+	if (savedata == nullptr)
+		return;
 
 	ogre_unordered_map<std::pair<int, int>, GameData*>::type platoonMap;
 	if (isImport)
@@ -413,12 +414,14 @@ void KEP::UniqueCharacterFix::UniqueNPCManager_FUN_009A93A0_hook(UniqueNPCManage
 		auto& characterSID = savedata->sdata[key];
 
 		auto usedUniques = ou->gamedata.getData(characterSID);
-		if (usedUniques == nullptr) continue;
+		if (usedUniques == nullptr)
+			continue;
 
 		key = "usedUniquesState" + index;
 		auto usedUniquesState = savedata->idata[key];
 
-		if (isImport && usedUniquesState == 1) continue;
+		if (isImport && usedUniquesState == 1)
+			continue;
 
 		auto& uniqueState = self->uniqueCharacterStates[usedUniques];
 		uniqueState.characterTemplate = usedUniques;
@@ -440,10 +443,10 @@ void KEP::UniqueCharacterFix::UniqueNPCManager_FUN_009A93A0_hook(UniqueNPCManage
 			}
 			else if (isDefaultPrisoner)
 			{
-				auto it = platoonMap.find(std::make_pair(uniqueState.handle.container, uniqueState.handle.containerSerial));
-				if (it != platoonMap.end())
+				auto iter = platoonMap.find(std::make_pair(uniqueState.handle.container, uniqueState.handle.containerSerial));
+				if (iter != platoonMap.end())
 				{
-					auto gamedata = it->second;
+					auto gamedata = iter->second;
 					hand platoonHandle;
 					gamedata->getHandle(platoonHandle, "handle");
 
@@ -461,6 +464,7 @@ void KEP::UniqueCharacterFix::UniqueNPCManager_FUN_009A93A0_hook(UniqueNPCManage
 							uniqueState.handle.containerSerial = 0;
 							uniqueState.handle.index = 0;
 							uniqueState.handle.serial = 0;
+							DebugLog(usedUniques->name + "(" + usedUniques->stringID + ") has not changed since the initial state, so the state was not imported.");
 						}
 					}
 				}
