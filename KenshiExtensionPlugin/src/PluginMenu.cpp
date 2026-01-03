@@ -152,19 +152,19 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 	panelLine_bulkLimitsExtension->setTooltip(boost::locale::gettext("Enable extension function for Bulk Limits."), self->tooltip);
 
 	auto panelLine_bulkStatMaxMale = externalFunctions->FUN_006FE880(pluginOptionPanel, boost::locale::gettext("Max Bulk Stat for Males"), tabID, true, -2000.0f, 2000.0f, settings._bulkStatMaxMale);
-	panelLine_bulkStatMaxMale->setTooltip(boost::locale::gettext("Sets the max value for stats affecting bulk."), self->tooltip);
+	panelLine_bulkStatMaxMale->setTooltip(boost::locale::gettext("Sets the max value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), self->tooltip);
 	externalFunctions->FUN_006F57E0(panelLine_bulkStatMaxMale, 0);
 	
 	auto panelLine_bulkStatMinMale = externalFunctions->FUN_006FE880(pluginOptionPanel, boost::locale::gettext("Min Bulk Stat for Males"), tabID, true, -2000.0f, 2000.0f, settings._bulkStatMinMale);
-	panelLine_bulkStatMinMale->setTooltip(boost::locale::gettext("Sets the min value for stats affecting bulk."), self->tooltip);
+	panelLine_bulkStatMinMale->setTooltip(boost::locale::gettext("Sets the min value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), self->tooltip);
 	externalFunctions->FUN_006F57E0(panelLine_bulkStatMinMale, 0);
 	
 	auto panelLine_bulkStatMaxFemale = externalFunctions->FUN_006FE880(pluginOptionPanel, boost::locale::gettext("Max Bulk Stat for Females"), tabID, true, -2000.0f, 2000.0f, settings._bulkStatMaxFemale);
-	panelLine_bulkStatMaxFemale->setTooltip(boost::locale::gettext("Sets the max value for stats affecting bulk."), self->tooltip);
+	panelLine_bulkStatMaxFemale->setTooltip(boost::locale::gettext("Sets the max value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), self->tooltip);
 	externalFunctions->FUN_006F57E0(panelLine_bulkStatMaxFemale, 0);
 	
 	auto panelLine_bulkStatMinFemale = externalFunctions->FUN_006FE880(pluginOptionPanel, boost::locale::gettext("Min Bulk Stat for Females"), tabID, true, -2000.0f, 2000.0f, settings._bulkStatMinFemale);
-	panelLine_bulkStatMinFemale->setTooltip(boost::locale::gettext("Sets the min value for stats affecting bulk."), self->tooltip);
+	panelLine_bulkStatMinFemale->setTooltip(boost::locale::gettext("Sets the min value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), self->tooltip);
 	externalFunctions->FUN_006F57E0(panelLine_bulkStatMinFemale, 0);
 
 	auto panelLine_idleStanceExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Idle Stance"), settings._idleStanceExtension, tabID);

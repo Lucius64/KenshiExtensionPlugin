@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KenshiExtensionPlugin\n"
-"POT-Creation-Date: 2026-01-01 18:50+0900\n"
-"PO-Revision-Date: 2026-01-01 18:50+0900\n"
+"POT-Creation-Date: 2026-01-03 20:17+0900\n"
+"PO-Revision-Date: 2026-01-03 20:18+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -369,16 +369,24 @@ msgid "Max Bulk Stat for Males"
 msgstr "男性の体格の最大ステータス"
 
 #: PluginMenu.cpp:155 PluginMenu.cpp:163
-msgid "Sets the max value for stats affecting bulk."
-msgstr "バルクに影響するステータスの最大値を設定します。"
+msgid ""
+"Sets the max value for stats affecting bulk. Setting both to 20 will lock "
+"them at the standard size."
+msgstr ""
+"バルクに影響するステータスの最大値を設定します。両方を 20 に設定すると、標準"
+"サイズに固定されます。"
 
 #: PluginMenu.cpp:158
 msgid "Min Bulk Stat for Males"
 msgstr "男性の体格の最小ステータス"
 
 #: PluginMenu.cpp:159 PluginMenu.cpp:167
-msgid "Sets the min value for stats affecting bulk."
-msgstr "バルクに影響するステータスの最小値を設定します。"
+msgid ""
+"Sets the min value for stats affecting bulk. Setting both to 20 will lock "
+"them at the standard size."
+msgstr ""
+"バルクに影響するステータスの最小値を設定します。両方を 20 に設定すると、標準"
+"サイズに固定されます。"
 
 #: PluginMenu.cpp:162
 msgid "Max Bulk Stat for Females"
