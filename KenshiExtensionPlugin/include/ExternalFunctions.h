@@ -229,8 +229,10 @@ namespace KEP
 		float (*FUN_002A5F00)(FurnaceBuilding*, Item*); //
 		float (*FUN_002A5710)(FurnaceBuilding*, GameData*);
 		void (*FUN_0029C810)(FurnaceBuilding*, lektor<GameData*>&);
+		void (*FUN_00299750)(FurnaceBuilding*, DataPanelLine*);
 		bool (*FUN_005A3B60)(AI*, hand&); // haveSomeResourcesFor
 		int (*FUN_00340EB0)(Task_FillMachine*, StorageBuilding*, Inventory*);
+		int (*FUN_00343720)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_001A4FB0)(PhysicsEntity*, const char*); // Load scythe file
 		RobotLimbItem* (*FUN_000CE290)(RobotLimbItem*, GameData*, GameData*, hand, int); // RobotLimbItem::RobotLimbItem(RobotLimbItem*, GameData*, GameData*, hand, int);
 		void (*FUN_00954340)(FitnessSelector<uint32_t>&, GameData*);

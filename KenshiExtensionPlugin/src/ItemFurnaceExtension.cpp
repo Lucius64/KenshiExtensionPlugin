@@ -26,6 +26,7 @@ namespace
 	void (*FurnaceBuilding_FUN_0029C810_orig)(FurnaceBuilding*, lektor<GameData*>&);
 	bool (*AI_haveSomeResourcesFor_orig)(AI*, hand&);
 	int (*Task_FillMachine_FUN_00340EB0_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
+	int (*Task_FillMachine_FUN_00343720_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
 
 	float getCostOfIngredients(FurnaceBuilding* self, GameData* itemGameData, const std::string& stringID)
 	{
@@ -243,7 +244,7 @@ int KEP::ItemFurnaceExtension::Task_FillMachine_FUN_00340EB0_hook(Task_FillMachi
 		{
 			while ((*iter)->section->hasRoomForItem((*iter)->data, 1))
 			{
-				auto item = inventory->getItem((*iter)->data);
+				auto item = inventory->takeItem_EntireStack((*iter)->data);
 				if (!(*iter)->section->addItem(item, 1))
 				{
 					inventory->addItem(item, 1, true, false);
@@ -252,10 +253,24 @@ int KEP::ItemFurnaceExtension::Task_FillMachine_FUN_00340EB0_hook(Task_FillMachi
 				++count;
 			}
 		}
+
+		if (0 < count)
+			externalFunctions->FUN_00299750(reinterpret_cast<FurnaceBuilding*>(storage), nullptr);
+
 		return count;
 	}
 
 	return Task_FillMachine_FUN_00340EB0_orig(self, storage, inventory);
+}
+
+int KEP::ItemFurnaceExtension::Task_FillMachine_FUN_00343720_hook(Task_FillMachine* self, StorageBuilding* storage, Inventory* inventory)
+{
+	auto count = Task_FillMachine_FUN_00343720_orig(self, storage, inventory);
+
+	if (0 < count && storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->storageItems.size() != 0)
+		externalFunctions->FUN_00299750(reinterpret_cast<FurnaceBuilding*>(storage), nullptr);
+
+	return count;
 }
 
 void KEP::ItemFurnaceExtension::init()
@@ -276,5 +291,8 @@ void KEP::ItemFurnaceExtension::init()
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00340EB0, &Task_FillMachine_FUN_00340EB0_hook, &Task_FillMachine_FUN_00340EB0_orig))
 			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt5] could not install hook!");
+
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00343720, &Task_FillMachine_FUN_00343720_hook, &Task_FillMachine_FUN_00343720_orig))
+			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt6] could not install hook!");
 	}
 }
