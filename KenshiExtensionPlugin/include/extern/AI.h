@@ -43,6 +43,7 @@ public:
 	StateBroadcastData* _0x18;
 	AITaskSystem* taskSystem;
 	SensoryData _0x28;
+	int _0x200;
 	char _0x208[0xa0];
 	TaskRepertoire* _0x2a8;
 	TradingInfo* _0x2b0;
