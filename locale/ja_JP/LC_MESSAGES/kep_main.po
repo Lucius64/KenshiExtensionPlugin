@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KenshiExtensionPlugin\n"
-"POT-Creation-Date: 2026-01-03 20:17+0900\n"
-"PO-Revision-Date: 2026-01-03 20:18+0900\n"
+"POT-Creation-Date: 2026-01-06 23:41+0900\n"
+"PO-Revision-Date: 2026-01-06 23:41+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -440,46 +440,10 @@ msgstr "名声値を保存"
 msgid "Saving reputation points."
 msgstr "名声値を保存します。"
 
-#~ msgid "Extension: NPC Class"
-#~ msgstr "拡張機能: NPCクラス"
+#: PluginMenu.cpp:188
+msgid "Extension: Animal Armor"
+msgstr "拡張機能: 動物の防具"
 
-#~ msgid "Enable extension function for NPC Class."
-#~ msgstr "NPCクラスの拡張機能を有効化します。"
-
-#~ msgid "Extension: Dialogue"
-#~ msgstr "拡張機能: ダイアログ"
-
-#~ msgid "Enable extension function for Dialogue."
-#~ msgstr "ダイアログの拡張機能を有効化します。"
-
-#~ msgid "Enable character dismissal function extension."
-#~ msgstr "キャラクター解雇の拡張機能を有効化します。"
-
-#~ msgid "Enable item furnace function extension."
-#~ msgstr "アイテム炉の拡張機能を有効化します。"
-
-#~ msgid "Raid events will occur from factions such as Fogmen and Fishmen."
-#~ msgstr "フォグマンやフィッシュマン等の勢力からの襲撃イベントが発生します。"
-
-#~ msgid ""
-#~ "Accelerates zone loading. This feature is disabled when using the Kenshi "
-#~ "CTD fix patch."
-#~ msgstr ""
-#~ "ゾーンの読み込みを高速化します。Kenshi CTD fix patchを使用している場合、こ"
-#~ "の機能は無効になります。"
-
-#~ msgid "PLUGIN"
-#~ msgstr "プラグイン"
-
-#~ msgid "Fixed an issue where NPC facial features were incorrect."
-#~ msgstr "NPCの顔つきが正しくない問題を修正する。"
-
-#~ msgid ""
-#~ "Fixed an issue where hair would not display correctly when opening the "
-#~ "Character Editor window while wearing items like bandanas."
-#~ msgstr ""
-#~ "バンダナ等を装備してキャラクターエディターウィンドウを開くと髪が正常に表示"
-#~ "されない不具合を修正します。"
-
-#~ msgid "[KEP Settings]"
-#~ msgstr "[Kenshi Extension Pluginの設定]"
+#: PluginMenu.cpp:189
+msgid "Enable extension function for Animal Armor. (REQURIES RESTART)"
+msgstr "動物の防具の拡張機能を有効化します。 (再起動が必要)"

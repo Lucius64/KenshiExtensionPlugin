@@ -62,6 +62,7 @@ namespace
 		settingsDocument.AddMember("portrait_extension", settings._portraitExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("save_reputation", settings._saveReputation, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("aim_animation_extension", settings._aimAnimationExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("animal_armor", settings._animalArmor, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -113,6 +114,7 @@ KEP::Settings::Settings()
 	, _saveReputation(false)
 	, _animationSkillTypeExtension(false)
 	, _portraitExtension(0)
+	, _animalArmor(true)
 {
 }
 
@@ -236,4 +238,6 @@ void KEP::Settings::loadSettings()
 		this->_saveReputation = settingsDocument["save_reputation"].GetBool();
 	if (settingsDocument.HasMember("aim_animation_extension"))
 		this->_aimAnimationExtension = settingsDocument["aim_animation_extension"].GetBool();
+	if (settingsDocument.HasMember("animal_armor"))
+		this->_animalArmor = settingsDocument["animal_armor"].GetBool();
 }

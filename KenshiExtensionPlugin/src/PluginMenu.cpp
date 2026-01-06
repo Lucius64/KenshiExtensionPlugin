@@ -185,6 +185,9 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 	auto panelLine_saveReputation = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Save reputation points"), settings._saveReputation, tabID);
 	panelLine_saveReputation->setTooltip(boost::locale::gettext("Saving reputation points."), self->tooltip);
 
+	auto panelLine_animalArmor = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Animal Armor"), settings._animalArmor, tabID);
+	panelLine_animalArmor->setTooltip(boost::locale::gettext("Enable extension function for Animal Armor. (REQURIES RESTART)"), self->tooltip);
+
 	pluginOptionTab->setVisible(false);
 	self->optionsTab->setItemData(pluginOptionTab, pluginOptionPanel);
 }

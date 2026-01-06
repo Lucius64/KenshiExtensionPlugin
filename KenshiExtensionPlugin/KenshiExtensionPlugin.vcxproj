@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AnimalExtension.h" />
     <ClInclude Include="include\AppearanceExtension.h" />
     <ClInclude Include="include\bugfix\AppearanceFix.h" />
     <ClInclude Include="include\bugfix\StatsFix.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="include\extern\FactionRelations.h" />
     <ClInclude Include="include\extern\FactionWarMgr.h" />
     <ClInclude Include="include\extern\GunClass.h" />
+    <ClInclude Include="include\extern\InventoryLayout.h" />
     <ClInclude Include="include\extern\OptionsWindow.h" />
     <ClInclude Include="include\extern\PortraitManager.h" />
     <ClInclude Include="include\extern\ProductionBuilding.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="include\WarCampaignExtension.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimalExtension.cpp" />
     <ClCompile Include="src\AnimationExtension.cpp" />
     <ClCompile Include="src\AppearanceExtension.cpp" />
     <ClCompile Include="src\bugfix\AppearanceFix.cpp" />

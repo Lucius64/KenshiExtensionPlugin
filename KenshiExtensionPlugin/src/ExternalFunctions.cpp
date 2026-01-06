@@ -39,6 +39,7 @@ KEP::ExternalGlobals::ExternalGlobals()
 	, _KenshiGUI(nullptr)
 	, _LocaleInfoManagerPtr(nullptr)
 	, _TemporaryLimbInterface(nullptr)
+	, _InventorySlotSkinSize(nullptr)
 	, _dropItemReturnAddress(0)
 {
 
@@ -77,6 +78,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_KenshiGUI = baseAddr + 0x2132750;
 			*(uintptr_t*)&this->_LocaleInfoManagerPtr = baseAddr + 0x2127370;
 			*(uintptr_t*)&this->_TemporaryLimbInterface = baseAddr + 0x2126cd0;
+			*(uintptr_t*)&this->_InventorySlotSkinSize = baseAddr + 0x2127440;
 			this->_dropItemReturnAddress = baseAddr + 0x712c49;
 		}
 	}
@@ -111,6 +113,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_KenshiGUI = baseAddr + 0x21306c0;
 			*(uintptr_t*)&this->_LocaleInfoManagerPtr = baseAddr + 0x2125380;
 			*(uintptr_t*)&this->_TemporaryLimbInterface = baseAddr + 0x2124ce0;
+			*(uintptr_t*)&this->_InventorySlotSkinSize = baseAddr + 0x2125450;
 			this->_dropItemReturnAddress = baseAddr + 0x7125a9;
 		}
 	}
@@ -203,6 +206,13 @@ KEP::ExternalFunctions::ExternalFunctions()
 	, FUN_005B3020(nullptr)
 	, FUN_005B33B0(nullptr)
 	, FUN_005B3380(nullptr)
+	, FUN_00155350(nullptr)
+	, FUN_0015D810(nullptr)
+	, FUN_0011DDC0(nullptr)
+	, FUN_0014F530(nullptr)
+	, FUN_0014E390(nullptr)
+	, FUN_0070C0A0(nullptr)
+	, FUN_0070C0B0(nullptr)
 	, target_Ogre_Skeleton__refreshAnimationState(nullptr)
 {
 
@@ -301,6 +311,13 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_005B3020 = baseAddr + 0x5b3020;
 			*(uintptr_t*)&this->FUN_005B33B0 = baseAddr + 0x5b33b0;
 			*(uintptr_t*)&this->FUN_005B3380 = baseAddr + 0x5b3380;
+			*(uintptr_t*)&this->FUN_00155350 = baseAddr + 0x155350;
+			*(uintptr_t*)&this->FUN_0015D810 = baseAddr + 0x15d810;
+			*(uintptr_t*)&this->FUN_0011DDC0 = baseAddr + 0x11ddc0;
+			*(uintptr_t*)&this->FUN_0014F530 = baseAddr + 0x14f530;
+			*(uintptr_t*)&this->FUN_0014E390 = baseAddr + 0x14e390;
+			*(uintptr_t*)&this->FUN_0070C0A0 = baseAddr + 0x70c0a0;
+			*(uintptr_t*)&this->FUN_0070C0B0 = baseAddr + 0x70c0b0;
 		}
 	}
 	else if (platform == 0)
@@ -393,6 +410,13 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_005B3020 = baseAddr + 0x5b3330;
 			*(uintptr_t*)&this->FUN_005B33B0 = baseAddr + 0x5b36c0;
 			*(uintptr_t*)&this->FUN_005B3380 = baseAddr + 0x5b3690;
+			*(uintptr_t*)&this->FUN_00155350 = baseAddr + 0x155270;
+			*(uintptr_t*)&this->FUN_0015D810 = baseAddr + 0x15d900;
+			*(uintptr_t*)&this->FUN_0011DDC0 = baseAddr + 0x11ddc0;
+			*(uintptr_t*)&this->FUN_0014F530 = baseAddr + 0x14f450;
+			*(uintptr_t*)&this->FUN_0014E390 = baseAddr + 0x14e2b0;
+			*(uintptr_t*)&this->FUN_0070C0A0 = baseAddr + 0x70ba00;
+			*(uintptr_t*)&this->FUN_0070C0B0 = baseAddr + 0x70ba10;
 		}
 	}
 

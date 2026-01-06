@@ -6,7 +6,6 @@
 
 #include <ogre/OgrePrerequisites.h>
 
-//#include <kenshi/WorldEventStateQuery.h>
 
 enum WorldStateEnum;
 enum StatsEnumerated;
@@ -74,11 +73,28 @@ class FactionRelations;
 class RangedCombatClass;
 class AnimationClassBase;
 class AnimationClass;
+class InventorySection;
+class InventoryLayout;
+class AnimalInventoryLayout;
+class InventoryGUI;
+class InventorySectionGUI;
 
 namespace MyGUI
 {
 	struct Colour;
 	class Widget;
+	class TextBox;
+	class Window;
+	class Button;
+	class ScrollView;
+	class ScrollBar;
+	class ComboBox;
+
+	namespace types
+	{
+		template<typename T>
+		struct TSize;
+	}
 }
 
 namespace boost
@@ -88,6 +104,11 @@ namespace boost
 		template<typename CharType>
 		class basic_message;
 	}
+}
+
+namespace wraps
+{
+	class BaseLayout;
 }
 
 namespace KEP
@@ -155,6 +176,7 @@ namespace KEP
 		ForgottenGUI* _KenshiGUI;
 		LocaleInfoManager* _LocaleInfoManagerPtr;
 		GameData* _TemporaryLimbInterface;
+		MyGUI::types::TSize<int>* _InventorySlotSkinSize;
 
 		uintptr_t _dropItemReturnAddress;
 
@@ -251,6 +273,13 @@ namespace KEP
 		float (*FUN_005B3020)(AnimationClassBase*, AnimationData*);
 		void (*FUN_005B33B0)(AnimationClassBase*, const Ogre::String&);
 		void (*FUN_005B3380)(AnimationClassBase*, AnimationData*);
+		AnimalInventoryLayout* (*FUN_00155350)(AnimalInventoryLayout*); // AnimalInventoryLayout::AnimalInventoryLayout()
+		void (*FUN_0015D810)(wraps::BaseLayout*, MyGUI::TextBox**, const std::string&, bool, bool); // Get Widget <TextBox>
+		void (*FUN_0011DDC0)(wraps::BaseLayout*, MyGUI::Widget**, const std::string&, bool, bool); // Get Widget <Widget>
+		void (*FUN_0014F530)(AnimalInventoryLayout*, InventoryGUI*, Ogre::map<std::string, InventorySectionGUI*>::type*, Inventory*); // Create GUI
+		InventorySectionGUI*(*FUN_0014E390)(InventoryLayout*, InventorySection*); // Get InventorySectionGUI
+		MyGUI::Widget* (*FUN_0070C0A0)(InventorySectionGUI*); // Get Widget
+		void (*FUN_0070C0B0)(InventorySectionGUI*, bool); // setVisible
 
 		hand(UniqueNPCManager::* FUN_009AFCA0)(GameData*); // Get UniqueCharacterHandle (thiscall & RVO)
 		std::string(boost::locale::basic_message<char>::* FUN_000A9580)(void); // boost::locale::basic_message<char>::str

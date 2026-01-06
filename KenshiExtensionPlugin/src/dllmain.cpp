@@ -28,6 +28,7 @@
 #include <AppearanceExtension.h>
 #include <AnimationExtension.h>
 #include <DialogueExtension.h>
+#include <AnimalExtension.h>
 
 
 namespace fs = boost::filesystem;
@@ -83,6 +84,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::AppearanceExtension::init();
 	KEP::AnimationExtension::init();
 	KEP::DialogueExtension::init();
+	KEP::AnimalExtension::init();
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  fdwReason, LPVOID lpvReserved)
