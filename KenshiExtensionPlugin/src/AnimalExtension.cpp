@@ -4,6 +4,7 @@
 
 #include <mygui/MyGUI_TSize.h>
 #include <mygui/MyGUI_TextBox.h>
+#include <mygui/MyGUI_Button.h>
 
 #include <kenshi/Kenshi.h>
 #include <core/Functions.h>
@@ -116,16 +117,24 @@ AnimalInventoryLayout* KEP::AnimalExtension::AnimalInventoryLayout__CONSTRUCTOR_
 		externalFunctions->FUN_0015D810(self, &lbArmor, "lbArmor", false, false);
 		if (lbArmor == nullptr) // レイアウト変更Modとの競合によるクラッシュを回避するためにデフォルトのレイアウトを実装する
 		{
+			MyGUI::TextBox* lbBackpack;
+			externalFunctions->FUN_0015D810(self, &lbBackpack, "lbBackpack", true, true);
+			MyGUI::Button* btOpenBag;
+			externalFunctions->FUN_0011CD50(self, &btOpenBag, "OpenBagButton", true, true);
 			lbArmor = panel->createWidgetReal<MyGUI::TextBox>("Kenshi_TextboxPaintedText", MyGUI::FloatCoord(0.0102881f, 0.126437f, 0.253086f, 0.045977f), MyGUI::Align::Default, self->mPrefix + "lbArmor");
+			lbArmor->setCoord(lbArmor->getLeft(), btOpenBag->getBottom(), lbBackpack->getWidth(), lbBackpack->getHeight());
 			lbArmor->setTextAlign(MyGUI::Align::Center);
-			lbArmor->setTextColour(MyGUI::Colour(0.327485f, 0.284279f, 0.23556f, 1.0f));
+			lbArmor->setTextColour(lbBackpack->getTextColour());
 		}
 		lbArmor->setCaption((boost::locale::translate("Armor").*externalFunctions->FUN_000A9580)());
 
 		MyGUI::Widget* armourWidget;
 		externalFunctions->FUN_0011DDC0(self, &armourWidget, "armour", false, false);
 		if (armourWidget == nullptr)
-			panel->createWidgetRealT(MyGUI::Widget::getClassTypeName(), "Kenshi_InventorySlotSkin", MyGUI::FloatCoord(0.0102881f, 0.172414f, 0.253086f, 0.232184f), MyGUI::Align::Default, self->mPrefix + "armour");
+		{
+			armourWidget = panel->createWidgetRealT(MyGUI::Widget::getClassTypeName(), "Kenshi_InventorySlotSkin", MyGUI::FloatCoord(0.0102881f, 0.172414f, 0.253086f, 0.232184f), MyGUI::Align::Default, self->mPrefix + "armour");
+			armourWidget->setPosition(lbArmor->getLeft(), lbArmor->getBottom());
+		}
 	}
 	return self;
 }

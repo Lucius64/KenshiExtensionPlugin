@@ -276,6 +276,8 @@ namespace KEP
 		AnimalInventoryLayout* (*FUN_00155350)(AnimalInventoryLayout*); // AnimalInventoryLayout::AnimalInventoryLayout()
 		void (*FUN_0015D810)(wraps::BaseLayout*, MyGUI::TextBox**, const std::string&, bool, bool); // Get Widget <TextBox>
 		void (*FUN_0011DDC0)(wraps::BaseLayout*, MyGUI::Widget**, const std::string&, bool, bool); // Get Widget <Widget>
+		void (*FUN_0011CD50)(wraps::BaseLayout*, MyGUI::Button**, const std::string&, bool, bool); // Get Widget <Button>
+		void (*FUN_00119C00)(wraps::BaseLayout*, MyGUI::Window**, const std::string&, bool, bool); // Get Widget <Window>
 		void (*FUN_0014F530)(AnimalInventoryLayout*, InventoryGUI*, Ogre::map<std::string, InventorySectionGUI*>::type*, Inventory*); // Create GUI
 		InventorySectionGUI*(*FUN_0014E390)(InventoryLayout*, InventorySection*); // Get InventorySectionGUI
 		MyGUI::Widget* (*FUN_0070C0A0)(InventorySectionGUI*); // Get Widget
