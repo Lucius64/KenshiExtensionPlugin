@@ -24,6 +24,7 @@ namespace
 	void (*CharStats_xpLockpicking_orig)(CharStats*, int, bool);
 	int (*CharStats_skillBonusAttack_unarmed_orig)(CharStats*, bool);
 	std::string(*CharStats_getStatName_orig)(StatsEnumerated);
+	void (*Character_recalculateTotalEquipmentSkillBonus_orig)(Character*);
 
 
 	StatsEnumerated getStatsEnumeratedFromWeaponCategory(WeaponCategory weaponCategory)
@@ -422,6 +423,105 @@ std::string KEP::StatsFix::CharStats_getStatName_hook(StatsEnumerated what)
 	return (boost::locale::translate(id).*externalFunctions->FUN_000A9580)();
 }
 
+void KEP::StatsFix::Character_recalculateTotalEquipmentSkillBonus_hook(Character* self)
+{
+	if (settings._fixAthleticsMultiplier)
+	{
+		Character_recalculateTotalEquipmentSkillBonus_orig(self);
+		return;
+	}
+
+	float athleticsMultiplierMin = 1.0f;
+	float athleticsMultiplierMax = 1.0f;
+	float combatSpeedMultiplier = 1.0f;
+	int skillBonusAttack = 0;
+	int skillBonusDefence = 0;
+	int skillBonusUnarmed = 0;
+	int skillBonusPerception = 0;
+	float skillMultDodge = 1.0f;
+	float skillMultStealth = 1.0f;
+	float skillMultAssassin = 1.0f;
+	float skillMultDexterity = 1.0f;
+	float skillMultDamage = 1.0f;
+	float fistInjuryEquipmentMult = 1.0f;
+	float skillMultRanged = 1.0f;
+
+	auto backPack = self->hasABackpackOn();
+
+	self->stats->_weatherProtections.clear();
+
+	int combatSkillBonus = 0;
+	if (backPack != nullptr)
+	{
+		skillMultDodge = backPack->stealthMult;
+		combatSkillBonus = backPack->combatSkillBonus;
+		combatSpeedMultiplier = backPack->combatSpeedMult;
+		if (backPack->athleticsMult < athleticsMultiplierMin)
+			athleticsMultiplierMin = backPack->athleticsMult;
+		if (athleticsMultiplierMax < backPack->athleticsMult)
+			athleticsMultiplierMax = backPack->athleticsMult;
+	}
+
+	skillBonusAttack = combatSkillBonus;
+	skillBonusDefence = combatSkillBonus;
+	skillMultStealth = skillMultDodge;
+
+	if (self->medical.armourList.size() == 0)
+	{
+		if (backPack == nullptr)
+		{
+			skillMultDodge = 1.1f;
+			skillMultStealth = 1.2f;
+			skillMultDexterity = 1.1f;
+		}
+	}
+	else
+	{
+		for (auto iter = self->medical.armourList.begin(); iter != self->medical.armourList.end(); ++iter)
+		{
+			skillBonusPerception += (*iter)->perceptionBonus;
+			skillBonusDefence += (*iter)->combatSkillBonusDef;
+			skillBonusAttack += (*iter)->combatSkillBonusAttk;
+			fistInjuryEquipmentMult *= (*iter)->fistInjuryMult;
+			skillMultStealth *= (*iter)->stealthMult;
+			skillMultDodge *= (*iter)->dodgeMult;
+			skillBonusUnarmed += (*iter)->unarmedBonus;
+			skillMultRanged *= (*iter)->rangedSkillMult;
+			skillMultAssassin *= (*iter)->assassinMult;
+			skillMultDexterity *= (*iter)->dexterityMult;
+			skillMultDamage *= (*iter)->damageMult;
+			combatSpeedMultiplier *= (*iter)->combatSpeedMult;
+			if ((*iter)->athleticsMult < athleticsMultiplierMin)
+				athleticsMultiplierMin = (*iter)->athleticsMult;
+			if (athleticsMultiplierMax < (*iter)->athleticsMult)
+				athleticsMultiplierMax = (*iter)->athleticsMult;
+
+			for (auto weatherProtectionIter = (*iter)->weatherProtections.begin(); weatherProtectionIter != (*iter)->weatherProtections.end(); ++weatherProtectionIter)
+			{
+				if (*weatherProtectionIter != WA_NONE)
+					self->stats->_weatherProtections[*weatherProtectionIter] += (*iter)->weatherProtectionAmount;
+			}
+		}
+	}
+
+	self->stats->setEquipmentStatBonuses(
+		athleticsMultiplierMax * athleticsMultiplierMin,
+		combatSpeedMultiplier,
+		skillBonusAttack,
+		skillBonusDefence,
+		skillMultStealth,
+		skillBonusUnarmed,
+		skillMultDodge,
+		fistInjuryEquipmentMult,
+		skillBonusPerception,
+		skillMultRanged,
+		skillMultDexterity,
+		skillMultAssassin,
+		skillMultDamage
+	);
+
+}
+
 void KEP::StatsFix::init()
 {
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::xpMelee), &CharStats_xpMelee_hook, &CharStats_xpMelee_orig))
@@ -435,4 +535,7 @@ void KEP::StatsFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::getStatName), &CharStats_getStatName_hook, &CharStats_getStatName_orig))
 		ErrorLog("KenshiExtensionPlugin: [stat name] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::recalculateTotalEquipmentSkillBonus), &Character_recalculateTotalEquipmentSkillBonus_hook, &Character_recalculateTotalEquipmentSkillBonus_orig))
+		ErrorLog("KenshiExtensionPlugin: [athletics mult] could not install hook!");
 }

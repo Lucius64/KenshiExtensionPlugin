@@ -64,6 +64,7 @@ namespace KEP
 		bool _saveReputation;
 		bool _animationSkillTypeExtension;
 		int _portraitExtension;
+		bool _fixAthleticsMultiplier;
 		bool _animalArmor;
 	};
 }
