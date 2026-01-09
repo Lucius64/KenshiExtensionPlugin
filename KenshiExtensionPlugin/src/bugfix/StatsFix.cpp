@@ -425,7 +425,7 @@ std::string KEP::StatsFix::CharStats_getStatName_hook(StatsEnumerated what)
 
 void KEP::StatsFix::Character_recalculateTotalEquipmentSkillBonus_hook(Character* self)
 {
-	if (settings._fixAthleticsMultiplier)
+	if (!settings._fixAthleticsMultiplier)
 	{
 		Character_recalculateTotalEquipmentSkillBonus_orig(self);
 		return;
