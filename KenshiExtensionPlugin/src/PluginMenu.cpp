@@ -103,7 +103,7 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 	auto panelLine_fixGlobalDamageMultiplierForCrossbow = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Fix global damage multiplier for Crossbow"), settings._fixGlobalDamageMultiplier, tabID);
 	panelLine_fixGlobalDamageMultiplierForCrossbow->setTooltip(boost::locale::gettext("The global damage multiplier will no longer significantly affect crossbows."), self->tooltip);
 
-	auto panelLine_fixItemBecomingStolenGoodsFromPlayerBug = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Fix item becoming sltolen goods from player bug"), settings._fixItemBecomingStolenGoodsFromPlayerBug, tabID);
+	auto panelLine_fixItemBecomingStolenGoodsFromPlayerBug = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Fix item becoming stolen goods from player bug"), settings._fixItemBecomingStolenGoodsFromPlayerBug, tabID);
 	panelLine_fixItemBecomingStolenGoodsFromPlayerBug->setTooltip(boost::locale::gettext("Prevents an issue where taking items out of a backpack placed on the ground halves their selling price."), self->tooltip);
 
 	auto panelLine_fixHousemateInventoryRefresh = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Fix housemates inventory refresh"), settings._fixHousemateInventoryRefresh, tabID);
