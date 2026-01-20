@@ -33,6 +33,7 @@
 #include <extern/PortraitManager.h>
 #include <extern/Renderer.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <bugfix/AppearanceFix.h>
@@ -47,17 +48,6 @@ namespace
 	void (*RenderToTexture_FUN_0084A9C0_orig)(RenderToTexture*, Character*, Ogre::SharedPtr<Ogre::Texture>, const PortraitManager&, const Ogre::Vector4&);
 	void (*Ogre_Skeleton__refreshAnimationState_orig)(Ogre::Skeleton*, Ogre::AnimationStateSet*);
 	AppearanceManager* (*AppearanceManager__CONSTRUCTOR_orig)(AppearanceManager* self);
-
-	std::string getHexString(size_t number, int width)
-	{
-		std::stringstream ss;
-		ss.setf(std::stringstream::hex);
-		ss << std::hex;
-		ss.width(width);
-		ss.fill('0');
-		ss << number;
-		return ss.str();
-	}
 
 	int compareModIndex(const void* a, const void* b)
 	{

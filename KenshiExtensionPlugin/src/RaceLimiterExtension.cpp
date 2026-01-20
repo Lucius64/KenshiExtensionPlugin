@@ -23,6 +23,7 @@
 #include <extern/TemporaryLimbInterface.h>
 #include <extern/GunClass.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <RaceLimiterExtension.h>

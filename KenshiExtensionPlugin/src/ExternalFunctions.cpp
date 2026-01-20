@@ -215,6 +215,19 @@ KEP::ExternalFunctions::ExternalFunctions()
 	, FUN_0014E390(nullptr)
 	, FUN_0070C0A0(nullptr)
 	, FUN_0070C0B0(nullptr)
+	, FUN_000CD830(nullptr)
+	, FUN_00A09840(nullptr)
+	, FUN_000D8620(nullptr)
+	, FUN_000D6360(nullptr)
+	, FUN_000D8310(nullptr)
+	, FUN_004B0B60(nullptr)
+	, FUN_002C9840(nullptr)
+	, FUN_002BB270(nullptr)
+	, FUN_002CE000(nullptr)
+	, FUN_002BBCE0(nullptr)
+	, FUN_002B8260(nullptr)
+	, FUN_0082E2E0(nullptr)
+	, FUN_002CA350(nullptr)
 	, target_Ogre_Skeleton__refreshAnimationState(nullptr)
 {
 
@@ -322,6 +335,19 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0014E390 = baseAddr + 0x14e390;
 			*(uintptr_t*)&this->FUN_0070C0A0 = baseAddr + 0x70c0a0;
 			*(uintptr_t*)&this->FUN_0070C0B0 = baseAddr + 0x70c0b0;
+			*(uintptr_t*)&this->FUN_000CD830 = baseAddr + 0xcd830;
+			*(uintptr_t*)&this->FUN_00A09840 = baseAddr + 0xa09840;
+			*(uintptr_t*)&this->FUN_000D8620 = baseAddr + 0xd8620;
+			*(uintptr_t*)&this->FUN_000D6360 = baseAddr + 0xd6360;
+			*(uintptr_t*)&this->FUN_000D8310 = baseAddr + 0xd8310;
+			*(uintptr_t*)&this->FUN_004B0B60 = baseAddr + 0x4b0b60;
+			*(uintptr_t*)&this->FUN_002C9840 = baseAddr + 0x2c9840;
+			*(uintptr_t*)&this->FUN_002BB270 = baseAddr + 0x2bb270;
+			*(uintptr_t*)&this->FUN_002CE000 = baseAddr + 0x2ce000;
+			*(uintptr_t*)&this->FUN_002BBCE0 = baseAddr + 0x2bbce0;
+			*(uintptr_t*)&this->FUN_002B8260 = baseAddr + 0x2b8260;
+			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x82e2e0;
+			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x2ca350;
 		}
 	}
 	else if (platform == 0)
@@ -423,6 +449,19 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0014E390 = baseAddr + 0x14e2b0;
 			*(uintptr_t*)&this->FUN_0070C0A0 = baseAddr + 0x70ba00;
 			*(uintptr_t*)&this->FUN_0070C0B0 = baseAddr + 0x70ba10;
+			*(uintptr_t*)&this->FUN_000CD830 = baseAddr + 0xcd830;
+			*(uintptr_t*)&this->FUN_00A09840 = baseAddr + 0xa08f60;
+			*(uintptr_t*)&this->FUN_000D8620 = baseAddr + 0xd8620;
+			*(uintptr_t*)&this->FUN_000D6360 = baseAddr + 0xd6360;
+			*(uintptr_t*)&this->FUN_000D8310 = baseAddr + 0xd8310;
+			*(uintptr_t*)&this->FUN_004B0B60 = baseAddr + 0x4b0e70;
+			*(uintptr_t*)&this->FUN_002C9840 = baseAddr + 0x2c93d0;
+			*(uintptr_t*)&this->FUN_002BB270 = baseAddr + 0x2bae00;
+			*(uintptr_t*)&this->FUN_002CE000 = baseAddr + 0x2cdb90;
+			*(uintptr_t*)&this->FUN_002BBCE0 = baseAddr + 0x2bb870;
+			*(uintptr_t*)&this->FUN_002B8260 = baseAddr + 0x2b7df0;
+			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x82dc20;
+			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x2c9ee0;
 		}
 	}
 

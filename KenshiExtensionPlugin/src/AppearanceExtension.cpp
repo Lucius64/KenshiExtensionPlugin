@@ -22,6 +22,7 @@
 #include <extern/StateBroadcastData.h>
 #include <extern/PortraitManager.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <AppearanceExtension.h>

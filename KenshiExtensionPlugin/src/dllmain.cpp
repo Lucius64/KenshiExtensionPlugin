@@ -29,6 +29,8 @@
 #include <AnimationExtension.h>
 #include <DialogueExtension.h>
 #include <AnimalExtension.h>
+#include <CraftingExtension.h>
+#include <ItemExtension.h>
 
 
 namespace fs = boost::filesystem;
@@ -76,6 +78,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::TownOverrideFix::init();
 	KEP::DistantTownFix::init();
 	KEP::ResearchFix::init();
+	KEP::GUIFix::init();
 	KEP::WarCampaignExtension::init();
 	KEP::CharacterExtension::init();
 	KEP::ItemFurnaceExtension::init();
@@ -85,6 +88,8 @@ __declspec(dllexport) void startPlugin()
 	KEP::AnimationExtension::init();
 	KEP::DialogueExtension::init();
 	KEP::AnimalExtension::init();
+	KEP::CraftingExtension::init();
+	KEP::ItemExtension::init();
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  fdwReason, LPVOID lpvReserved)

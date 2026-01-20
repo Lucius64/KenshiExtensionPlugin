@@ -9,6 +9,7 @@
 
 enum WorldStateEnum;
 enum StatsEnumerated;
+enum itemType;
 class AnimationData;
 class AppearanceManager;
 class GameData;
@@ -22,6 +23,7 @@ class AreaSector;
 class TownList;
 class Platoon;
 class ZoneManager;
+class ZoneMap;
 class CampaignData;
 class hand;
 class TownBase;
@@ -78,6 +80,9 @@ class InventoryLayout;
 class AnimalInventoryLayout;
 class InventoryGUI;
 class InventorySectionGUI;
+class SeveredLimbItem;
+class CraftingBuilding;
+class GameDataGroup;
 
 namespace MyGUI
 {
@@ -89,11 +94,14 @@ namespace MyGUI
 	class ScrollView;
 	class ScrollBar;
 	class ComboBox;
+	class ItemBox;
 
 	namespace types
 	{
 		template<typename T>
 		struct TSize;
+		template<typename T>
+		struct TCoord;
 	}
 }
 
@@ -282,6 +290,19 @@ namespace KEP
 		InventorySectionGUI*(*FUN_0014E390)(InventoryLayout*, InventorySection*); // Get InventorySectionGUI
 		MyGUI::Widget* (*FUN_0070C0A0)(InventorySectionGUI*); // Get Widget
 		void (*FUN_0070C0B0)(InventorySectionGUI*, bool); // setVisible
+		void (*FUN_000CD830)(SeveredLimbItem*); // SeveredLimbItem::destroyPhysical
+		void (*FUN_00A09840)(ZoneManager*, lektor<ZoneMap*>&); // 
+		void (*FUN_000D8620)(DistantTown*, bool); // Update DistantTown
+		std::string* (*FUN_000D6360)(DistantTown*, std::string*); // Get DistantMesh Filename
+		void (*FUN_000D8310)(DistantTown*); // Create DistantMesh
+		void (*FUN_004B0B60)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool); // ResearchItemList
+		void (*FUN_002C9840)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool); // CraftItemList
+		GameData* (*FUN_002BB270)(CraftingBuilding*, int);
+		GameData* (*FUN_002CE000)(); // Get PlayerWeapons
+		void (*FUN_002BBCE0)(CraftingBuilding*, lektor<GameDataGroup>&); // Get CraftItemList
+		float (*FUN_002B8260)(CraftingBuilding*, GameData*); // Get WeaponLevel
+		void (*FUN_0082E2E0)(Research*, lektor<GameDataGroup>&, itemType, itemType); // Get EnableItems
+		void (*FUN_002CA350)(const Ogre::vector<GameDataReference>::type*, itemType, lektor<GameDataGroup>&); // Get EnableItems
 
 		hand(UniqueNPCManager::* FUN_009AFCA0)(GameData*); // Get UniqueCharacterHandle (thiscall & RVO)
 		std::string(boost::locale::basic_message<char>::* FUN_000A9580)(void); // boost::locale::basic_message<char>::str
@@ -289,16 +310,6 @@ namespace KEP
 		ExternalFunctions();
 		void init(unsigned int platform, const std::string& version, uintptr_t baseAddr);
 	};
-
-	inline float lerp(float t, float a, float b)
-	{
-		return (b - a) * t + a;
-	}
-
-	inline float linear(float t, float zero, float one)
-	{
-		return (t - zero) / (one - zero);
-	}
 
 	extern boost::scoped_ptr<ExternalFunctions> externalFunctions;
 	extern boost::scoped_ptr<ExternalGlobals> externalGlobals;

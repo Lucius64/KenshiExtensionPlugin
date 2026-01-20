@@ -23,6 +23,7 @@
 #include <extern/Renderer.h>
 #include <extern/UseableStuff.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <bugfix/MedicalFix.h>

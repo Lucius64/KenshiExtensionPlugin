@@ -142,6 +142,7 @@
     <ClInclude Include="include\bugfix\MiscFix.h" />
     <ClInclude Include="include\bugfix\UniqueCharacterFix.h" />
     <ClInclude Include="include\AnimationExtension.h" />
+    <ClInclude Include="include\CraftingExtension.h" />
     <ClInclude Include="include\DialogueExtension.h" />
     <ClInclude Include="include\CharacterExtension.h" />
     <ClInclude Include="include\ExternalFunctions.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="include\extern\DatapanelGUI.h" />
     <ClInclude Include="include\extern\FactionRelations.h" />
     <ClInclude Include="include\extern\FactionWarMgr.h" />
+    <ClInclude Include="include\extern\ForgottenGUI.h" />
     <ClInclude Include="include\extern\GunClass.h" />
     <ClInclude Include="include\extern\InventoryLayout.h" />
     <ClInclude Include="include\extern\OptionsWindow.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="include\extern\Renderer.h" />
     <ClInclude Include="include\extern\Research.h" />
     <ClInclude Include="include\extern\RobotLimbItem.h" />
+    <ClInclude Include="include\extern\SeveredLimbItem.h" />
     <ClInclude Include="include\extern\SquadManagementScreen.h" />
     <ClInclude Include="include\extern\StateBroadcastData.h" />
     <ClInclude Include="include\extern\StorageBuilding.h" />
@@ -174,11 +177,15 @@
     <ClInclude Include="include\extern\TownBase.h" />
     <ClInclude Include="include\extern\UniqueNPCManager.h" />
     <ClInclude Include="include\extern\UseableStuff.h" />
+    <ClInclude Include="include\extern\ZoneManager.h" />
+    <ClInclude Include="include\extern\ZoneMapContent.h" />
+    <ClInclude Include="include\ItemExtension.h" />
     <ClInclude Include="include\ItemFurnaceExtension.h" />
     <ClInclude Include="include\PluginMenu.h" />
     <ClInclude Include="include\RaceLimiterExtension.h" />
     <ClInclude Include="include\ScytheFileExtension.h" />
     <ClInclude Include="include\Settings.h" />
+    <ClInclude Include="include\UtilityFunction.h" />
     <ClInclude Include="include\WarCampaignExtension.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,15 +198,18 @@
     <ClCompile Include="src\bugfix\MedicalFix.cpp" />
     <ClCompile Include="src\bugfix\MiscFix.cpp" />
     <ClCompile Include="src\bugfix\UniqueCharacterFix.cpp" />
+    <ClCompile Include="src\CraftingExtension.cpp" />
     <ClCompile Include="src\DialogueExtension.cpp" />
     <ClCompile Include="src\CharacterExtension.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\ExternalFunctions.cpp" />
+    <ClCompile Include="src\ItemExtension.cpp" />
     <ClCompile Include="src\ItemFurnaceExtension.cpp" />
     <ClCompile Include="src\PluginMenu.cpp" />
     <ClCompile Include="src\RaceLimiterExtension.cpp" />
     <ClCompile Include="src\ScytheFileExtension.cpp" />
     <ClCompile Include="src\Settings.cpp" />
+    <ClCompile Include="src\UtilityFunction.cpp" />
     <ClCompile Include="src\WarCampaignExtension.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

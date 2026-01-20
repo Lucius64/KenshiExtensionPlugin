@@ -191,6 +191,21 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 	auto panelLine_animalArmor = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Animal Armor"), settings._animalArmor, tabID);
 	panelLine_animalArmor->setTooltip(boost::locale::gettext("Enable extension function for Animal Armor. (REQURIES RESTART)"), self->tooltip);
 
+	auto panelLine_fixTechAndCraftingQueue = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Fix research and crafting queue sizes"), settings._fixTechAndCraftingQueue, tabID);
+	panelLine_fixTechAndCraftingQueue->setTooltip(boost::locale::gettext("Revert queue height to version 1.0.59 or earlier. Additionally, it will now scale according to window size instead of font size. (REQURIES RESTART)"), self->tooltip);
+
+	auto panelLine_enableCrashPrevention = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Enable crash prevention"), settings._enableCrashPrevention, tabID);
+	panelLine_enableCrashPrevention->setTooltip(boost::locale::gettext("Fixes two causes of random crashes. See the documentation for details. (REQURIES RESTART)\nNote: This doesn't prevent all crashes."), self->tooltip);
+
+	auto panelLine_craftingItemExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Crafting item"), settings._craftingItemExtension, tabID);
+	panelLine_craftingItemExtension->setTooltip(boost::locale::gettext("Enable extension function for Crafting item. (REQURIES RESTART)"), self->tooltip);
+
+	auto panelLine_weaponExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Weapon"), settings._weaponExtension, tabID);
+	panelLine_weaponExtension->setTooltip(boost::locale::gettext("Enable extension function for Weapon. (REQURIES RESTART)"), self->tooltip);
+
+	auto panelLine_dialogueExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Dialogue"), settings._dialogueExtension, tabID);
+	panelLine_dialogueExtension->setTooltip(boost::locale::gettext("Enable extension function for Dialogue."), self->tooltip);
+
 	pluginOptionTab->setVisible(false);
 	self->optionsTab->setItemData(pluginOptionTab, pluginOptionPanel);
 }

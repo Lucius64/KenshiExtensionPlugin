@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KenshiExtensionPlugin\n"
-"POT-Creation-Date: 2026-01-11 10:52+0900\n"
-"PO-Revision-Date: 2026-01-11 10:52+0900\n"
+"POT-Creation-Date: 2026-01-20 23:53+0900\n"
+"PO-Revision-Date: 2026-01-20 23:54+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -458,3 +458,53 @@ msgstr "拡張機能: 動物の防具"
 #: PluginMenu.cpp:192
 msgid "Enable extension function for Animal Armor. (REQURIES RESTART)"
 msgstr "動物の防具の拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:194
+msgid "Fix research and crafting queue sizes"
+msgstr "研究とクラフトのキューのサイズを修正"
+
+#: PluginMenu.cpp:195
+msgid ""
+"Revert queue height to version 1.0.59 or earlier. Additionally, it will now "
+"scale according to window size instead of font size. (REQURIES RESTART)"
+msgstr ""
+"キューの高さをバージョン1.0.59以前に戻します。また、フォントサイズの代わりに"
+"ウィンドウズサイズに応じてスケーリングします。 (再起動が必要)"
+
+#: PluginMenu.cpp:197
+msgid "Enable crash prevention"
+msgstr "クラッシュ防止を有効化"
+
+#: PluginMenu.cpp:198
+msgid ""
+"Fixes two causes of random crashes. See the documentation for details. "
+"(REQURIES RESTART)\n"
+"Note: This doesn't prevent all crashes."
+msgstr ""
+"ランダムなクラッシュの原因を2つ修正します。修正内容はドキュメントを参照してく"
+"ださい。 (再起動が必要)\n"
+"注意：全てのクラッシュを防止するものではありません。"
+
+#: PluginMenu.cpp:200
+msgid "Extension: Crafting item"
+msgstr "拡張機能: アイテム製作"
+
+#: PluginMenu.cpp:201
+msgid "Enable extension function for Crafting item. (REQURIES RESTART)"
+msgstr "アイテム製作の拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:203
+msgid "Extension: Weapon"
+msgstr "拡張機能: 武器"
+
+#: PluginMenu.cpp:204
+msgid "Enable extension function for Weapon. (REQURIES RESTART)"
+msgstr "武器の拡張機能を有効化します。 (再起動が必要)"
+
+#: PluginMenu.cpp:206
+msgid "Extension: Dialogue"
+msgstr "拡張機能: ダイアログ"
+
+#: PluginMenu.cpp:207
+msgid "Enable extension function for Dialogue."
+msgstr "ダイアログの拡張機能を有効化します。"

@@ -64,6 +64,11 @@ namespace
 		settingsDocument.AddMember("aim_animation_extension", settings._aimAnimationExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_athletics_multiplier", settings._fixAthleticsMultiplier, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("animal_armor", settings._animalArmor, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_tech_and_crafting_queue", settings._fixTechAndCraftingQueue, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("enable_crash_prevention", settings._enableCrashPrevention, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("crafting_item_extension", settings._craftingItemExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("weapon_extension", settings._weaponExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("dialogue_extension", settings._dialogueExtension, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -117,6 +122,11 @@ KEP::Settings::Settings()
 	, _portraitExtension(0)
 	, _fixAthleticsMultiplier(true)
 	, _animalArmor(true)
+	, _fixTechAndCraftingQueue(false)
+	, _enableCrashPrevention(true)
+	, _craftingItemExtension(false)
+	, _weaponExtension(false)
+	, _dialogueExtension(false)
 {
 }
 
@@ -244,4 +254,14 @@ void KEP::Settings::loadSettings()
 		this->_fixAthleticsMultiplier = settingsDocument["fix_athletics_multiplier"].GetBool();
 	if (settingsDocument.HasMember("animal_armor"))
 		this->_animalArmor = settingsDocument["animal_armor"].GetBool();
+	if (settingsDocument.HasMember("fix_tech_and_crafting_queue"))
+		this->_fixTechAndCraftingQueue = settingsDocument["fix_tech_and_crafting_queue"].GetBool();
+	if (settingsDocument.HasMember("enable_crash_prevention"))
+		this->_enableCrashPrevention = settingsDocument["enable_crash_prevention"].GetBool();
+	if (settingsDocument.HasMember("crafting_item_extension"))
+		this->_craftingItemExtension = settingsDocument["crafting_item_extension"].GetBool();
+	if (settingsDocument.HasMember("weapon_extension"))
+		this->_weaponExtension = settingsDocument["weapon_extension"].GetBool();
+	if (settingsDocument.HasMember("dialogue_extension"))
+		this->_dialogueExtension = settingsDocument["dialogue_extension"].GetBool();
 }

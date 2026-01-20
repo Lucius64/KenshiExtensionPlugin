@@ -66,5 +66,10 @@ namespace KEP
 		int _portraitExtension;
 		bool _fixAthleticsMultiplier;
 		bool _animalArmor;
+		bool _fixTechAndCraftingQueue;
+		bool _enableCrashPrevention;
+		bool _craftingItemExtension;
+		bool _weaponExtension;
+		bool _dialogueExtension;
 	};
 }

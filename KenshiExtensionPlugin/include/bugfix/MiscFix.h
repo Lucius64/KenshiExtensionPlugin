@@ -8,6 +8,17 @@ class UtilityT;
 class DistantTown;
 class Research;
 
+namespace MyGUI
+{
+	class ItemBox;
+
+	namespace types
+	{
+		template<typename T>
+		struct TCoord;
+	}
+}
+
 namespace KEP
 {
 	namespace WorldStateFix
@@ -32,12 +43,20 @@ namespace KEP
 	namespace DistantTownFix
 	{
 		DistantTown* DistantTown__CONSTRUCTOR_hook(DistantTown* self, Town* town);
+		void DistantTown_FUN_000D8620_hook(DistantTown* self, bool visible);
 		void init();
 	}
 
 	namespace ResearchFix
 	{
 		void Research_FUN_00830b90_hook(Research* self, GameData* gameData);
+		void init();
+	}
+
+	namespace GUIFix
+	{
+		void FUN_004B0B60_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b);
+		void FUN_002C9840_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b);
 		void init();
 	}
 }

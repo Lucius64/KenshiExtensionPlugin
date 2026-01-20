@@ -21,6 +21,7 @@
 
 #include <extern/InventoryLayout.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <AnimalExtension.h>
@@ -60,23 +61,6 @@ namespace
 			return nullptr;
 
 		return reference.getPtr(&ou->gamedata);
-	}
-
-	int getLevel(int rarity)
-	{
-		switch (rarity) {
-		case 0:
-			return 5;
-		case 1:
-			return 40;
-		case 3:
-			return 60;
-		case 4:
-			return 80;
-		case 5:
-			return 95;
-		}
-		return 20;
 	}
 }
 
@@ -164,20 +148,4 @@ void KEP::AnimalExtension::init()
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0014F530, &AnimalInventoryLayout_FUN_0014F530_hook, &AnimalInventoryLayout_FUN_0014F530_orig))
 			ErrorLog("KenshiExtensionPlugin: [animal armor] could not install hook!");
 	}
-}
-
-
-/*
-* KenshiLibからGameDataReferenceの定義が欠落しているので暫定的に追加する
-*/
-
-GameData* GameDataReference::getPtr(GameDataContainer* source) const
-{
-	if (this->ptr == nullptr)
-	{
-		auto newPtr = source->getData(this->sid);
-		const_cast<GameDataReference*>(this)->ptr = newPtr;
-		return newPtr;
-	}
-	return this->ptr;
 }

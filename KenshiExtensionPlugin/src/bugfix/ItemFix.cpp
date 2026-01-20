@@ -1,9 +1,12 @@
 ﻿#include <intrin.h>
 
+#include <ogre/OgreStringConverter.h>
+
 #include <kenshi/Kenshi.h>
 #include <core/Functions.h>
 #include <Debug.h>
 
+#include <kenshi/Logger.h>
 #include <kenshi/Globals.h>
 #include <kenshi/util/hand.h>
 #include <kenshi/GlobalConstants.h>
@@ -22,7 +25,11 @@
 #include <extern/BuildingInterior.h>
 #include <extern/BlueprintItem.h>
 #include <extern/StorageBuilding.h>
+#include <extern/ZoneManager.h>
+#include <extern/ZoneMapContent.h>
+#include <extern/SeveredLimbItem.h>
 
+#include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <bugfix/ItemFix.h>
@@ -38,6 +45,8 @@ namespace
 	void (*Building_setResidentSquad_orig)(Building*, Platoon*);
 	BlueprintItem* (*BlueprintItem__CONSTRUCTOR_orig)(BlueprintItem*, GameData*, GameData*, hand&);
 	bool (*InventorySection_isLimitedSlotCompatible_orig)(InventorySection*, Item*);
+	void (*SeveredLimbItem_destroyPhysical_orig)(SeveredLimbItem*);
+
 }
 
 void KEP::ItemFix::MedicalSystem_addArmour_hook(MedicalSystem* self, Armour* item)
@@ -257,6 +266,63 @@ bool KEP::ItemFix::InventorySection_isLimitedSlotCompatible_hook(InventorySectio
 	return self->limitedSlot == item->slotType;
 }
 
+void KEP::ItemFix::SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
+{
+	lektor<ZoneMap*> loadedZones;
+	externalFunctions->FUN_00A09840(externalGlobals->_CLASS_02133098->zoneManager, loadedZones);
+	hand handle(self);
+
+	int count = 0;
+	for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
+	{
+		if ((*iter)->container == nullptr)
+		{
+			DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
+			continue;
+		}
+
+		if ((*iter)->container->_0x110.count(handle) != 0)
+			++count;
+	}
+
+	if (1 < count)
+		Logger::logMessage("Limb " + getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " in " + Ogre::StringConverter::toString(count) + " zones", Logger::Error);
+
+	self->timeout.time = 0.0;
+	self->Item::destroyPhysical();
+
+	int afterCount = 0;
+	for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
+	{
+		if ((*iter)->container == nullptr)
+		{
+			DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
+			continue;
+		}
+
+		if ((*iter)->container->_0x110.count(handle) != 0)
+			++afterCount;
+	}
+
+	if (0 < afterCount)
+	{
+		if (afterCount == count)
+			Logger::logMessage("Limb " + getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " was not removed from any zones. _isPhysical=" + (self->_isPhysical ? "true" : "false"), Logger::Error);
+
+		for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
+		{
+			if ((*iter)->container == nullptr)
+			{
+				DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
+				continue;
+			}
+
+			if ((*iter)->container->_0x110.count(handle) != 0)
+				Logger::logMessage(" - still in zone " + (*iter)->zonePos.getAsString(), Logger::Info);
+		}
+	}
+}
+
 void KEP::ItemFix::init()
 {
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::addArmour), &MedicalSystem_addArmour_hook, &MedicalSystem_addArmour_orig))
@@ -280,4 +346,10 @@ void KEP::ItemFix::init()
 	bool (InventorySection::*ptrToInventorySectionFunc)(Item*) = &InventorySection::isLimitedSlotCompatible;
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(ptrToInventorySectionFunc), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
 		ErrorLog("KenshiExtensionPlugin: [itemtype limit] could not install hook!");
+
+	if (settings._enableCrashPrevention)
+	{
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000CD830, &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
+			ErrorLog("KenshiExtensionPlugin: [severed limb CTD fix] could not install hook!");
+	}
 }

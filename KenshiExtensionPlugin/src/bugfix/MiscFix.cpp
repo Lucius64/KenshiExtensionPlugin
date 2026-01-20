@@ -4,6 +4,11 @@
 
 #include <boost/filesystem.hpp>
 
+#include <ogre/OgreResourceGroupManager.h>
+#include <ogre/OgreStringConverter.h>
+
+#include <mygui/MyGUI_ItemBox.h>
+
 #include <kenshi/Kenshi.h>
 #include <core/Functions.h>
 #include <Debug.h>
@@ -13,6 +18,7 @@
 #include <kenshi/GameData.h>
 #include <kenshi/WorldEventStateQuery.h>
 
+#include <extern/ForgottenGUI.h>
 #include <extern/TownBase.h>
 #include <extern/BasePopulationManager.h>
 #include <extern/Research.h>
@@ -31,7 +37,10 @@ namespace
 	void (*Town_FUN_00371480_orig)(Town*, GameData*);
 	void (*Town_FUN_009FD8D0_orig)(Town*, GameData*);
 	DistantTown* (*DistantTown__CONSTRUCTOR_orig)(DistantTown*, Town*);
+	void (*DistantTown_FUN_000D8620_orig)(DistantTown*, bool);
 	void (*Research_FUN_00830b90_orig)(Research*, GameData*);
+	void (*FUN_004B0B60_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
+	void (*FUN_002C9840_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
 }
 
 WorldEventStateQuery* KEP::WorldStateFix::WorldEventStateQuery_getFromData_hook(GameData* d)
@@ -136,10 +145,36 @@ DistantTown* KEP::DistantTownFix::DistantTown__CONSTRUCTOR_hook(DistantTown* sel
 	return self;
 }
 
+void KEP::DistantTownFix::DistantTown_FUN_000D8620_hook(DistantTown* self, bool visible)
+{
+	if (visible && visible != self->visible && self->_0x8 == 0)
+	{
+		auto resourceMgr = Ogre::ResourceGroupManager::getSingletonPtr();
+		std::string meshfile;
+		externalFunctions->FUN_000D6360(self, &meshfile);
+		if (!resourceMgr->resourceExistsInAnyGroup(meshfile))
+		{
+			if (self->_0x10 == nullptr)
+				externalFunctions->FUN_000D8310(self);
+
+			self->visible = visible;
+			return;
+		}
+	}
+
+	DistantTown_FUN_000D8620_orig(self, visible);
+}
+
 void KEP::DistantTownFix::init()
 {
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000D5FD0, &DistantTown__CONSTRUCTOR_hook, &DistantTown__CONSTRUCTOR_orig))
 		ErrorLog("KenshiExtensionPlugin: [distant town] could not install hook!");
+
+	if (settings._enableCrashPrevention)
+	{
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000D8620, &DistantTown_FUN_000D8620_hook, &DistantTown_FUN_000D8620_orig))
+			ErrorLog("KenshiExtensionPlugin: [missing distant town mesh CTD fix] could not install hook!");
+	}
 }
 
 void KEP::ResearchFix::Research_FUN_00830b90_hook(Research* self, GameData* gameData)
@@ -166,4 +201,32 @@ void KEP::ResearchFix::init()
 {
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00830b90, &Research_FUN_00830b90_hook, &Research_FUN_00830b90_orig))
 		ErrorLog("KenshiExtensionPlugin: [research building upgrade] could not install hook!");
+}
+
+void KEP::GUIFix::FUN_004B0B60_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b)
+{
+	_coord.left = 0;
+	_coord.top = 0;
+	_coord.width = parent->getClientCoord().width;
+	_coord.height = static_cast<int>(externalGlobals->_KenshiGUI->scaleFactor.y * 28.0f);
+}
+
+void KEP::GUIFix::FUN_002C9840_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b)
+{
+	_coord.left = 0;
+	_coord.top = 0;
+	_coord.width = parent->getClientCoord().width;
+	_coord.height = static_cast<int>(externalGlobals->_KenshiGUI->scaleFactor.y * 28.0f);
+}
+
+void KEP::GUIFix::init()
+{
+	if (settings._fixTechAndCraftingQueue)
+	{
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_004B0B60, &FUN_004B0B60_hook, &FUN_004B0B60_orig))
+			ErrorLog("KenshiExtensionPlugin: [queue size pt1] could not install hook!");
+
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002C9840, &FUN_002C9840_hook, &FUN_002C9840_orig))
+			ErrorLog("KenshiExtensionPlugin: [queue size pt2] could not install hook!");
+	}
 }

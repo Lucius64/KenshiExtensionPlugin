@@ -11,6 +11,7 @@ class MedicalSystem;
 class Armour;
 class BlueprintItem;
 class InventorySection;
+class SeveredLimbItem;
 
 namespace KEP
 {
@@ -23,6 +24,7 @@ namespace KEP
 		void Building_setResidentSquad_hook(Building* self, Platoon* who);
 		BlueprintItem* BlueprintItem__CONSTRUCTOR_hook(BlueprintItem* self, GameData* baseData, GameData* companyData, hand _handle);
 		bool InventorySection_isLimitedSlotCompatible_hook(InventorySection* self, Item* item);
+		void SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self);
 		void init();
 	}
 }
