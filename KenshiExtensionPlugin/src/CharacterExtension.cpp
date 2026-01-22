@@ -105,7 +105,7 @@ void KEP::CharacterExtension::SquadManagementScreen_FUN_0048EFA0_hook(SquadManag
 bool KEP::CharacterExtension::Character_giveBirth_hook(Character* self, GameDataCopyStandalone* appearance, const Ogre::Vector3& position, const Ogre::Quaternion& rotation, GameSaveState* state, ActivePlatoon* tempplatoonptr, Faction* _faction)
 {
 	bool success = Character_giveBirth_orig(self, appearance, position, rotation, state, tempplatoonptr, _faction);
-	if (settings._dialogueExtension && self->isAnimal() != nullptr && self->platoon->me->squadTemplate->listExistsAndNotEmpty("dialog animal"))
+	if (settings._dialogueExtension && success && self->isAnimal() != nullptr && !self->platoon->me->squadTemplate->listExistsAndNotEmpty("dialog animal"))
 	{
 		lektor<std::string> dialogList;
 		if (_faction->isPlayer != nullptr)
