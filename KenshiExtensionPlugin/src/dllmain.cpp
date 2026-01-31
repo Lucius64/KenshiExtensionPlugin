@@ -42,7 +42,7 @@ __declspec(dllexport) void startPlugin()
 	auto platform = versionInfo.GetPlatform();
 	auto version = versionInfo.GetVersion();
 
-	if (platform == KenshiLib::BinaryVersion::UNKNOWN || version != "1.0.65")
+	if (platform == KenshiLib::BinaryVersion::UNKNOWN || (version != "1.0.65" && version != "1.0.68"))
 	{
 		ErrorLog("KenshiExtensionPlugin: error!");
 		return;

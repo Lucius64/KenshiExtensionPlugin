@@ -80,7 +80,8 @@ void KEP::MedicalFix::MedicalSystem_medicalUpdate_hook(MedicalSystem* self, floa
 		{
 			speed = 0.0f;
 			Character* carryingCharacter = self->me->carryingObject.getCharacter();
-			if (carryingCharacter != nullptr) speed = carryingCharacter->getMovementSpeed();
+			if (carryingCharacter != nullptr)
+				speed = carryingCharacter->getMovementSpeed();
 		}
 		else
 		{
@@ -100,8 +101,10 @@ void KEP::MedicalFix::MedicalSystem_medicalUpdate_hook(MedicalSystem* self, floa
 					auto race = self->me->getRace();
 					Ogre::ColourValue bloodColour(race->bloodColour.r, race->bloodColour.g, race->bloodColour.b, self->currentBleedRate);
 
-					if (1.0f < bloodColour.a) { bloodColour.a = 1.0f; }
-					else if (bloodColour.a < 0.0f) { bloodColour.a = 0.0f; }
+					if (1.0f < bloodColour.a)
+						bloodColour.a = 1.0f;
+					else if (bloodColour.a < 0.0f)
+						bloodColour.a = 0.0f;
 
 					auto pos2 = self->me->getMovementDirection();
 					externalFunctions->FUN_008DBF80(externalGlobals->_CLASS_021322B0->renderer->terrainDecalsManager, 3, self->lastBloodPosition, pos2, 0.2f, bloodColour, 99.0f);
@@ -124,7 +127,8 @@ void KEP::MedicalFix::MedicalSystem_medicalUpdate_hook(MedicalSystem* self, floa
 						Ogre::Vector3 pos2(randx - 0.5f, 0.0f, randz - 0.5f);
 
 						float f1 = self->currentBleedRate * 0.1f;
-						if (0.5f < f1) f1 = 0.5f;
+						if (0.5f < f1)
+							f1 = 0.5f;
 
 						auto race = self->me->getRace();
 
@@ -228,7 +232,7 @@ void KEP::MedicalFix::MedicalSystem_medicalUpdate_hook(MedicalSystem* self, floa
 				self->blood = bloodRecoveryRate * frameTime * healRateRace + currentBlood;
 
 			if (self->blood > 25.0f)
-				self->currentBleedRate = false;
+				self->bloodlossTrauma = false;
 
 		}
 	}

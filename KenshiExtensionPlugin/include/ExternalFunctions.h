@@ -83,6 +83,9 @@ class InventorySectionGUI;
 class SeveredLimbItem;
 class CraftingBuilding;
 class GameDataGroup;
+class NewGameWindow;
+class GunClass;
+enum StatsEnumerated;
 
 namespace MyGUI
 {
@@ -303,6 +306,7 @@ namespace KEP
 		float (*FUN_002B8260)(CraftingBuilding*, GameData*); // Get WeaponLevel
 		void (*FUN_0082E2E0)(Research*, lektor<GameDataGroup>&, itemType, itemType); // Get EnableItems
 		void (*FUN_002CA350)(const Ogre::vector<GameDataReference>::type*, itemType, lektor<GameDataGroup>&); // Get EnableItems
+		void (*FUN_00912CA0)(NewGameWindow*); // Set NewGameList
 
 		hand(UniqueNPCManager::* FUN_009AFCA0)(GameData*); // Get UniqueCharacterHandle (thiscall & RVO)
 		std::string(boost::locale::basic_message<char>::* FUN_000A9580)(void); // boost::locale::basic_message<char>::str
