@@ -335,7 +335,7 @@ void KEP::MedicalFix::MedicalSystem_precalculateFirstAidNeedScore_hook(MedicalSy
 			if (healedHpPercentage < self->worstDamage)
 				self->worstDamage = healedHpPercentage;
 
-			auto remainingHpPercentage = calcHealedHpPercentage(*iter);
+			auto remainingHpPercentage = calcRemainingHpPercentage(*iter);
 			if (remainingHpPercentage < self->restedState)
 				self->restedState = remainingHpPercentage;
 		}
