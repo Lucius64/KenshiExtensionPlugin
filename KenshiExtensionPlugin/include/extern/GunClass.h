@@ -2,6 +2,8 @@
 #include <ogre/OgrePrerequisites.h>
 #include <ogre/OgreVector3.h>
 #include <ogre/OgreQuaternion.h>
+#include <ogre/OgreSharedPtr.h>
+
 #include <kenshi/util/hand.h>
 
 class GameData;
@@ -28,8 +30,7 @@ public:
 	bool _0x60;
 	bool isLoaded;
 	GameData* data;
-	size_t _0x70;
-	size_t _0x78;
+	Ogre::MaterialPtr _0x70;
 	ConstantTracerT* tracer1;
 	ConstantTracerT* tracer2;
 	Ogre::Vector3 barrelPos;
@@ -51,6 +52,14 @@ public:
 	virtual void vfunc0x30();
 	virtual void vfunc0x38();
 	virtual void vfunc0x40(bool);
+	virtual Ogre::Vector3 vfunc0x48();
+	virtual Ogre::Vector3 vfunc0x50(float);
+	virtual bool vfunc0x58(void*);
+	virtual void vfunc0x60();
+	virtual void vfunc0x68();
+	virtual void vfunc0x70();
+	virtual void vfunc0x78(float);
+	virtual void vfunc0x80(float, const hand&);
 };
 
 // KenshiLibでは未定義

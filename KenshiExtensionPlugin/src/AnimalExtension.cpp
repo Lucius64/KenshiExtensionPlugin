@@ -36,7 +36,10 @@ namespace
 	GameData* _chooseClothingItemFromListForAnimal(GameData* dataList, const std::string& listName, AttachSlot slot, RaceData* race)
 	{
 		FitnessSelector<int> selector;
-		auto list = dataList->getReferenceList(listName);
+		auto list = dataList->getReferenceListIfExists(listName);
+		if (list == nullptr)
+			return nullptr;
+
 		int count = 0;
 		for (auto iter = list->begin(); iter != list->end(); ++iter)
 		{

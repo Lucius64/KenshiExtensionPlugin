@@ -180,7 +180,7 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 	panelLine_portraitExtension->setTooltip(boost::locale::gettext("Select player portrait capacity caps. Default is 256 people. (REQURIES RESTART)"), self->tooltip);
 	externalFunctions->FUN_006F6340(panelLine_portraitExtension, "256", 0);
 	externalFunctions->FUN_006F6340(panelLine_portraitExtension, "1024", 1);
-	panelLine_portraitExtension->chenge();
+	panelLine_portraitExtension->change();
 
 	auto panelLine_saveReputation = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Save reputation points"), settings._saveReputation, tabID);
 	panelLine_saveReputation->setTooltip(boost::locale::gettext("Saving reputation points."), self->tooltip);
@@ -205,6 +205,12 @@ void KEP::PluginMenu::OptionsWindow_FUN_003F0120_hook(OptionsWindow* self)
 
 	auto panelLine_dialogueExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Dialogue"), settings._dialogueExtension, tabID);
 	panelLine_dialogueExtension->setTooltip(boost::locale::gettext("Enable extension function for Dialogue."), self->tooltip);
+
+	auto panelLine_sortedNewGameStarts = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Sort New Game Starts"), settings._sortedNewGameStarts, tabID);
+	panelLine_sortedNewGameStarts->setTooltip(boost::locale::gettext("Sort New Game Starts by Mod load order and dictionary order of stringID. (REQURIES RESTART)"), self->tooltip);
+
+	auto panelLine_characterExtension = externalFunctions->FUN_006FE210(pluginOptionPanel, boost::locale::gettext("Extension: Character"), settings._characterExtension, tabID);
+	panelLine_characterExtension->setTooltip(boost::locale::gettext("Enable extension function for Character."), self->tooltip);
 
 	pluginOptionTab->setVisible(false);
 	self->optionsTab->setItemData(pluginOptionTab, pluginOptionPanel);

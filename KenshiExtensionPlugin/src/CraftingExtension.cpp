@@ -28,13 +28,22 @@ namespace
 {
 	GameData* (*FUN_002BB270_orig)(CraftingBuilding*, int);
 	void (*FUN_002BBCE0_orig)(CraftingBuilding*, lektor<GameDataGroup>&);
+	void (*FUN_002CA350_orig)(const Ogre::vector<GameDataReference>::type*, itemType, lektor<GameDataGroup>&);
 
-	bool compare(const GameDataGroup& a, const GameDataGroup& b)
+	struct GameDataGroupLess
 	{
-		if (a.data1->createdIndex != b.data1->createdIndex)
-			return a.data1->createdIndex < b.data1->createdIndex;
-		return a.data1->stringID < b.data1->stringID;
-	}
+		bool operator()(const GameDataGroup& a, const GameDataGroup& b) const
+		{
+			if (a.data1->name == b.data1->name)
+			{
+				if (a.data1->createdIndex == b.data1->createdIndex)
+					return a.data1->stringID < b.data1->stringID;
+
+				return a.data1->createdIndex < b.data1->createdIndex;
+			}
+			return a.data1->name < b.data1->name;
+		}
+	};
 }
 
 GameData* KEP::CraftingExtension::FUN_002BB270_hook(CraftingBuilding* self , int level)
@@ -121,7 +130,7 @@ void KEP::CraftingExtension::FUN_002BBCE0_hook(CraftingBuilding* self, lektor<Ga
 
 		enableWeaponList.clear();
 
-		auto refList = self->functionality->getReferenceList("weapon types");
+		auto refList = self->functionality->getReferenceListIfExists("weapon types");
 		if (refList != nullptr && refList->size() != 0)
 		{
 			externalFunctions->FUN_002CA350(refList, WEAPON, enableWeaponList);
@@ -138,7 +147,7 @@ void KEP::CraftingExtension::FUN_002BBCE0_hook(CraftingBuilding* self, lektor<Ga
 		else
 		{
 			externalFunctions->FUN_0082E2E0(ou->player->technology, enableWeaponList, WEAPON, NULL_ITEM);
-			std::sort(enableWeaponList.begin(), enableWeaponList.end(), compare);
+			std::sort(enableWeaponList.begin(), enableWeaponList.end(), GameDataGroupLess());
 
 			for (auto enableWeaponIter = enableWeaponList.begin(); enableWeaponIter != enableWeaponList.end(); ++enableWeaponIter)
 			{
@@ -154,11 +163,37 @@ void KEP::CraftingExtension::FUN_002BBCE0_hook(CraftingBuilding* self, lektor<Ga
 		}
 	}
 
-	externalFunctions->FUN_002CA350(self->functionality->getReferenceList("item crafts"), ITEM, list);
-	externalFunctions->FUN_002CA350(self->functionality->getReferenceList("armour crafts"), ARMOUR, list);
-	externalFunctions->FUN_002CA350(self->functionality->getReferenceList("crossbow crafts"), CROSSBOW, list);
-	externalFunctions->FUN_002CA350(self->functionality->getReferenceList("backpack crafts"), CONTAINER, list);
-	externalFunctions->FUN_002CA350(self->functionality->getReferenceList("robotics crafts"), LIMB_REPLACEMENT, list);
+	externalFunctions->FUN_002CA350(self->functionality->getReferenceListIfExists("item crafts"), ITEM, list);
+	externalFunctions->FUN_002CA350(self->functionality->getReferenceListIfExists("armour crafts"), ARMOUR, list);
+	externalFunctions->FUN_002CA350(self->functionality->getReferenceListIfExists("crossbow crafts"), CROSSBOW, list);
+	externalFunctions->FUN_002CA350(self->functionality->getReferenceListIfExists("backpack crafts"), CONTAINER, list);
+	externalFunctions->FUN_002CA350(self->functionality->getReferenceListIfExists("robotics crafts"), LIMB_REPLACEMENT, list);
+}
+
+void KEP::CraftingExtension::FUN_002CA350_hook(const Ogre::vector<GameDataReference>::type* craftingItems, itemType type, lektor<GameDataGroup>& list)
+{
+	if (craftingItems == nullptr)
+		return;
+
+	lektor<GameDataGroup> enableItemList;
+	const auto& researchedItems = ou->player->technology->_0x10[type];
+	for (auto iter = craftingItems->begin(); iter != craftingItems->end(); ++iter)
+	{
+		for (auto enableIter = researchedItems.begin(); enableIter != researchedItems.end(); ++enableIter)
+		{
+			if (iter->sid == (*enableIter)->stringID)
+			{
+				enableItemList.push_back(GameDataGroup(*enableIter, nullptr));
+				break;
+			}
+		}
+	}
+
+	std::sort(enableItemList.begin(), enableItemList.end(), GameDataGroupLess());
+	for (auto enableIter = enableItemList.begin(); enableIter != enableItemList.end(); ++enableIter)
+	{
+		list.push_back(*enableIter);
+	}
 }
 
 void KEP::CraftingExtension::init()
@@ -170,5 +205,8 @@ void KEP::CraftingExtension::init()
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002BBCE0, &FUN_002BBCE0_hook, &FUN_002BBCE0_orig))
 			ErrorLog("KenshiExtensionPlugin: [weapon craft pt2] could not install hook!");
+
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002CA350, &FUN_002CA350_hook, &FUN_002CA350_orig))
+			ErrorLog("KenshiExtensionPlugin: [weapon craft pt3] could not install hook!");
 	}
 }

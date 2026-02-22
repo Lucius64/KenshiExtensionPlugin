@@ -7,6 +7,7 @@ class WorldEventStateQuery;
 class UtilityT;
 class DistantTown;
 class Research;
+class NewGameWindow;
 
 namespace MyGUI
 {
@@ -57,6 +58,7 @@ namespace KEP
 	{
 		void FUN_004B0B60_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b);
 		void FUN_002C9840_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b);
+		void FUN_00912CA0_hook(NewGameWindow* self);
 		void init();
 	}
 }

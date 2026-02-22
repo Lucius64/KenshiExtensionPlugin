@@ -89,7 +89,7 @@ public:
 	virtual ~DataPanelLine();
 	virtual void setVisible(bool);
 	virtual void setEnabled(bool);
-	virtual void chenge();
+	virtual void change();
 	virtual void input(float&);
 	virtual void setTooltip(const std::string&, ToolTip*);
 	//virtual void setTooltip(const std::string&);

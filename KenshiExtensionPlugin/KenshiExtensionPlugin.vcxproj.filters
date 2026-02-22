@@ -186,6 +186,9 @@
     <ClInclude Include="include\ItemExtension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\extern\NewGameWindow.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ExternalFunctions.cpp">

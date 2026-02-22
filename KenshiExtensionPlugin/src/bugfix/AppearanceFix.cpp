@@ -56,12 +56,15 @@ namespace
 		return ((*(GameData**)a)->createdIndex <= (*(GameData**)b)->createdIndex) - 1;
 	}
 
-	bool compare(const AnimationData* a, const AnimationData* b)
+	struct AnimationDataLess
 	{
-		if (a->data->createdIndex != b->data->createdIndex)
-			return a->data->createdIndex < b->data->createdIndex;
-		return a->name < b->name;
-	}
+		bool operator()(const AnimationData* a, const AnimationData* b) const
+		{
+			if (a->data->createdIndex != b->data->createdIndex)
+				return a->data->createdIndex < b->data->createdIndex;
+			return a->name < b->name;
+		}
+	};
 }
 
 Ogre::Entity* KEP::AppearanceFix::AppearanceManager_FUN_0007C030_hook(AppearanceManager* self, GameData* bodydata, Ogre::Entity* entity, bool isPlayer, float facesWeirdness, bool isShaved)
@@ -318,11 +321,11 @@ void KEP::AppearanceFix::RenderToTexture_FUN_0084A9C0_hook(RenderToTexture* self
 			auto it = boneIteratorConst.peekNext();
 			boneIteratorConst.moveNext();
 			auto bone = portraitCharacterSkeleton->getBone(it->getHandle());
-			(bone->setBoneSize)((it->getBoneSize)());
-			(bone->setBonePositionalSize)((it->getBonePositionalSize)());
+			bone->setBoneSize(it->getBoneSize());
+			bone->setBonePositionalSize(it->getBonePositionalSize());
 		} while (boneIteratorConst.current() != boneIteratorConst.end());
 	}
-	(portraitCharacterSkeleton->setMovementScale)(1.0f);
+	portraitCharacterSkeleton->setMovementScale(1.0f);
 
 	auto& resourceMgr = Ogre::ResourceGroupManager::getSingleton();
 	auto& logMgr = Ogre::LogManager::getSingleton();
@@ -482,7 +485,7 @@ void KEP::AppearanceFix::Ogre_Skeleton__refreshAnimationState_hook(Ogre::Skeleto
 AppearanceManager* KEP::AppearanceFix::AppearanceManager__CONSTRUCTOR_hook(AppearanceManager* self)
 {
 	AppearanceManager__CONSTRUCTOR_orig(self);
-	std::sort(self->idleStances.begin(), self->idleStances.end(), compare);
+	std::sort(self->idleStances.begin(), self->idleStances.end(), AnimationDataLess());
 	return self;
 }
 

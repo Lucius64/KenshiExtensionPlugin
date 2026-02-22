@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KenshiExtensionPlugin\n"
-"POT-Creation-Date: 2026-01-20 23:53+0900\n"
-"PO-Revision-Date: 2026-01-20 23:54+0900\n"
+"POT-Creation-Date: 2026-02-22 22:30+0900\n"
+"PO-Revision-Date: 2026-02-22 22:30+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -508,3 +508,23 @@ msgstr "拡張機能: ダイアログ"
 #: PluginMenu.cpp:207
 msgid "Enable extension function for Dialogue."
 msgstr "ダイアログの拡張機能を有効化します。"
+
+#: PluginMenu.cpp:209
+msgid "Sort New Game Starts"
+msgstr "ニューゲーム選択をソート"
+
+#: PluginMenu.cpp:210
+msgid ""
+"Sort New Game Starts by Mod load order and dictionary order of stringID. "
+"(REQURIES RESTART)"
+msgstr ""
+"ニューゲーム選択をMODの読み込み順、StringIDの辞書順にソートします。 (再起動が"
+"必要)"
+
+#: PluginMenu.cpp:212
+msgid "Extension: Character"
+msgstr "拡張機能: キャラクター"
+
+#: PluginMenu.cpp:213
+msgid "Enable extension function for Character."
+msgstr "キャラクターの拡張機能を有効化します。"

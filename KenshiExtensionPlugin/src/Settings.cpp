@@ -69,6 +69,8 @@ namespace
 		settingsDocument.AddMember("crafting_item_extension", settings._craftingItemExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("weapon_extension", settings._weaponExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("dialogue_extension", settings._dialogueExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("sorted_new_game_starts", settings._sortedNewGameStarts, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("character_extension", settings._characterExtension, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -127,6 +129,8 @@ KEP::Settings::Settings()
 	, _craftingItemExtension(false)
 	, _weaponExtension(false)
 	, _dialogueExtension(false)
+	, _sortedNewGameStarts(false)
+	, _characterExtension(false)
 {
 }
 
@@ -264,4 +268,8 @@ void KEP::Settings::loadSettings()
 		this->_weaponExtension = settingsDocument["weapon_extension"].GetBool();
 	if (settingsDocument.HasMember("dialogue_extension"))
 		this->_dialogueExtension = settingsDocument["dialogue_extension"].GetBool();
+	if (settingsDocument.HasMember("sorted_new_game_starts"))
+		this->_sortedNewGameStarts = settingsDocument["sorted_new_game_starts"].GetBool();
+	if (settingsDocument.HasMember("character_extension"))
+		this->_characterExtension = settingsDocument["character_extension"].GetBool();
 }

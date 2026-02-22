@@ -125,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -162,6 +163,7 @@
     <ClInclude Include="include\extern\ForgottenGUI.h" />
     <ClInclude Include="include\extern\GunClass.h" />
     <ClInclude Include="include\extern\InventoryLayout.h" />
+    <ClInclude Include="include\extern\NewGameWindow.h" />
     <ClInclude Include="include\extern\OptionsWindow.h" />
     <ClInclude Include="include\extern\PortraitManager.h" />
     <ClInclude Include="include\extern\ProductionBuilding.h" />

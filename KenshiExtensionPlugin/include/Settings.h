@@ -71,5 +71,7 @@ namespace KEP
 		bool _craftingItemExtension;
 		bool _weaponExtension;
 		bool _dialogueExtension;
+		bool _sortedNewGameStarts;
+		bool _characterExtension;
 	};
 }

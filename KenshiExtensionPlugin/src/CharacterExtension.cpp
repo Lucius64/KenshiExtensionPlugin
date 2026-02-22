@@ -104,7 +104,27 @@ void KEP::CharacterExtension::SquadManagementScreen_FUN_0048EFA0_hook(SquadManag
 
 bool KEP::CharacterExtension::Character_giveBirth_hook(Character* self, GameDataCopyStandalone* appearance, const Ogre::Vector3& position, const Ogre::Quaternion& rotation, GameSaveState* state, ActivePlatoon* tempplatoonptr, Faction* _faction)
 {
+	int money = 0;
+	bool initialization = false;
+	if (settings._characterExtension && state == nullptr && self->getFaction()->isPlayer == nullptr)
+	{
+		auto ownerShips = self->getOwnerships();
+		if (ownerShips != nullptr)
+		{
+			initialization = true;
+			money = ownerShips->money;
+		}
+	}
+
 	bool success = Character_giveBirth_orig(self, appearance, position, rotation, state, tempplatoonptr, _faction);
+
+	if (initialization && success)
+	{
+		auto ownerShips = self->getOwnerships();
+		if (ownerShips != nullptr && ownerShips->money < money)
+			ownerShips->money = money;
+	}
+
 	if (settings._dialogueExtension && success && self->isAnimal() != nullptr && !self->platoon->me->squadTemplate->listExistsAndNotEmpty("dialog animal"))
 	{
 		lektor<std::string> dialogList;

@@ -22,6 +22,7 @@
 #include <extern/TownBase.h>
 #include <extern/BasePopulationManager.h>
 #include <extern/Research.h>
+#include <extern/NewGameWindow.h>
 
 #include <ExternalFunctions.h>
 #include <Settings.h>
@@ -41,6 +42,17 @@ namespace
 	void (*Research_FUN_00830b90_orig)(Research*, GameData*);
 	void (*FUN_004B0B60_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
 	void (*FUN_002C9840_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
+	void (*FUN_00912CA0_orig)(NewGameWindow*);
+
+	struct GameDataNewGameLess
+	{
+		bool operator()(const GameData* a, const GameData* b) const
+		{
+			if (a->createdIndex != b->createdIndex)
+				return a->createdIndex < b->createdIndex;
+			return a->stringID < b->stringID;
+		}
+	};
 }
 
 WorldEventStateQuery* KEP::WorldStateFix::WorldEventStateQuery_getFromData_hook(GameData* d)
@@ -219,6 +231,28 @@ void KEP::GUIFix::FUN_002C9840_hook(void* self, MyGUI::ItemBox* parent, MyGUI::t
 	_coord.height = static_cast<int>(externalGlobals->_KenshiGUI->scaleFactor.y * 28.0f);
 }
 
+void KEP::GUIFix::FUN_00912CA0_hook(NewGameWindow* self)
+{
+	lektor<GameData*> newGames;
+	ou->gamedata.getDataOfType(newGames, NEW_GAME_STARTOFF);
+	std::sort(newGames.begin(), newGames.end(), GameDataNewGameLess());
+	int defaultIndex = -1;
+
+	for (uint32_t i = 0; i < newGames.size(); ++i)
+	{
+		auto newGame = newGames[i];
+		if (defaultIndex == -1 && newGame->stringID == "1980-gamedata.base")
+			defaultIndex = static_cast<int>(i);
+
+		self->newGameStartList.push_back(newGame);
+	}
+
+	if (defaultIndex > -1)
+		self->selected = defaultIndex;
+	else
+		self->selected = 0;
+}
+
 void KEP::GUIFix::init()
 {
 	if (settings._fixTechAndCraftingQueue)
@@ -228,5 +262,11 @@ void KEP::GUIFix::init()
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002C9840, &FUN_002C9840_hook, &FUN_002C9840_orig))
 			ErrorLog("KenshiExtensionPlugin: [queue size pt2] could not install hook!");
+	}
+
+	if (settings._sortedNewGameStarts)
+	{
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00912CA0, &FUN_00912CA0_hook, &FUN_00912CA0_orig))
+			ErrorLog("KenshiExtensionPlugin: [new game list] could not install hook!");
 	}
 }
