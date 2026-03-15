@@ -108,11 +108,10 @@ bool KEP::CharacterExtension::Character_giveBirth_hook(Character* self, GameData
 	bool initialization = false;
 	if (settings._characterExtension && state == nullptr && self->getFaction()->isPlayer == nullptr)
 	{
-		auto ownerShips = self->getOwnerships();
-		if (ownerShips != nullptr)
+		if (tempplatoonptr != nullptr && tempplatoonptr->me != nullptr)
 		{
 			initialization = true;
-			money = ownerShips->money;
+			money = tempplatoonptr->me->ownerships.money;
 		}
 	}
 
