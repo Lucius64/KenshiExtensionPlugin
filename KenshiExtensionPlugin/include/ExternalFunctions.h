@@ -65,7 +65,6 @@ class FurnaceBuilding;
 class Task_FillMachine;
 class StorageBuilding;
 class Inventory;
-class PhysicsEntity;
 class RobotLimbItem;
 template<typename T>
 class FitnessSelector;
@@ -86,6 +85,20 @@ class GameDataGroup;
 class NewGameWindow;
 class GunClass;
 enum StatsEnumerated;
+class StringPair;
+
+namespace scythe
+{
+	namespace data
+	{
+		class PhysicsEntity;
+	}
+}
+
+namespace std
+{
+	class locale;
+}
 
 namespace MyGUI
 {
@@ -169,7 +182,7 @@ namespace KEP
 		CLASS_02130220* _CLASS_021322B0; // main window
 		hand* _hand_01E395F8;
 		std::string* _MainColorCode;
-		std::string* _SecondarColorCode;
+		std::string* _SecondaryColorCode;
 		std::string* _TitleColorCode;
 		std::string* _BadColorCode;
 		std::string* _BadBrightColorCode;
@@ -188,6 +201,8 @@ namespace KEP
 		LocaleInfoManager* _LocaleInfoManagerPtr;
 		GameData* _TemporaryLimbInterface;
 		MyGUI::types::TSize<int>* _InventorySlotSkinSize;
+		std::locale* _KenshiLocale;
+		MyGUI::types::TSize<float>* _ScreenSize;
 
 		uintptr_t _dropItemReturnAddress;
 
@@ -236,10 +251,9 @@ namespace KEP
 		void (*FUN_00371480)(Town*, GameData*); // Load town
 		void (*FUN_009FD8D0)(Town*, GameData*); // Override town
 		DistantTown* (*FUN_000D5FD0)(DistantTown*, Town*); // DistantTown(Town*)
-		void (*FUN_00830b90)(Research*, GameData*); // Set BuildingUpgrades
+		void (*FUN_00830B90)(Research*, GameData*); // Set BuildingUpgrades
 		OptionsWindow* (*FUN_00406B90)(void); // Get OptionsWindow singleton
 		void (*FUN_003FB250)(OptionsWindow*); // Open OptionsWindow
-		void (*target_Ogre_Skeleton__refreshAnimationState)(Ogre::Skeleton*, Ogre::AnimationStateSet*);
 		DataPanelLine* (*FUN_006FDE20)(DatapanelGUI*, const std::string&, const std::string&, int, bool, bool); // Create DataPanelLine
 		DataPanelLine_CheckBox* (*FUN_006FE210)(DatapanelGUI*, const std::string&, bool&, int); // Create DataPanelLine_CheckBox
 		DataPanelLine_SliderEditable* (*FUN_006FE880)(DatapanelGUI*, const std::string&, int, bool, float, float, float&); // Create DataPanelLine_SliderEditable
@@ -266,10 +280,10 @@ namespace KEP
 		bool (*FUN_005A3B60)(AI*, hand&); // haveSomeResourcesFor
 		int (*FUN_00340EB0)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_00343720)(Task_FillMachine*, StorageBuilding*, Inventory*);
-		int (*FUN_001A4FB0)(PhysicsEntity*, const char*); // Load scythe file
+		int (*FUN_001A4FB0)(scythe::data::PhysicsEntity*, const char*); // Load scythe file
 		RobotLimbItem* (*FUN_000CE290)(RobotLimbItem*, GameData*, GameData*, hand, int); // RobotLimbItem::RobotLimbItem(RobotLimbItem*, GameData*, GameData*, hand, int);
-		void (*FUN_00954340)(FitnessSelector<uint32_t>&, GameData*);
-		GameData* (*FUN_006BEAC0)(GameDataReference*, GameDataContainer*);
+		void (*FUN_00954340)(FitnessSelector<uint32_t>&, GameData*); // crossbow level selector
+		GameData* (*FUN_006BEAC0)(GameDataReference*, GameDataContainer*); // GameDataReference::getPtr(GameDataContainer*)
 		void (*FUN_0052B1E0)(AppearanceHuman*); // muscular and body bulk
 		AppearanceManager* (*FUN_0007F0B0)(AppearanceManager*); // AppearanceManager()
 		AppearanceManager* (*FUN_0053E320)(); // Get AppearanceManager Singleton
@@ -307,9 +321,10 @@ namespace KEP
 		void (*FUN_0082E2E0)(Research*, lektor<GameDataGroup>&, itemType, itemType); // Get EnableItems
 		void (*FUN_002CA350)(const Ogre::vector<GameDataReference>::type*, itemType, lektor<GameDataGroup>&); // Get EnableItems
 		void (*FUN_00912CA0)(NewGameWindow*); // Set NewGameList
+		void (*FUN_0079EAB0)(Ogre::vector<StringPair>::type&, const std::string&, float, bool); // tooltip +-
+		void (*RobotLimbItem_getTooltipData2)(RobotLimbItem*, Ogre::vector<StringPair>::type&);
 
 		hand(UniqueNPCManager::* FUN_009AFCA0)(GameData*); // Get UniqueCharacterHandle (thiscall & RVO)
-		std::string(boost::locale::basic_message<char>::* FUN_000A9580)(void); // boost::locale::basic_message<char>::str
 
 		ExternalFunctions();
 		void init(unsigned int platform, const std::string& version, uintptr_t baseAddr);

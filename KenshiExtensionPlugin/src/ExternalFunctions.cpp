@@ -21,7 +21,7 @@ KEP::ExternalGlobals::ExternalGlobals()
 	, _CLASS_021322B0(nullptr)
 	, _hand_01E395F8(nullptr)
 	, _MainColorCode(nullptr)
-	, _SecondarColorCode(nullptr)
+	, _SecondaryColorCode(nullptr)
 	, _TitleColorCode(nullptr)
 	, _BadColorCode(nullptr)
 	, _BadBrightColorCode(nullptr)
@@ -40,6 +40,7 @@ KEP::ExternalGlobals::ExternalGlobals()
 	, _LocaleInfoManagerPtr(nullptr)
 	, _TemporaryLimbInterface(nullptr)
 	, _InventorySlotSkinSize(nullptr)
+	, _ScreenSize(nullptr)
 	, _dropItemReturnAddress(0)
 {
 
@@ -60,7 +61,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_CLASS_021322B0                = baseAddr + 0x021322b0;
 			*(uintptr_t*)&this->_hand_01E395F8                 = baseAddr + 0x01e395f8;
 			*(uintptr_t*)&this->_MainColorCode                 = baseAddr + 0x01f48238;
-			*(uintptr_t*)&this->_SecondarColorCode             = baseAddr + 0x01f48260;
+			*(uintptr_t*)&this->_SecondaryColorCode            = baseAddr + 0x01f48260;
 			*(uintptr_t*)&this->_TitleColorCode                = baseAddr + 0x01f48288;
 			*(uintptr_t*)&this->_BadColorCode                  = baseAddr + 0x01f482b0;
 			*(uintptr_t*)&this->_BadBrightColorCode            = baseAddr + 0x01f482d8;
@@ -92,7 +93,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_CLASS_021322B0                = baseAddr + 0x02133300;
 			*(uintptr_t*)&this->_hand_01E395F8                 = baseAddr + 0x01e3a5f8;
 			*(uintptr_t*)&this->_MainColorCode                 = baseAddr + 0x01f49248;
-			*(uintptr_t*)&this->_SecondarColorCode             = baseAddr + 0x01f49270;
+			*(uintptr_t*)&this->_SecondaryColorCode            = baseAddr + 0x01f49270;
 			*(uintptr_t*)&this->_TitleColorCode                = baseAddr + 0x01f49298;
 			*(uintptr_t*)&this->_BadColorCode                  = baseAddr + 0x01f492c0;
 			*(uintptr_t*)&this->_BadBrightColorCode            = baseAddr + 0x01f492e8;
@@ -127,7 +128,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_CLASS_021322B0                = baseAddr + 0x02130220;
 			*(uintptr_t*)&this->_hand_01E395F8                 = baseAddr + 0x01e375f8;
 			*(uintptr_t*)&this->_MainColorCode                 = baseAddr + 0x01f46248;
-			*(uintptr_t*)&this->_SecondarColorCode             = baseAddr + 0x01f46270;
+			*(uintptr_t*)&this->_SecondaryColorCode            = baseAddr + 0x01f46270;
 			*(uintptr_t*)&this->_TitleColorCode                = baseAddr + 0x01f46298;
 			*(uintptr_t*)&this->_BadColorCode                  = baseAddr + 0x01f462c0;
 			*(uintptr_t*)&this->_BadBrightColorCode            = baseAddr + 0x01f462e8;
@@ -159,7 +160,7 @@ void KEP::ExternalGlobals::init(unsigned int platform, const std::string& versio
 			*(uintptr_t*)&this->_CLASS_021322B0                = baseAddr + 0x02132230;
 			*(uintptr_t*)&this->_hand_01E395F8                 = baseAddr + 0x01e395f8;
 			*(uintptr_t*)&this->_MainColorCode                 = baseAddr + 0x01f48248;
-			*(uintptr_t*)&this->_SecondarColorCode             = baseAddr + 0x01f48270;
+			*(uintptr_t*)&this->_SecondaryColorCode            = baseAddr + 0x01f48270;
 			*(uintptr_t*)&this->_TitleColorCode                = baseAddr + 0x01f48298;
 			*(uintptr_t*)&this->_BadColorCode                  = baseAddr + 0x01f482c0;
 			*(uintptr_t*)&this->_BadBrightColorCode            = baseAddr + 0x01f482e8;
@@ -222,8 +223,7 @@ KEP::ExternalFunctions::ExternalFunctions()
 	, FUN_00371480(nullptr)
 	, FUN_009FD8D0(nullptr)
 	, FUN_000D5FD0(nullptr)
-	, FUN_000A9580(nullptr)
-	, FUN_00830b90(nullptr)
+	, FUN_00830B90(nullptr)
 	, FUN_00406B90(nullptr)
 	, FUN_003FB250(nullptr)
 	, FUN_006FDE20(nullptr)
@@ -293,7 +293,8 @@ KEP::ExternalFunctions::ExternalFunctions()
 	, FUN_0082E2E0(nullptr)
 	, FUN_002CA350(nullptr)
 	, FUN_00912CA0(nullptr)
-	, target_Ogre_Skeleton__refreshAnimationState(nullptr)
+	, FUN_0079EAB0(nullptr)
+	, RobotLimbItem_getTooltipData2(nullptr)
 {
 
 }
@@ -343,8 +344,7 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_00371480 = baseAddr + 0x371480;
 			*(uintptr_t*)&this->FUN_009FD8D0 = baseAddr + 0x9fd8d0;
 			*(uintptr_t*)&this->FUN_000D5FD0 = baseAddr + 0xd5fd0;
-			*(uintptr_t*)&this->FUN_000A9580 = baseAddr + 0xa9580;
-			*(uintptr_t*)&this->FUN_00830b90 = baseAddr + 0x830b90;
+			*(uintptr_t*)&this->FUN_00830B90 = baseAddr + 0x830b90;
 			*(uintptr_t*)&this->FUN_00406B90 = baseAddr + 0x406b90;
 			*(uintptr_t*)&this->FUN_003FB250 = baseAddr + 0x3fb250;
 			*(uintptr_t*)&this->FUN_006FDE20 = baseAddr + 0x6fde20;
@@ -414,6 +414,8 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x82e2e0;
 			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x2ca350;
 			*(uintptr_t*)&this->FUN_00912CA0 = baseAddr + 0x912ca0;
+			*(uintptr_t*)&this->FUN_0079EAB0 = baseAddr + 0x79eab0;
+			*(uintptr_t*)&this->RobotLimbItem_getTooltipData2 = baseAddr + 0x79f160;
 		}
 		else if (version == "1.0.68")
 		{
@@ -455,8 +457,7 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_00371480 = baseAddr + 0x003715c0;
 			*(uintptr_t*)&this->FUN_009FD8D0 = baseAddr + 0x009fe7a0;
 			*(uintptr_t*)&this->FUN_000D5FD0 = baseAddr + 0x000d6010;
-			*(uintptr_t*)&this->FUN_000A9580 = baseAddr + 0x000a95c0;
-			*(uintptr_t*)&this->FUN_00830b90 = baseAddr + 0x00831a60;
+			*(uintptr_t*)&this->FUN_00830B90 = baseAddr + 0x00831a60;
 			*(uintptr_t*)&this->FUN_00406B90 = baseAddr + 0x00406f30;
 			*(uintptr_t*)&this->FUN_003FB250 = baseAddr + 0x003fb570;
 			*(uintptr_t*)&this->FUN_006FDE20 = baseAddr + 0x006fe9f0;
@@ -526,6 +527,8 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x0082f1b0;
 			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x002ca390;
 			*(uintptr_t*)&this->FUN_00912CA0 = baseAddr + 0x00913b70;
+			*(uintptr_t*)&this->FUN_0079EAB0 = baseAddr + 0x0079f650;
+			*(uintptr_t*)&this->RobotLimbItem_getTooltipData2 = baseAddr + 0x79fd00;
 		}
 	}
 	else if (platform == 0)
@@ -570,8 +573,7 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_00371480 = baseAddr + 0x3710a0;
 			*(uintptr_t*)&this->FUN_009FD8D0 = baseAddr + 0x9fcff0;
 			*(uintptr_t*)&this->FUN_000D5FD0 = baseAddr + 0xd5fd0;
-			*(uintptr_t*)&this->FUN_000A9580 = baseAddr + 0xa9580;
-			*(uintptr_t*)&this->FUN_00830b90 = baseAddr + 0x8304d0;
+			*(uintptr_t*)&this->FUN_00830B90 = baseAddr + 0x8304d0;
 			*(uintptr_t*)&this->FUN_00406B90 = baseAddr + 0x4067b0;
 			*(uintptr_t*)&this->FUN_003FB250 = baseAddr + 0x3fae70;
 			*(uintptr_t*)&this->FUN_006FDE20 = baseAddr + 0x6fd780;
@@ -641,6 +643,8 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x82dc20;
 			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x2c9ee0;
 			*(uintptr_t*)&this->FUN_00912CA0 = baseAddr + 0x9123c0;
+			*(uintptr_t*)&this->FUN_0079EAB0 = baseAddr + 0x79e3f0;
+			*(uintptr_t*)&this->RobotLimbItem_getTooltipData2 = baseAddr + 0x79eaa0;
 		}
 		else if (version == "1.0.68")
 		{
@@ -682,8 +686,7 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_00371480 = baseAddr + 0x00370f60;
 			*(uintptr_t*)&this->FUN_009FD8D0 = baseAddr + 0x009fdee0;
 			*(uintptr_t*)&this->FUN_000D5FD0 = baseAddr + 0x000d5ff0;
-			*(uintptr_t*)&this->FUN_000A9580 = baseAddr + 0x000a95a0;
-			*(uintptr_t*)&this->FUN_00830b90 = baseAddr + 0x008313c0;
+			*(uintptr_t*)&this->FUN_00830B90 = baseAddr + 0x008313c0;
 			*(uintptr_t*)&this->FUN_00406B90 = baseAddr + 0x004068d0;
 			*(uintptr_t*)&this->FUN_003FB250 = baseAddr + 0x003faf10;
 			*(uintptr_t*)&this->FUN_006FDE20 = baseAddr + 0x006fe390;
@@ -753,9 +756,8 @@ void KEP::ExternalFunctions::init(unsigned int platform, const std::string& vers
 			*(uintptr_t*)&this->FUN_0082E2E0 = baseAddr + 0x0082eb10;
 			*(uintptr_t*)&this->FUN_002CA350 = baseAddr + 0x002c9d30;
 			*(uintptr_t*)&this->FUN_00912CA0 = baseAddr + 0x009132b0;
+			*(uintptr_t*)&this->FUN_0079EAB0 = baseAddr + 0x007b2380;
+			*(uintptr_t*)&this->RobotLimbItem_getTooltipData2 = baseAddr + 0x79f660;
 		}
 	}
-
-	auto hOgreMain = GetModuleHandleA("OgreMain_x64.dll");
-	*(uintptr_t*)&target_Ogre_Skeleton__refreshAnimationState = reinterpret_cast<uintptr_t>(GetProcAddress(hOgreMain, "?_refreshAnimationState@Skeleton@Ogre@@UEAAXPEAVAnimationStateSet@2@@Z"));
 }

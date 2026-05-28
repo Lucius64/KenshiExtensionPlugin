@@ -1,20 +1,23 @@
 ﻿#pragma once
 #include <string>
+#include <kep/config_manager.h>
 
 namespace KEP
 {
 	class Settings;
 
 	extern Settings settings;
-	extern std::string myDirectory;
 
-	class Settings
+	class  Settings : public IPluginOption
 	{
 	public:
 		Settings();
 		void init(const std::string& path);
 		void saveSettings() const;
 		void loadSettings();
+		virtual ~Settings();
+		virtual void save() const;
+		virtual void create(DatapanelGUI* panel, int category, ToolTip* tooltip);
 
 	private:
 		std::string _settingsPath;
@@ -72,6 +75,9 @@ namespace KEP
 		bool _weaponExtension;
 		bool _dialogueExtension;
 		bool _sortedNewGameStarts;
+		bool _xpMod;
 		bool _characterExtension;
+		bool _fixGetResourceFilePath;
+		bool _fixTortureBuilding;
 	};
 }

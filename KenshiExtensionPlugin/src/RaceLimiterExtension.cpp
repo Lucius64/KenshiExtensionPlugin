@@ -32,41 +32,101 @@
 namespace
 {
 	bool (*RaceLimiter_canEquip_orig)(RaceLimiter*, GameData*, RootObject*);
+	bool RaceLimiter_canEquip_hook(RaceLimiter* self, GameData* item, RootObject* who)
+	{
+		// 武器キャビネットは武器スロットになっているので、チェック対象になっている。
+		// 武器とクロスボウの制限を実装する際に問題となるので、無条件でtrueを返す。
+		if (who->data->type == BUILDING)
+			return true;
+
+		auto target = who;
+		if (who->data == KEP::externalGlobals->_TemporaryLimbInterface) // インベントリの義肢スロットはwhoがTemporaryLimbInterfaceになっているので、所有者を参照する。
+			target = reinterpret_cast<TemporaryLimbInterface*>(who)->owner;
+
+		bool isAnimal = target->getDataType() == CHARACTER && reinterpret_cast<Character*>(target)->isAnimal() != nullptr;
+
+		return self->canEquip(item, target->getRace(), isAnimal);
+	}
+
 	RobotLimbItem* (*RobotLimbItem__CONTRUCTOR_orig)(RobotLimbItem*, GameData*, GameData*, hand&, int);
-}
+	RobotLimbItem* RobotLimbItem__CONTRUCTOR_hook(RobotLimbItem* self, GameData* baseData, GameData* materialData, hand _handle, int _level)
+	{
+		RobotLimbItem__CONTRUCTOR_orig(self, baseData, materialData, _handle, _level);
+		RaceLimiter::getSingleton()->addLimit(baseData);
+		return self;
+	}
 
-bool KEP::RaceLimiterExtension::RaceLimiter_canEquip_hook(RaceLimiter* self, GameData* item, RootObject* who)
-{
-	// 武器キャビネットは武器スロットになっているので、チェック対象になっている。
-	// 武器とクロスボウの制限を実装する際に問題となるので、無条件でtrueを返す。
-	if (who->data->type == BUILDING)
-		return true;
+	void (*RaceLimiter_addLimit_orig)(RaceLimiter*, GameData* dat);
+	void RaceLimiter_addLimit_hook(RaceLimiter* self, GameData* dat)
+	{
+		RaceLimiter_addLimit_orig(self, dat);
 
-	auto target = who;
-	if (who->data == externalGlobals->_TemporaryLimbInterface) // インベントリの義肢スロットはwhoがTemporaryLimbInterfaceになっているので、所有者を参照する。
-		target = reinterpret_cast<TemporaryLimbInterface*>(who)->owner;
+		auto limiterIter = self->limits.find(dat);
+		if (limiterIter == self->limits.end())
+			return;
 
-	bool isAnimal = target->getDataType() == CHARACTER && reinterpret_cast<Character*>(target)->isAnimal() != nullptr;
+		auto& raceGroupsExclude = dat->objectReferences["race groups exclude"];
+		auto eIter = raceGroupsExclude.end();
+		for (auto iter = raceGroupsExclude.begin(); iter != eIter; ++iter)
+		{
+			auto referenceData = iter->getPtr(&ou->gamedata);
+			if (referenceData == nullptr)
+				continue;
 
-	return self->canEquip(item, target->getRace(), isAnimal);
-}
+			auto& races = referenceData->objectReferences["races"];
+			auto eRacesIter = races.end();
+			for (auto racesIter = races.begin(); racesIter != eRacesIter; ++racesIter)
+			{
+				auto gameData = ou->gamedata.getData(racesIter->sid, RACE);
+				if (gameData == nullptr)
+					continue;
 
-RobotLimbItem* KEP::RaceLimiterExtension::RobotLimbItem__CONTRUCTOR_hook(RobotLimbItem* self, GameData* baseData, GameData* materialData, hand _handle, int _level)
-{
-	RobotLimbItem__CONTRUCTOR_orig(self, baseData, materialData, _handle, _level);
-	RaceLimiter::getSingleton()->addLimit(baseData);
-	return self;
+				auto race = RaceData::getRaceData(gameData);
+				if (race == nullptr)
+					continue;
+
+				if (limiterIter->second.racesInclude.count(race) == 0)
+					limiterIter->second.racesExclude.insert(race);
+			}
+		}
+
+		auto& raceGroupsInclude = dat->objectReferences["race groups include"];
+		eIter = raceGroupsInclude.end();
+		for (auto iter = raceGroupsInclude.begin(); iter != eIter; ++iter)
+		{
+			auto referenceData = iter->getPtr(&ou->gamedata);
+			if (referenceData == nullptr)
+				continue;
+
+			auto& races = referenceData->objectReferences["races"];
+			auto eRacesIter = races.end();
+			for (auto racesIter = races.begin(); racesIter != eRacesIter; ++racesIter)
+			{
+				auto gameData = ou->gamedata.getData(racesIter->sid, RACE);
+				if (gameData == nullptr)
+					continue;
+
+				auto race = RaceData::getRaceData(gameData);
+				if (race == nullptr)
+					continue;
+
+				limiterIter->second.racesInclude.insert(race);
+			}
+		}
+	}
 }
 
 void KEP::RaceLimiterExtension::init()
 {
 	if (settings._raceEquipmentLimitsExtension)
 	{
-		bool (RaceLimiter::*ptrToRaceLimiterFunc)(GameData*, RootObject*) = &RaceLimiter::_NV_canEquip;
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(ptrToRaceLimiterFunc), &RaceLimiter_canEquip_hook, &RaceLimiter_canEquip_orig))
-			ErrorLog("KenshiExtensionPlugin: [race limiter extension pt1] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (RaceLimiter::*)(GameData*, RootObject*))&RaceLimiter::_NV_canEquip), &RaceLimiter_canEquip_hook, &RaceLimiter_canEquip_orig))
+			ErrorLog("[RaceLimiter::canEquip] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000CE290, &RobotLimbItem__CONTRUCTOR_hook, &RobotLimbItem__CONTRUCTOR_orig))
-			ErrorLog("KenshiExtensionPlugin: [race limiter extension pt2] could not install hook!");
+			ErrorLog("[RobotLimbItem::RobotLimbItem] could not install hook!");
+
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RaceLimiter::addLimit), &RaceLimiter_addLimit_hook, &RaceLimiter_addLimit_orig))
+			ErrorLog("[RaceLimiter::addLimit] could not install hook!");
 	}
 }

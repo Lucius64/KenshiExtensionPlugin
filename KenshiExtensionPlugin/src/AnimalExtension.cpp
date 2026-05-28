@@ -19,8 +19,7 @@
 #include <kenshi/util/UtilityT.h>
 #include <kenshi/FitnessSelector.h>
 
-#include <extern/InventoryLayout.h>
-
+#include <kep/translation.h>
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
@@ -29,10 +28,6 @@
 
 namespace
 {
-	bool (*CharacterAnimal_setupInventorySections_orig)(CharacterAnimal*, GameSaveState*);
-	AnimalInventoryLayout* (*AnimalInventoryLayout__CONSTRUCTOR_orig)(AnimalInventoryLayout*);
-	void (*AnimalInventoryLayout_FUN_0014F530_orig)(AnimalInventoryLayout*, InventoryGUI*, Ogre::map<std::string, InventorySectionGUI*>::type&, Inventory*);
-
 	GameData* _chooseClothingItemFromListForAnimal(GameData* dataList, const std::string& listName, AttachSlot slot, RaceData* race)
 	{
 		FitnessSelector<int> selector;
@@ -65,77 +60,80 @@ namespace
 
 		return reference.getPtr(&ou->gamedata);
 	}
-}
 
-bool KEP::AnimalExtension::CharacterAnimal_setupInventorySections_hook(CharacterAnimal* self, GameSaveState* state)
-{
-	self->inventory->initialiseNewSection("armour", 5, 4, ATTACH_BODY, true, false, true, 1); // 先にセクションを作らないと装備が消える！
-	CharacterAnimal_setupInventorySections_orig(self, state);
-
-	if (state == nullptr) // 初回スポーンのみ処理する
+	bool (*CharacterAnimal_setupInventorySections_orig)(CharacterAnimal*, GameSaveState*);
+	bool CharacterAnimal_setupInventorySections_hook(CharacterAnimal* self, GameSaveState* state)
 	{
-		auto armourGrade = self->data->idata["armour grade"];
-		auto upgradeChance = self->data->idata["armour upgrade chance"];
-		auto baseData = _chooseClothingItemFromListForAnimal(self->data, "clothing", ATTACH_BODY, self->getRace());
-		if (baseData != nullptr)
-		{
-			if (armourGrade < 5 && UtilityT::randomInt(0, 100) < upgradeChance)
-				++armourGrade;
+		self->inventory->initialiseNewSection("armour", 5, 4, ATTACH_BODY, true, false, true, 1); // 先にセクションを作らないと装備が消える！
+		CharacterAnimal_setupInventorySections_orig(self, state);
 
-			Item* item = ou->theFactory->createItem(baseData, hand(), nullptr, nullptr, getLevel(armourGrade), nullptr);
-			if (item != nullptr)
-				self->inventory->addItem(item, 1, false, true);
+		if (state == nullptr) // 初回スポーンのみ処理する
+		{
+			auto armourGrade = self->data->idata["armour grade"];
+			auto upgradeChance = self->data->idata["armour upgrade chance"];
+			auto baseData = _chooseClothingItemFromListForAnimal(self->data, "clothing", ATTACH_BODY, self->getRace());
+			if (baseData != nullptr)
+			{
+				if (armourGrade < 5 && UtilityT::randomInt(0, 100) < upgradeChance)
+					++armourGrade;
+
+				Item* item = ou->theFactory->createItem(baseData, hand(), nullptr, nullptr, KEP::getLevel(armourGrade), nullptr);
+				if (item != nullptr)
+					self->inventory->addItem(item, 1, false, true);
+			}
 		}
+
+		return true;
 	}
 
-	return true;
-}
-
-AnimalInventoryLayout* KEP::AnimalExtension::AnimalInventoryLayout__CONSTRUCTOR_hook(AnimalInventoryLayout* self)
-{
-	AnimalInventoryLayout__CONSTRUCTOR_orig(self);
-
-	auto root = self->mListWindowRoot[0]; // 範囲チェック不要
-	if (root->getChildCount() != 0)
+	AnimalInventoryLayout* (*AnimalInventoryLayout__CONSTRUCTOR_orig)(AnimalInventoryLayout*);
+	AnimalInventoryLayout* AnimalInventoryLayout__CONSTRUCTOR_hook(AnimalInventoryLayout* self)
 	{
-		auto panel = root->getChildAt(0);
+		AnimalInventoryLayout__CONSTRUCTOR_orig(self);
 
-		MyGUI::TextBox* lbArmor;
-		externalFunctions->FUN_0015D810(self, &lbArmor, "lbArmor", false, false);
-		if (lbArmor == nullptr) // レイアウト変更Modとの競合によるクラッシュを回避するためにデフォルトのレイアウトを実装する
+		auto root = self->mListWindowRoot[0]; // 範囲チェック不要
+		if (root->getChildCount() != 0)
 		{
-			MyGUI::TextBox* lbBackpack;
-			externalFunctions->FUN_0015D810(self, &lbBackpack, "lbBackpack", true, true);
-			MyGUI::Button* btOpenBag;
-			externalFunctions->FUN_0011CD50(self, &btOpenBag, "OpenBagButton", true, true);
-			lbArmor = panel->createWidgetReal<MyGUI::TextBox>("Kenshi_TextboxPaintedText", MyGUI::FloatCoord(0.0102881f, 0.126437f, 0.253086f, 0.045977f), MyGUI::Align::Default, self->mPrefix + "lbArmor");
-			lbArmor->setCoord(lbArmor->getLeft(), btOpenBag->getBottom(), lbBackpack->getWidth(), lbBackpack->getHeight());
-			lbArmor->setTextAlign(MyGUI::Align::Center);
-			lbArmor->setTextColour(lbBackpack->getTextColour());
-		}
-		lbArmor->setCaption((boost::locale::translate("Armor").*externalFunctions->FUN_000A9580)());
+			auto panel = root->getChildAt(0);
 
-		MyGUI::Widget* armourWidget;
-		externalFunctions->FUN_0011DDC0(self, &armourWidget, "armour", false, false);
-		if (armourWidget == nullptr)
-		{
-			armourWidget = panel->createWidgetRealT(MyGUI::Widget::getClassTypeName(), "Kenshi_InventorySlotSkin", MyGUI::FloatCoord(0.0102881f, 0.172414f, 0.253086f, 0.232184f), MyGUI::Align::Default, self->mPrefix + "armour");
-			armourWidget->setPosition(lbArmor->getLeft(), lbArmor->getBottom());
+			MyGUI::TextBox* lbArmor;
+			self->assignWidget(lbArmor, "lbArmor", false, false);
+			if (lbArmor == nullptr) // レイアウト変更Modとの競合によるクラッシュを回避するためにデフォルトのレイアウトを実装する
+			{
+				MyGUI::TextBox* lbBackpack;
+				self->assignWidget(lbBackpack, "lbBackpack", true, true);
+				MyGUI::Button* btOpenBag;
+				self->assignWidget(btOpenBag, "OpenBagButton", true, true);
+				lbArmor = panel->createWidgetReal<MyGUI::TextBox>("Kenshi_TextboxPaintedText", MyGUI::FloatCoord(0.0102881f, 0.126437f, 0.253086f, 0.045977f), MyGUI::Align::Default, self->mPrefix + "lbArmor");
+				lbArmor->setCoord(lbArmor->getLeft(), btOpenBag->getBottom(), lbBackpack->getWidth(), lbBackpack->getHeight());
+				lbArmor->setTextAlign(MyGUI::Align::Center);
+				lbArmor->setTextColour(lbBackpack->getTextColour());
+			}
+			lbArmor->setCaption(KEP::TranslationUtility::gettext_main("Armor"));
+
+			MyGUI::Widget* armourWidget;
+			self->assignWidget(armourWidget, "armour", false, false);
+			if (armourWidget == nullptr)
+			{
+				armourWidget = panel->createWidgetRealT(MyGUI::Widget::getClassTypeName(), "Kenshi_InventorySlotSkin", MyGUI::FloatCoord(0.0102881f, 0.172414f, 0.253086f, 0.232184f), MyGUI::Align::Default, self->mPrefix + "armour");
+				armourWidget->setPosition(lbArmor->getLeft(), lbArmor->getBottom());
+			}
 		}
+		return self;
 	}
-	return self;
-}
 
-void KEP::AnimalExtension::AnimalInventoryLayout_FUN_0014F530_hook(AnimalInventoryLayout* self, InventoryGUI* invGui, Ogre::map<std::string, InventorySectionGUI*>::type& sectionGuis, Inventory* inv)
-{
-	auto section = inv->getSection("armour");
-	auto sectionGui = externalFunctions->FUN_0014E390(self, section);
-	auto widget = externalFunctions->FUN_0070C0A0(sectionGui);
-	widget->setSize(MyGUI::IntSize(section->width * externalGlobals->_InventorySlotSkinSize->width, section->height * externalGlobals->_InventorySlotSkinSize->height));
-	sectionGuis["armour"] = sectionGui;
-	externalFunctions->FUN_0070C0B0(sectionGui, section->enabled);
+	void (*AnimalInventoryLayout_setupSections_orig)(AnimalInventoryLayout*, InventoryGUI*, Ogre::map<std::string, InventorySectionGUI*>::type&, Inventory*);
+	void AnimalInventoryLayout_setupSections_hook(AnimalInventoryLayout* self, InventoryGUI* invGui, Ogre::map<std::string, InventorySectionGUI*>::type& sectionGuis, Inventory* inv)
+	{
+		auto section = inv->getSection("armour");
+		auto sectionGui = self->createSectionGUI(section);
+		auto widget = sectionGui->getWidget();
+		widget->setSize(MyGUI::IntSize(section->width * KEP::externalGlobals->_InventorySlotSkinSize->width, section->height * KEP::externalGlobals->_InventorySlotSkinSize->height));
+		sectionGuis["armour"] = sectionGui;
+		sectionGui->setEnabled(section->enabled);
 
-	AnimalInventoryLayout_FUN_0014F530_orig(self, invGui, sectionGuis, inv);
+		AnimalInventoryLayout_setupSections_orig(self, invGui, sectionGuis, inv);
+	}
 }
 
 void KEP::AnimalExtension::init()
@@ -143,12 +141,12 @@ void KEP::AnimalExtension::init()
 	if (settings._animalArmor)
 	{
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharacterAnimal::_NV_setupInventorySections), &CharacterAnimal_setupInventorySections_hook, &CharacterAnimal_setupInventorySections_orig))
-			ErrorLog("KenshiExtensionPlugin: [animal armor] could not install hook!");
+			ErrorLog("[CharacterAnimal::setupInventorySections] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00155350, &AnimalInventoryLayout__CONSTRUCTOR_hook, &AnimalInventoryLayout__CONSTRUCTOR_orig))
-			ErrorLog("KenshiExtensionPlugin: [animal armor] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AnimalInventoryLayout::_CONSTRUCTOR), &AnimalInventoryLayout__CONSTRUCTOR_hook, &AnimalInventoryLayout__CONSTRUCTOR_orig))
+			ErrorLog("[AnimalInventoryLayout::AnimalInventoryLayout] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0014F530, &AnimalInventoryLayout_FUN_0014F530_hook, &AnimalInventoryLayout_FUN_0014F530_orig))
-			ErrorLog("KenshiExtensionPlugin: [animal armor] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0014F530, &AnimalInventoryLayout_setupSections_hook, &AnimalInventoryLayout_setupSections_orig))
+			ErrorLog("[AnimalInventoryLayout::setupSections] could not install hook!");
 	}
 }

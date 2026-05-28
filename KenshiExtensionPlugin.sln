@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36804.6 d17.14
+VisualStudioVersion = 17.14.36804.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KenshiExtensionPlugin", "KenshiExtensionPlugin\KenshiExtensionPlugin.vcxproj", "{FE171B31-CA8B-4609-894C-5F360C29F329}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18185F0A-108D-48D5-862D-369E757B2039} = {18185F0A-108D-48D5-862D-369E757B2039}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kep-core", "kep-core\kep-core.vcxproj", "{18185F0A-108D-48D5-862D-369E757B2039}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,14 @@ Global
 		{FE171B31-CA8B-4609-894C-5F360C29F329}.Release|x64.Build.0 = Release|x64
 		{FE171B31-CA8B-4609-894C-5F360C29F329}.Release|x86.ActiveCfg = Release|Win32
 		{FE171B31-CA8B-4609-894C-5F360C29F329}.Release|x86.Build.0 = Release|Win32
+		{18185F0A-108D-48D5-862D-369E757B2039}.Debug|x64.ActiveCfg = Debug|x64
+		{18185F0A-108D-48D5-862D-369E757B2039}.Debug|x64.Build.0 = Debug|x64
+		{18185F0A-108D-48D5-862D-369E757B2039}.Debug|x86.ActiveCfg = Debug|Win32
+		{18185F0A-108D-48D5-862D-369E757B2039}.Debug|x86.Build.0 = Debug|Win32
+		{18185F0A-108D-48D5-862D-369E757B2039}.Release|x64.ActiveCfg = Release|x64
+		{18185F0A-108D-48D5-862D-369E757B2039}.Release|x64.Build.0 = Release|x64
+		{18185F0A-108D-48D5-862D-369E757B2039}.Release|x86.ActiveCfg = Release|Win32
+		{18185F0A-108D-48D5-862D-369E757B2039}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

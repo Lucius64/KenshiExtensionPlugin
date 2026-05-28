@@ -1,16 +1,23 @@
 ﻿#include <windows.h>
 #include <Settings.h>
 #include <boost/filesystem.hpp>
+#include <boost/locale.hpp>
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 #include <rapidjson/prettywriter.h>
 #include <Debug.h>
 
+#include <kenshi/gui/OptionsWindow.h>
+#include <kenshi/gui/DatapanelGUI.h>
+#include <kenshi/gui/DataPanelLine.h>
+
+#include <kep/translation.h>
+#include <ExternalFunctions.h>
+
 namespace fs = boost::filesystem;
 
 KEP::Settings KEP::settings;
-std::string KEP::myDirectory;
 
 namespace
 {
@@ -71,6 +78,8 @@ namespace
 		settingsDocument.AddMember("dialogue_extension", settings._dialogueExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("sorted_new_game_starts", settings._sortedNewGameStarts, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("character_extension", settings._characterExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_GetResourceFilePath", settings._fixGetResourceFilePath, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_TortureBuilding", settings._fixTortureBuilding, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -130,7 +139,10 @@ KEP::Settings::Settings()
 	, _weaponExtension(false)
 	, _dialogueExtension(false)
 	, _sortedNewGameStarts(false)
-	, _characterExtension(false)
+	, _xpMod(false)
+	, _characterExtension(true)
+	, _fixGetResourceFilePath(true)
+	, _fixTortureBuilding(true)
 {
 }
 
@@ -144,7 +156,7 @@ void KEP::Settings::saveSettings() const
 	std::ofstream ofs(_settingsPath);
 	if (!ofs.is_open())
 	{
-		DebugLog("Kenshi Extension Plugin: save settings fialed");
+		DebugLog("save settings fialed");
 		return;
 	}
 
@@ -272,4 +284,198 @@ void KEP::Settings::loadSettings()
 		this->_sortedNewGameStarts = settingsDocument["sorted_new_game_starts"].GetBool();
 	if (settingsDocument.HasMember("character_extension"))
 		this->_characterExtension = settingsDocument["character_extension"].GetBool();
+	if (settingsDocument.HasMember("fix_GetResourceFilePath"))
+		this->_fixGetResourceFilePath = settingsDocument["fix_GetResourceFilePath"].GetBool();
+	if (settingsDocument.HasMember("fix_TortureBuilding"))
+		this->_fixTortureBuilding = settingsDocument["fix_TortureBuilding"].GetBool();
+}
+
+KEP::Settings::~Settings()
+{
+}
+
+void KEP::Settings::save() const
+{
+	this->saveSettings();
+}
+
+void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
+{
+	panel->setLine(*externalGlobals->_MainColorCode + KEP::TranslationUtility::gettext("[KEP Bug fixes]"), "", category, false, true);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix NPC faces"), &this->_fixShapeKey, category)
+		->setToolTip(KEP::TranslationUtility::gettext("NPC shape keys are applied correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix hair display in the character editor"), &this->_fixHairDisplay, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Characters equipped with bandanas and similar items will now display correctly in the Character Editor window."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix portrait"), &this->_fixPortrait, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The idle animations added or overwritten by Mods will be reflected in the portrait. Additionally, the positions of the shoulders and neck will be displayed correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix animation override"), &this->_fixAnimationOverride, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The animation will be overridden correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix spawning of unique characters"), &this->_fixspawningOfUniqueCharacters, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents the loss of unique characters due to town overrides or squad regeneration."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix unloading of unique characters"), &this->_fixUnloadingOfUniqueCharacters, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents unique characters participating in town raid events from teleporting hometown."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix importing of unique prisoners"), &this->_fixImportingOfUniquePrisoners, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents unique prisoners that have already appeared from disappearing after import."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the unique leader for the Town Raid event"), &this->_fixSpecialLeader, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents imprisoned unique characters from becoming leaders of town raid events."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix melee combat XP"), &this->_fixMeleeCombatXP, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Race bonuses for martial arts and weapon skills apply to melee combat XP. Additionally, SOL for weapon skills etc. functions correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix lockpicking XP"), &this->_fixLockpickingXP, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The \"exp gain multiplier\" is applied to lockpicking XP."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix unarmed damage bonus"), &this->_fixUnarmedDamageBonus, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The \"Unarmed Damage Bonus\" applies to martial arts skills."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix calculation of athletics effect"), &this->_fixAthleticsMultiplier, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The bonus to movement ability from backpacks applies even when wearing armor."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix stat name display"), &this->_fixStatNameDisplay, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents Polearm from failing to display in certain GUIs."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the prosthetic leg movement animation"), &this->_fixMovementAnimation, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents limping when the maximum HP of the left and right legs differs significantly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix pet recovery speed"), &this->_fixPetRecoverySpeed, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Pet recovery speed prioritizes the bed's effect over the stun effect."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix order of HP bar"), &this->_fixHPBarOrder, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents the HP bars for the chest and stomach from being reversed."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the injury calculation"), &this->_fixTheInjuryCalculation, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents Hive from becoming bedridden at the base when it takes a very small cut damage."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the blood when spawning"), &this->_fixTheBloodWhenSpawning, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents characters from spawning with low blood."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix global damage multiplier for Crossbow"), &this->_fixGlobalDamageMultiplier, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The global damage multiplier will no longer significantly affect crossbows."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix item becoming stolen goods from player bug"), &this->_fixItemBecomingStolenGoodsFromPlayerBug, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents an issue where taking items out of a backpack placed on the ground halves their selling price."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix housemates inventory refresh"), &this->_fixHousemateInventoryRefresh, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents an issue where Waystation bars, etc., do not refresh their inventory."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix blueprint texture"), &this->_fixBlueprintTextures, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Materials can be applied to blueprints."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable player involvement"), &this->_enablePlayerInvolvement, category)
+		->setToolTip(KEP::TranslationUtility::gettext("World State player involvement functions correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable Navigation Mesh cache"), &this->_enableTheNavigationMeshCache, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Accelerates zone loading and prevents falling through walls. Kenshi CTD fix patch takes precedence, so option changes will be disabled while it is in use."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix town override"), &this->_fixTownOverride, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents overridden town settings from reverting to their original values."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix display for distant towns"), &this->_fixVisibleDistantTown, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents the town loaded during loading from occasionally failing to switch to the distant mesh."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix research and crafting queue sizes"), &this->_fixTechAndCraftingQueue, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Revert queue height to version 1.0.59 or earlier. Additionally, it will now scale according to window size instead of font size. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable duplicate research on building improvements"), &this->_fixBuildingImprovements, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The effects of research to increase building output can be applied multiple times."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Change the order of armor damage reduction"), &this->_ChangeArmorDamageReductionOrder, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Damage is reduced in order of armor with the highest slash resistance efficiency. Changing settings during play requires saving and reloading."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix peeler machine"), &this->_fixTortureBuilding, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents an issue where characters become unable to be released from the peeler machine. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix crossbow locker"), &this->_fixItemTypeLimit, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Item type limits will be enforced."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix UtilityT::getResourceFilePath"), &this->_fixGetResourceFilePath, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Change the search path priority for `UtilityT::getResourceFilePath` to match that of the OGRE resource manager."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable crash prevention"), &this->_enableCrashPrevention, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Fixes two causes of random crashes. See the documentation for details. (REQURIES RESTART)\nNote: This doesn't prevent all crashes."), tooltip);
+
+	panel->addSpace(category, 1.0f);
+
+	panel->setLine(*externalGlobals->_MainColorCode + KEP::TranslationUtility::gettext("[KEP Features]"), "", category, false, true);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Sort idle stances"), &this->_sortedIdleStances, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Sort idle stances by Mod load order and dictionary order of names. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Sort New Game Starts"), &this->_sortedNewGameStarts, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Sort New Game Starts by Mod load order and dictionary order of stringID. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable raid events from factions not displayed in the list"), &this->_enableNotRealWarCampaign, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Raid events will occur from factions such as Fogmen and Fishmen. Changing settings during play requires saving and reloading."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Save reputation points"), &this->_saveReputation, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Saving reputation points."), tooltip);
+
+	auto panelLine_portraitExtension = panel->setLineDropBox(KEP::TranslationUtility::gettext("Player portrait capacity cap"), category, &this->_portraitExtension, false, 0.4f);
+	panelLine_portraitExtension->setToolTip(KEP::TranslationUtility::gettext("Select player portrait capacity caps. Default is 256 people. (REQURIES RESTART)"), tooltip);
+	panelLine_portraitExtension->addAValue("256", 0);
+	panelLine_portraitExtension->addAValue("1024", 1);
+	panelLine_portraitExtension->refresh();
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Character Dismissal"), &this->_dismissedCharacterExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Character Dismissal."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Item Furnace"), &this->_furnaceExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Item Furnaces. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Race Equipment Limits"), &this->_raceEquipmentLimitsExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Race Equipment Limits. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Scythe Path"), &this->_scythePathExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Scythe Path."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Bulk Limits"), &this->_bulkLimitsExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Bulk Limits."), tooltip);
+
+	auto panelLine_bulkStatMaxMale = panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Max Bulk Stat for Males"), category, true, -2000.0f, 2000.0f, &this->_bulkStatMaxMale);
+	panelLine_bulkStatMaxMale->setToolTip(KEP::TranslationUtility::gettext("Sets the max value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), tooltip);
+	panelLine_bulkStatMaxMale->setPrecision(0);
+
+	auto panelLine_bulkStatMinMale = panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Min Bulk Stat for Males"), category, true, -2000.0f, 2000.0f, &this->_bulkStatMinMale);
+	panelLine_bulkStatMinMale->setToolTip(KEP::TranslationUtility::gettext("Sets the min value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), tooltip);
+	panelLine_bulkStatMinMale->setPrecision(0);
+
+	auto panelLine_bulkStatMaxFemale = panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Max Bulk Stat for Females"), category, true, -2000.0f, 2000.0f, &this->_bulkStatMaxFemale);
+	panelLine_bulkStatMaxFemale->setToolTip(KEP::TranslationUtility::gettext("Sets the max value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), tooltip);
+	panelLine_bulkStatMaxFemale->setPrecision(0);
+
+	auto panelLine_bulkStatMinFemale = panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Min Bulk Stat for Females"), category, true, -2000.0f, 2000.0f, &this->_bulkStatMinFemale);
+	panelLine_bulkStatMinFemale->setToolTip(KEP::TranslationUtility::gettext("Sets the min value for stats affecting bulk. Setting both to 20 will lock them at the standard size."), tooltip);
+	panelLine_bulkStatMinFemale->setPrecision(0);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Idle Stance"), &this->_idleStanceExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Idle Stance."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Animation SkillType"), &this->_animationSkillTypeExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Animation SkillType. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Aim Animation"), &this->_aimAnimationExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Aim Animation."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Animal Armor"), &this->_animalArmor, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Animal Armor. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Crafting item"), &this->_craftingItemExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Crafting item. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Weapon"), &this->_weaponExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Weapon. (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Dialogue"), &this->_dialogueExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Dialogue."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Character"), &this->_characterExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Character."), tooltip);
 }

@@ -17,15 +17,14 @@
 #include <kenshi/Item.h>
 #include <kenshi/Inventory.h>
 #include <kenshi/Platoon.h>
-#include <kenshi/Building.h>
+#include <kenshi/Building/StorageBuilding.h>
 #include <kenshi/Gear.h>
 #include <kenshi/MedicalSystem.h>
+#include <kenshi/ZoneManager.h>
 
 #include <extern/GunClass.h>
 #include <extern/BuildingInterior.h>
 #include <extern/BlueprintItem.h>
-#include <extern/StorageBuilding.h>
-#include <extern/ZoneManager.h>
 #include <extern/ZoneMapContent.h>
 #include <extern/SeveredLimbItem.h>
 
@@ -34,291 +33,284 @@
 #include <Settings.h>
 #include <bugfix/ItemFix.h>
 
-
-
 namespace
 {
 	void (*MedicalSystem_addArmour_orig)(MedicalSystem*, Armour*);
-	GunClassPersonal* (*GunClassPersonal__CONSTRUCTOR_orig)(GunClassPersonal*, GameData*, float);
-	void (*ContainerItem_setProperOwner_orig)(ContainerItem*, const hand&);
-	void (*ActivePlatoon_refreshInventory_orig)(ActivePlatoon*, bool);
-	void (*Building_setResidentSquad_orig)(Building*, Platoon*);
-	BlueprintItem* (*BlueprintItem__CONSTRUCTOR_orig)(BlueprintItem*, GameData*, GameData*, hand&);
-	bool (*InventorySection_isLimitedSlotCompatible_orig)(InventorySection*, Item*);
-	void (*SeveredLimbItem_destroyPhysical_orig)(SeveredLimbItem*);
-
-}
-
-void KEP::ItemFix::MedicalSystem_addArmour_hook(MedicalSystem* self, Armour* item)
-{
-	if (!settings._ChangeArmorDamageReductionOrder)
+	void MedicalSystem_addArmour_hook(MedicalSystem* self, Armour* item)
 	{
-		MedicalSystem_addArmour_orig(self, item);
-		return;
-	}
-
-	for (uint32_t i = 0; i < self->armourList.size(); ++i)
-	{
-		if (item->cutToStun < self->armourList[i]->cutToStun)
+		if (!KEP::settings._ChangeArmorDamageReductionOrder)
 		{
-			self->armourList.insert(item, i);
+			MedicalSystem_addArmour_orig(self, item);
 			return;
 		}
-	}
-	self->armourList.push_back(item);
-}
 
-GunClassPersonal* KEP::ItemFix::GunClassPersonal__CONSTRUCTOR_hook(GunClassPersonal* self, GameData* baseData, float _level)
-{
-	GunClassPersonal__CONSTRUCTOR_orig(self, baseData, _level);
-
-	if (settings._fixGlobalDamageMultiplier)
-	{
-		self->pierceDamageMin = static_cast<int>(lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage min 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage min 1"]));
-		self->pierceDamageMax = static_cast<int>(lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage max 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage max 1"]));
-	}
-
-	return self;
-}
-
-void KEP::ItemFix::ContainerItem_setProperOwner_hook(ContainerItem* self, const hand& handle)
-{
-	if (!settings._fixItemBecomingStolenGoodsFromPlayerBug)
-	{
-		ContainerItem_setProperOwner_orig(self, handle);
-		return;
-	}
-
-	uintptr_t retAddr = reinterpret_cast<uintptr_t>(_ReturnAddress());
-
-	auto newOwner = handle.getRootObject();
-	Faction* newOwnerFaction = newOwner != nullptr ? newOwner->getFaction() : nullptr;
-
-	if (retAddr != externalGlobals->_dropItemReturnAddress || newOwnerFaction == nullptr || newOwnerFaction->isPlayer == nullptr)
-	{
-		auto inventory = self->getInventory();
-		for (auto iter = inventory->_allItems.begin(); iter != inventory->_allItems.end(); ++iter)
+		for (uint32_t i = 0; i < self->armourList.size(); ++i)
 		{
-			auto& itemOwnerHandle = (*iter)->getProperOwner();
-			if (itemOwnerHandle.type == NULL_ITEM)
+			if (item->cutToStun < self->armourList[i]->cutToStun)
 			{
-				(*iter)->setProperOwner(handle);
-			}
-			else if (handle.type == NULL_ITEM)
-			{
-				auto& containerOwnerHandle = self->getProperOwner();
-				if (itemOwnerHandle == containerOwnerHandle)
-				{
-					(*iter)->setProperOwner(handle);
-				}
-				else
-				{
-					auto containerOwner = containerOwnerHandle.getRootObject();
-					auto itemOwner = itemOwnerHandle.getRootObject();
-					if (containerOwner != nullptr &&
-						itemOwner != nullptr &&
-						containerOwner->getFaction() == itemOwner->getFaction())
-					{
-						(*iter)->setProperOwner(handle);
-					}
-				}
-			}
-		}
-	}
-
-	self->properOwner.type = handle.type;
-	self->properOwner.container = handle.container;
-	self->properOwner.containerSerial = handle.containerSerial;
-	self->properOwner.index = handle.index;
-	self->properOwner.serial = handle.serial;
-
-	return;
-}
-
-
-void KEP::ItemFix::ActivePlatoon_refreshInventory_hook(ActivePlatoon* self, bool firstTime)
-{
-	if (firstTime && settings._fixHousemateInventoryRefresh)
-	{
-		auto& homeBuildingHandle = self->me->getOwnerships()->_homeBuilding;
-		if (homeBuildingHandle.type != NULL_ITEM)
-		{
-			auto homeBuilding = homeBuildingHandle.getBuilding();
-			if (homeBuilding != nullptr &&
-				homeBuilding->myInterior != nullptr &&
-				homeBuilding->myInterior->physicsCollection == nullptr &&
-				(homeBuilding->residentSquad.container != self->me->handle.container || homeBuilding->residentSquad.containerSerial != self->me->handle.containerSerial))
-			{
-				hand handle = homeBuilding->residentSquad;
-
-				homeBuilding->residentSquad.type = self->me->handle.type;
-				homeBuilding->residentSquad.container = self->me->handle.container;
-				homeBuilding->residentSquad.containerSerial = self->me->handle.containerSerial;
-				homeBuilding->residentSquad.index = self->me->handle.index;
-				homeBuilding->residentSquad.serial = self->me->handle.serial;
-
-				ActivePlatoon_refreshInventory_orig(self, firstTime);
-				homeBuilding->residentSquad.type = handle.type;
-				homeBuilding->residentSquad.container = handle.container;
-				homeBuilding->residentSquad.containerSerial = handle.containerSerial;
-				homeBuilding->residentSquad.index = handle.index;
-				homeBuilding->residentSquad.serial = handle.serial;
-
-				auto residentsPlatoon = homeBuilding->residentSquad.getPlatoon();
-				if (residentsPlatoon != nullptr && residentsPlatoon->activePlatoon != nullptr && externalFunctions->FUN_00958550(residentsPlatoon->activePlatoon))
-				{
-					auto residentsLeader = residentsPlatoon->getSquadLeader();
-					if (residentsLeader != nullptr)
-					{
-						auto trader = externalFunctions->FUN_004FDE00();
-						externalFunctions->FUN_0095A340(trader, homeBuilding, residentsPlatoon->squadTemplate, residentsPlatoon, true, false);
-					}
-				}
+				self->armourList.insert(item, i);
 				return;
 			}
 		}
+		self->armourList.push_back(item);
 	}
 
-	ActivePlatoon_refreshInventory_orig(self, firstTime);
-}
-
-
-void KEP::ItemFix::Building_setResidentSquad_hook(Building* self, Platoon* who)
-{
-	if (!settings._fixHousemateInventoryRefresh)
+	GunClassPersonal* (*GunClassPersonal__CONSTRUCTOR_orig)(GunClassPersonal*, GameData*, float);
+	GunClassPersonal* GunClassPersonal__CONSTRUCTOR_hook(GunClassPersonal* self, GameData* baseData, float _level)
 	{
-		Building_setResidentSquad_orig(self, who);
-		return;
-	}
+		GunClassPersonal__CONSTRUCTOR_orig(self, baseData, _level);
 
-	// residentsの上書き条件
-	// 1. residentsの型がNULL_ITEM
-	// 2. residentsの部隊がnull
-	// 3. handleCがresidents <= 設定対象 and 設定対象のseparatedの型がNULL_ITEM
-	if (who == nullptr)
-		return;
-
-	hand& currentResident = self->residentSquad;
-	if (self->residentSquad.type == NULL_ITEM || self->residentSquad.getPlatoon() == nullptr || who->isSeparatedSquad.type == NULL_ITEM && self->residentSquad.container <= who->handle.container)
-	{
-		Building_setResidentSquad_orig(self, who);
-	}
-	else
-	{
-		auto ownerships = who->getOwnerships();
-		if (ownerships->_homeBuilding != self->handle)
-			ownerships->setHomeBuilding(self->handle, who->squadType);
-
-		return;
-	}
-}
-
-
-BlueprintItem* KEP::ItemFix::BlueprintItem__CONSTRUCTOR_hook(BlueprintItem* self, GameData* baseData, GameData* companyData, hand _handle)
-{
-	BlueprintItem__CONSTRUCTOR_orig(self, baseData, companyData, _handle);
-
-	if (settings._fixBlueprintTextures)
-	{
-		auto materialData = ou->gamedata.getData(baseData->getFromList("material", 0), MATERIAL_SPECS_CLOTHING);
-		if (materialData != nullptr)
-			self->materialData = materialData;
-	}
-
-	return self;
-}
-
-bool KEP::ItemFix::InventorySection_isLimitedSlotCompatible_hook(InventorySection* self, Item* item)
-{
-	if (!settings._fixItemTypeLimit)
-		return InventorySection_isLimitedSlotCompatible_orig(self, item);
-
-	auto itemGamedata = item->getGameData();
-	if (self->veryLimitedSlot.size() != 0)
-	{
-		for (auto iter = self->veryLimitedSlot.begin(); iter != self->veryLimitedSlot.end(); ++iter)
+		if (KEP::settings._fixGlobalDamageMultiplier)
 		{
-			if (*iter == itemGamedata)
-				return true;
+			self->pierceDamageMin = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage min 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage min 1"]));
+			self->pierceDamageMax = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage max 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage max 1"]));
 		}
-		return false;
+
+		return self;
 	}
 
-	if (self->limitedSlot != ATTACH_NONE && self->callbackObject != nullptr)
+	void (*ContainerItem_setProperOwner_orig)(ContainerItem*, const hand&);
+	void ContainerItem_setProperOwner_hook(ContainerItem* self, const hand& handle)
 	{
-		if (!RaceLimiter::getSingleton()->canEquip(itemGamedata, self->callbackObject))
+		if (!KEP::settings._fixItemBecomingStolenGoodsFromPlayerBug)
+		{
+			ContainerItem_setProperOwner_orig(self, handle);
+			return;
+		}
+
+		uintptr_t retAddr = reinterpret_cast<uintptr_t>(_ReturnAddress());
+
+		auto newOwner = handle.getRootObject();
+		Faction* newOwnerFaction = newOwner != nullptr ? newOwner->getFaction() : nullptr;
+
+		if (retAddr != KEP::externalGlobals->_dropItemReturnAddress || newOwnerFaction == nullptr || newOwnerFaction->isPlayer == nullptr)
+		{
+			auto inventory = self->getInventory();
+			for (auto iter = inventory->_allItems.begin(); iter != inventory->_allItems.end(); ++iter)
+			{
+				auto& itemOwnerHandle = (*iter)->getProperOwner();
+				if (itemOwnerHandle.type == NULL_ITEM)
+				{
+					(*iter)->setProperOwner(handle);
+				}
+				else if (handle.type == NULL_ITEM)
+				{
+					auto& containerOwnerHandle = self->getProperOwner();
+					if (itemOwnerHandle == containerOwnerHandle)
+					{
+						(*iter)->setProperOwner(handle);
+					}
+					else
+					{
+						auto containerOwner = containerOwnerHandle.getRootObject();
+						auto itemOwner = itemOwnerHandle.getRootObject();
+						if (containerOwner != nullptr &&
+							itemOwner != nullptr &&
+							containerOwner->getFaction() == itemOwner->getFaction())
+						{
+							(*iter)->setProperOwner(handle);
+						}
+					}
+				}
+			}
+		}
+
+		self->properOwner.type = handle.type;
+		self->properOwner.container = handle.container;
+		self->properOwner.containerSerial = handle.containerSerial;
+		self->properOwner.index = handle.index;
+		self->properOwner.serial = handle.serial;
+
+		return;
+	}
+
+	void (*ActivePlatoon_refreshInventory_orig)(ActivePlatoon*, bool);
+	void ActivePlatoon_refreshInventory_hook(ActivePlatoon* self, bool firstTime)
+	{
+		if (firstTime && KEP::settings._fixHousemateInventoryRefresh)
+		{
+			auto& homeBuildingHandle = self->me->getOwnerships()->_homeBuilding;
+			if (homeBuildingHandle.type != NULL_ITEM)
+			{
+				auto homeBuilding = homeBuildingHandle.getBuilding();
+				if (homeBuilding != nullptr &&
+					homeBuilding->myInterior != nullptr &&
+					homeBuilding->myInterior->physicsCollection == nullptr &&
+					(homeBuilding->residentSquad.container != self->me->handle.container || homeBuilding->residentSquad.containerSerial != self->me->handle.containerSerial))
+				{
+					hand handle = homeBuilding->residentSquad;
+
+					homeBuilding->residentSquad.type = self->me->handle.type;
+					homeBuilding->residentSquad.container = self->me->handle.container;
+					homeBuilding->residentSquad.containerSerial = self->me->handle.containerSerial;
+					homeBuilding->residentSquad.index = self->me->handle.index;
+					homeBuilding->residentSquad.serial = self->me->handle.serial;
+
+					ActivePlatoon_refreshInventory_orig(self, firstTime);
+					homeBuilding->residentSquad.type = handle.type;
+					homeBuilding->residentSquad.container = handle.container;
+					homeBuilding->residentSquad.containerSerial = handle.containerSerial;
+					homeBuilding->residentSquad.index = handle.index;
+					homeBuilding->residentSquad.serial = handle.serial;
+
+					auto residentsPlatoon = homeBuilding->residentSquad.getPlatoon();
+					if (residentsPlatoon != nullptr && residentsPlatoon->activePlatoon != nullptr && KEP::externalFunctions->FUN_00958550(residentsPlatoon->activePlatoon))
+					{
+						auto residentsLeader = residentsPlatoon->getSquadLeader();
+						if (residentsLeader != nullptr)
+						{
+							auto trader = KEP::externalFunctions->FUN_004FDE00();
+							KEP::externalFunctions->FUN_0095A340(trader, homeBuilding, residentsPlatoon->squadTemplate, residentsPlatoon, true, false);
+						}
+					}
+					return;
+				}
+			}
+		}
+
+		ActivePlatoon_refreshInventory_orig(self, firstTime);
+	}
+
+	void (*Building_setResidentSquad_orig)(Building*, Platoon*);
+	void Building_setResidentSquad_hook(Building* self, Platoon* who)
+	{
+		if (!KEP::settings._fixHousemateInventoryRefresh)
+		{
+			Building_setResidentSquad_orig(self, who);
+			return;
+		}
+
+		// residentsの上書き条件
+		// 1. residentsの型がNULL_ITEM
+		// 2. residentsの部隊がnull
+		// 3. handleCがresidents <= 設定対象 and 設定対象のseparatedの型がNULL_ITEM
+		if (who == nullptr)
+			return;
+
+		hand& currentResident = self->residentSquad;
+		if (self->residentSquad.type == NULL_ITEM || self->residentSquad.getPlatoon() == nullptr || who->isSeparatedSquad.type == NULL_ITEM && self->residentSquad.container <= who->handle.container)
+		{
+			Building_setResidentSquad_orig(self, who);
+		}
+		else
+		{
+			auto ownerships = who->getOwnerships();
+			if (ownerships->_homeBuilding != self->handle)
+				ownerships->setHomeBuilding(self->handle, who->squadType);
+
+			return;
+		}
+	}
+
+	BlueprintItem* (*BlueprintItem__CONSTRUCTOR_orig)(BlueprintItem*, GameData*, GameData*, hand&);
+	BlueprintItem* BlueprintItem__CONSTRUCTOR_hook(BlueprintItem* self, GameData* baseData, GameData* companyData, hand _handle)
+	{
+		BlueprintItem__CONSTRUCTOR_orig(self, baseData, companyData, _handle);
+
+		if (KEP::settings._fixBlueprintTextures)
+		{
+			auto materialData = ou->gamedata.getData(baseData->getFromList("material", 0), MATERIAL_SPECS_CLOTHING);
+			if (materialData != nullptr)
+				self->materialData = materialData;
+		}
+
+		return self;
+	}
+
+	bool (*InventorySection_isLimitedSlotCompatible_orig)(InventorySection*, Item*);
+	bool InventorySection_isLimitedSlotCompatible_hook(InventorySection* self, Item* item)
+	{
+		if (!KEP::settings._fixItemTypeLimit)
+			return InventorySection_isLimitedSlotCompatible_orig(self, item);
+
+		auto itemGamedata = item->getGameData();
+		if (self->veryLimitedSlot.size() != 0)
+		{
+			for (auto iter = self->veryLimitedSlot.begin(); iter != self->veryLimitedSlot.end(); ++iter)
+			{
+				if (*iter == itemGamedata)
+					return true;
+			}
 			return false;
-	}
-
-	if (self->armourOnly)
-		return itemGamedata->type == ARMOUR;
-
-	if (self->parentInventory->owner != nullptr && self->parentInventory->owner->data->type == BUILDING)
-	{
-		auto storage = reinterpret_cast<Building*>(self->parentInventory->owner)->getFunctionStuff();
-		if (storage != nullptr && (storage->itemtypeLimit == CROSSBOW || storage->itemtypeLimit == LIMB_REPLACEMENT || storage->itemtypeLimit == CONTAINER || storage->itemtypeLimit == NEST_ITEM || storage->itemtypeLimit == MAP_ITEM ))
-			return storage->itemtypeLimit == itemGamedata->type;
-	}
-
-	if (self->limitedSlot == ATTACH_NONE)
-		return true;
-
-	return self->limitedSlot == item->slotType;
-}
-
-void KEP::ItemFix::SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
-{
-	lektor<ZoneMap*> loadedZones;
-	externalFunctions->FUN_00A09840(externalGlobals->_CLASS_02133098->zoneManager, loadedZones);
-	hand handle(self);
-
-	int count = 0;
-	for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
-	{
-		if ((*iter)->container == nullptr)
-		{
-			DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
-			continue;
 		}
 
-		if ((*iter)->container->_0x110.count(handle) != 0)
-			++count;
-	}
-
-	if (1 < count)
-		Logger::logMessage("Limb " + getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " in " + Ogre::StringConverter::toString(count) + " zones", Logger::Error);
-
-	self->timeout.time = 0.0;
-	self->Item::destroyPhysical();
-
-	int afterCount = 0;
-	for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
-	{
-		if ((*iter)->container == nullptr)
+		if (self->limitedSlot != ATTACH_NONE && self->callbackObject != nullptr)
 		{
-			DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
-			continue;
+			if (!RaceLimiter::getSingleton()->canEquip(itemGamedata, self->callbackObject))
+				return false;
 		}
 
-		if ((*iter)->container->_0x110.count(handle) != 0)
-			++afterCount;
+		if (self->armourOnly)
+			return itemGamedata->type == ARMOUR;
+
+		if (self->parentInventory->owner != nullptr && self->parentInventory->owner->data->type == BUILDING)
+		{
+			auto storage = reinterpret_cast<Building*>(self->parentInventory->owner)->getFunctionStuff();
+			if (storage != nullptr && (storage->specialItemTypesOnly == CROSSBOW || storage->specialItemTypesOnly == LIMB_REPLACEMENT || storage->specialItemTypesOnly == CONTAINER || storage->specialItemTypesOnly == NEST_ITEM || storage->specialItemTypesOnly == MAP_ITEM))
+				return storage->specialItemTypesOnly == itemGamedata->type;
+		}
+
+		if (self->limitedSlot == ATTACH_NONE)
+			return true;
+
+		return self->limitedSlot == item->slotType;
 	}
 
-	if (0 < afterCount)
+	void (*SeveredLimbItem_destroyPhysical_orig)(SeveredLimbItem*);
+	void SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
 	{
-		if (afterCount == count)
-			Logger::logMessage("Limb " + getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " was not removed from any zones. _isPhysical=" + (self->_isPhysical ? "true" : "false"), Logger::Error);
+		lektor<ZoneMap*> loadedZones;
+		KEP::externalGlobals->_CLASS_02133098->zoneManager->getAllActiveZones(loadedZones);
+		hand handle(self);
 
+		int count = 0;
 		for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
 		{
-			if ((*iter)->container == nullptr)
+			if ((*iter)->mapContent == nullptr)
 			{
-				DebugLog("KenshiExtensionPlugin: zone " + (*iter)->zonePos.getAsString() + " container is null");
+				DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
 				continue;
 			}
 
-			if ((*iter)->container->_0x110.count(handle) != 0)
-				Logger::logMessage(" - still in zone " + (*iter)->zonePos.getAsString(), Logger::Info);
+			if ((*iter)->mapContent->_0x110.count(handle) != 0)
+				++count;
+		}
+
+		if (1 < count)
+			Logger::logMessage("Limb " + KEP::getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " in " + Ogre::StringConverter::toString(count) + " zones", Logger::Error);
+
+		self->timeout.time = 0.0;
+		self->Item::destroyPhysical();
+
+		int afterCount = 0;
+		for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
+		{
+			if ((*iter)->mapContent == nullptr)
+			{
+				DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
+				continue;
+			}
+
+			if ((*iter)->mapContent->_0x110.count(handle) != 0)
+				++afterCount;
+		}
+
+		if (0 < afterCount)
+		{
+			if (afterCount == count)
+				Logger::logMessage("Limb " + KEP::getHexString(self) + " at " + Ogre::StringConverter::toString(self->pos) + " was not removed from any zones. _isPhysical=" + (self->_isPhysical ? "true" : "false"), Logger::Error);
+
+			for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
+			{
+				if ((*iter)->mapContent == nullptr)
+				{
+					DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
+					continue;
+				}
+
+				if ((*iter)->mapContent->_0x110.count(handle) != 0)
+					Logger::logMessage(" - still in zone " + (*iter)->coordinates.getAsString(), Logger::Info);
+			}
 		}
 	}
 }
@@ -326,30 +318,29 @@ void KEP::ItemFix::SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
 void KEP::ItemFix::init()
 {
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::addArmour), &MedicalSystem_addArmour_hook, &MedicalSystem_addArmour_orig))
-		ErrorLog("KenshiExtensionPlugin: [cut efficiency] could not install hook!");
+		ErrorLog("[MedicalSystem::addArmour] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0043BDE0, &GunClassPersonal__CONSTRUCTOR_hook, &GunClassPersonal__CONSTRUCTOR_orig))
-		ErrorLog("KenshiExtensionPlugin: [crossbow global damage multiplier] could not install hook!");
+		ErrorLog("[GunClassPersonal::GunClassPersonal] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ContainerItem::_NV_setProperOwner), &ContainerItem_setProperOwner_hook, &ContainerItem_setProperOwner_orig))
-		ErrorLog("KenshiExtensionPlugin: [drop backpack] could not install hook!");
+		ErrorLog("[ContainerItem::setProperOwner] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ActivePlatoon::refreshInventory), &ActivePlatoon_refreshInventory_hook, &ActivePlatoon_refreshInventory_orig))
-		ErrorLog("KenshiExtensionPlugin: [refresh inventory pt1] could not install hook!");
+		ErrorLog("[ActivePlatoon::refreshInventory] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Building::setResidentSquad), &Building_setResidentSquad_hook, &Building_setResidentSquad_orig))
-		ErrorLog("KenshiExtensionPlugin: [refresh inventory pt2] could not install hook!");
+		ErrorLog("[Building::setResidentSquad] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002B7860, &BlueprintItem__CONSTRUCTOR_hook, &BlueprintItem__CONSTRUCTOR_orig))
-		ErrorLog("KenshiExtensionPlugin: [blueprint material] could not install hook!");
+		ErrorLog("[BlueprintItem::BlueprintItem] could not install hook!");
 
-	bool (InventorySection::*ptrToInventorySectionFunc)(Item*) = &InventorySection::isLimitedSlotCompatible;
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(ptrToInventorySectionFunc), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
-		ErrorLog("KenshiExtensionPlugin: [itemtype limit] could not install hook!");
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (InventorySection::*)(Item*))&InventorySection::isLimitedSlotCompatible), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
+		ErrorLog("[InventorySection::isLimitedSlotCompatible(Item*)] could not install hook!");
 
 	if (settings._enableCrashPrevention)
 	{
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000CD830, &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
-			ErrorLog("KenshiExtensionPlugin: [severed limb CTD fix] could not install hook!");
+			ErrorLog("[SeveredLimbItem::destroyPhysical] could not install hook!");
 	}
 }

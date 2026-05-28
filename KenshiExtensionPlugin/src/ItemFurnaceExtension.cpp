@@ -10,8 +10,8 @@
 #include <kenshi/Inventory.h>
 #include <kenshi/Gear.h>
 #include <kenshi/Character.h>
+#include <kenshi/Building/FurnaceBuilding.h>
 
-#include <extern/ProductionBuilding.h>
 #include <extern/AI.h>
 
 #include <ExternalFunctions.h>
@@ -21,13 +21,6 @@
 
 namespace
 {
-	void (*FurnaceBuilding_setupFromData_orig)(FurnaceBuilding*);
-	float (*FurnaceBuilding_FUN_002A5F00_orig)(FurnaceBuilding*, Item*);
-	void (*FurnaceBuilding_FUN_0029C810_orig)(FurnaceBuilding*, lektor<GameData*>&);
-	bool (*AI_haveSomeResourcesFor_orig)(AI*, hand&);
-	int (*Task_FillMachine_FUN_00340EB0_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
-	int (*Task_FillMachine_FUN_00343720_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
-
 	float getCostOfIngredients(FurnaceBuilding* self, GameData* itemGameData, const std::string& stringID)
 	{
 		float amount = 0.0f;
@@ -46,253 +39,251 @@ namespace
 
 		return amount;
 	}
-}
 
-void KEP::ItemFurnaceExtension::FurnaceBuilding_setupFromData_hook(FurnaceBuilding* self)
-{
-	externalFunctions->FUN_0029E770(self);
-
-	auto& inItems = self->inputItems;
-	if (inItems.size() == 0)
+	void (*FurnaceBuilding_setupFromData_orig)(FurnaceBuilding*);
+	void FurnaceBuilding_setupFromData_hook(FurnaceBuilding* self)
 	{
-		int width = 12;
-		int height = 7;
-		int stackingBonusMin = 10;
-		float stackingBonusMult = 1.0f;
+		self->ProductionBuilding::setupFromData();
 
-		auto bf_flags = self->functionality->idata["flags"];
-		if (bf_flags == 1)
+		auto& inItems = self->consumptionItems;
+		if (inItems.size() == 0)
 		{
-			width = self->data->idata["storage size width"];
-			if (width < 1)
-				width = 12;
+			int width = 12;
+			int height = 7;
+			int stackingBonusMin = 10;
+			float stackingBonusMult = 1.0f;
 
-			height = self->data->idata["storage size height"];
-			if (height < 1)
-				height = 7;
-
-			stackingBonusMin = self->data->idata["stackable bonus minimum"];
-			if (stackingBonusMin < 1)
-				stackingBonusMin = 10;
-
-			stackingBonusMult = self->data->fdata["stackable bonus mult"];
-			if (stackingBonusMult < 0.0f)
-				stackingBonusMult = 1.0f;
-		}
-
-		std::string inventoryName = "in1";
-		self->inventory->initialiseNewSection(inventoryName, width, height, ATTACH_NONE, false, false, true, 0);
-
-		auto section = self->inventory->getSection(inventoryName);
-
-		section->stackingBonusMin = stackingBonusMin;
-		section->stackingBonusMult = stackingBonusMult;
-
-		if (bf_flags == 1)
-		{
-			if (self->itemtypeLimit == WEAPON || self->itemtypeLimit == ARMOUR || self->itemtypeLimit == CONTAINER || self->itemtypeLimit == CROSSBOW || self->itemtypeLimit == LIMB_REPLACEMENT || self->itemtypeLimit == NEST_ITEM || self->itemtypeLimit == MAP_ITEM)
+			auto bf_flags = self->functionalityData->idata["flags"];
+			if (bf_flags == 1)
 			{
-				lektor<GameData*> itemdataList;
-				ou->gamedata.getDataOfType(itemdataList, self->itemtypeLimit);
-				for (auto iter = itemdataList.begin(); iter != itemdataList.end(); ++iter)
-				{
-					StorageBuilding::ConsumptionItem* limitItem = new StorageBuilding::ConsumptionItem();
-					limitItem->_0x4 = 1.0f;
-					limitItem->numStack = -1;
-					limitItem->data = *iter;
-					limitItem->section = section;
+				width = self->data->idata["storage size width"];
+				if (width < 1)
+					width = 12;
 
-					section->addVeryLimitedSlot(*iter);
+				height = self->data->idata["storage size height"];
+				if (height < 1)
+					height = 7;
 
-					self->storageItems.push_back(limitItem);
-				}
+				stackingBonusMin = self->data->idata["stackable bonus minimum"];
+				if (stackingBonusMin < 1)
+					stackingBonusMin = 10;
+
+				stackingBonusMult = self->data->fdata["stackable bonus mult"];
+				if (stackingBonusMult < 0.0f)
+					stackingBonusMult = 1.0f;
 			}
-			else
+
+			std::string inventoryName = "in1";
+			self->inventory->initialiseNewSection(inventoryName, width, height, ATTACH_NONE, false, false, true, 0);
+
+			auto section = self->inventory->getSection(inventoryName);
+
+			section->stackingBonusMin = stackingBonusMin;
+			section->stackingBonusMult = stackingBonusMult;
+
+			if (bf_flags == 1)
 			{
-				auto limitInventoryIter = self->data->objectReferences.find("limit inventory");
-				if (limitInventoryIter != self->data->objectReferences.end())
+				if (self->specialItemTypesOnly == WEAPON || self->specialItemTypesOnly == ARMOUR || self->specialItemTypesOnly == CONTAINER || self->specialItemTypesOnly == CROSSBOW || self->specialItemTypesOnly == LIMB_REPLACEMENT || self->specialItemTypesOnly == NEST_ITEM || self->specialItemTypesOnly == MAP_ITEM)
 				{
-					for (auto iter = limitInventoryIter->second.begin(); iter != limitInventoryIter->second.end(); ++iter)
+					lektor<GameData*> itemdataList;
+					ou->gamedata.getDataOfType(itemdataList, self->specialItemTypesOnly);
+					for (auto iter = itemdataList.begin(); iter != itemdataList.end(); ++iter)
 					{
-						auto gamedata = ou->gamedata.getData(iter->sid);
-						if (gamedata != nullptr)
+						StorageBuilding::ConsumptionItem* limitItem = new StorageBuilding::ConsumptionItem(1.0f, *iter, section, -1);
+
+						section->addVeryLimitedSlot(*iter);
+
+						self->manyLimitItems.push_back(limitItem);
+					}
+				}
+				else
+				{
+					auto limitInventoryIter = self->data->objectReferences.find("limit inventory");
+					if (limitInventoryIter != self->data->objectReferences.end())
+					{
+						for (auto iter = limitInventoryIter->second.begin(); iter != limitInventoryIter->second.end(); ++iter)
 						{
-							StorageBuilding::ConsumptionItem* limitItem = new StorageBuilding::ConsumptionItem();
-							limitItem->_0x4 = 1.0f;
-							limitItem->numStack = -1;
-							limitItem->data = gamedata;
-							limitItem->section = section;
+							auto gamedata = ou->gamedata.getData(iter->sid);
+							if (gamedata != nullptr)
+							{
+								StorageBuilding::ConsumptionItem* limitItem = new StorageBuilding::ConsumptionItem(1.0f, gamedata, section, -1);
 
-							section->addVeryLimitedSlot(gamedata);
+								section->addVeryLimitedSlot(gamedata);
 
-							self->storageItems.push_back(limitItem);
+								self->manyLimitItems.push_back(limitItem);
+							}
 						}
 					}
 				}
+
+				section->width = width;
+				section->height = height;
 			}
 
-			section->width = width;
-			section->height = height;
-		}
-
-		auto& elem = inItems[inItems.size()];
-		elem.amount = 0;
-		elem._0x4 = 1.0f;
-		elem.numStack = 5;
-		elem.data = nullptr;
-		elem.section = section;
-		inItems.push_back(elem);
-	}
-}
-
-float KEP::ItemFurnaceExtension::FurnaceBuilding_FUN_002A5F00_hook(FurnaceBuilding* self, Item* input)
-{
-	auto itemBaseData = input->getGameData();
-
-	auto iter = self->functionality->objectReferences.find("furnace ingredients");
-	if (iter != self->functionality->objectReferences.end() && iter->second.size() != 0)
-	{
-		auto ingredientsData = ou->gamedata.getData(iter->second[0].sid);
-		if (ingredientsData != nullptr && iter->second[0].sid != "1866-gamedata.base")
-		{
-			float amount = 0.0f;
-
-			if (input->objectType == WEAPON)
-			{
-				float weight = input->getItemWeightSingle() * 0.2f;
-				if (weight > 5.0f)
-					weight = 5.0f;
-				else if (weight < 0.5f)
-					weight = 0.5f;
-
-				amount = weight;
-			}
-			else if (input->objectType == ARMOUR)
-			{
-				amount = Armour::getArmourCraftingMaterialConsumptionRate(input->data) * 2.0f;
-			}
-			else if (input->objectType == ITEM || input->objectType == CROSSBOW || input->objectType == LIMB_REPLACEMENT || input->objectType == CONTAINER)
-			{
-				auto ingredientsIt = itemBaseData->objectReferences.find("ingredients");
-				if (ingredientsIt != itemBaseData->objectReferences.end() && ingredientsIt->second.size() != 0)
-					amount = getCostOfIngredients(self, itemBaseData, iter->second[0].sid) * input->quantity * 0.5f;
-			}
-			return amount;
+			auto& elem = inItems[inItems.size()];
+			elem.amount = 0;
+			elem.rate = 1.0f;
+			elem.maxCapacity = 5;
+			elem.item = nullptr;
+			elem.inventorySection = section;
+			inItems.push_back(elem);
 		}
 	}
 
-	if (input->objectType == CROSSBOW || input->objectType == LIMB_REPLACEMENT || input->objectType == CONTAINER)
+	float (*FurnaceBuilding_getInputValue_orig)(FurnaceBuilding*, Item*);
+	float FurnaceBuilding_getInputValue_hook(FurnaceBuilding* self, Item* input)
 	{
-		auto ingredientsIt = itemBaseData->objectReferences.find("ingredients");
-		if (ingredientsIt != itemBaseData->objectReferences.end() && ingredientsIt->second.size() != 0)
-			return externalFunctions->FUN_002A5710(self, itemBaseData) * input->quantity * 0.5f;
-	}
-	else
-	{
-		return FurnaceBuilding_FUN_002A5F00_orig(self, input);
-	}
+		auto itemBaseData = input->getGameData();
 
-	return 0.0f;
-}
-
-void KEP::ItemFurnaceExtension::FurnaceBuilding_FUN_0029C810_hook(FurnaceBuilding* self, lektor<GameData*>& out)
-{
-	if (self->itemtypeLimit == WEAPON || self->itemtypeLimit == ARMOUR || self->itemtypeLimit == CONTAINER || self->itemtypeLimit == CROSSBOW || self->itemtypeLimit == LIMB_REPLACEMENT || self->itemtypeLimit == NEST_ITEM || self->itemtypeLimit == MAP_ITEM)
-	{
-		ou->gamedata.getDataOfType(out, self->itemtypeLimit);
-		return;
-	}
-
-	if (self->inventory != nullptr && self->storageItems.size() != 0)
-	{
-		for (uint32_t i = 0; i < self->storageItems.size(); i++)
+		auto iter = self->functionalityData->objectReferences.find("furnace ingredients");
+		if (iter != self->functionalityData->objectReferences.end() && iter->second.size() != 0)
 		{
-			out.push_back(self->storageItems[i]->data);
-		}
-		return;
-	}
-
-	FurnaceBuilding_FUN_0029C810_orig(self, out);
-}
-
-bool KEP::ItemFurnaceExtension::AI_haveSomeResourcesFor_hook(AI* self, hand& handle)
-{
-	auto building = handle.getBuilding();
-	if (building != nullptr)
-	{
-		auto storage = building->getFunctionStuff();
-		if (storage != nullptr && storage->itemtypeLimit == ITEM && storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->storageItems.size() != 0)
-		{
-			for (auto iter = storage->storageItems.begin(); iter != storage->storageItems.end(); ++iter)
+			auto ingredientsData = ou->gamedata.getData(iter->second[0].sid);
+			if (ingredientsData != nullptr && iter->second[0].sid != "1866-gamedata.base")
 			{
-				if (self->me->hasItem((*iter)->data))
-					return true;
-			}
-			return false;
-		}
-	}
-	
-	return AI_haveSomeResourcesFor_orig(self, handle);
-}
+				float amount = 0.0f;
 
-int KEP::ItemFurnaceExtension::Task_FillMachine_FUN_00340EB0_hook(Task_FillMachine* self, StorageBuilding* storage, Inventory* inventory)
-{
-	if (storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->storageItems.size() != 0)
-	{
-		int count = 0;
-		for (auto iter = storage->storageItems.begin(); iter != storage->storageItems.end(); ++iter)
-		{
-			while ((*iter)->section->hasRoomForItem((*iter)->data, 1))
-			{
-				auto item = inventory->takeItem_EntireStack((*iter)->data);
-				if (!(*iter)->section->addItem(item, 1))
+				if (input->objectType == WEAPON)
 				{
-					inventory->addItem(item, 1, true, false);
-					break;
+					float weight = input->getItemWeightSingle() * 0.2f;
+					if (weight > 5.0f)
+						weight = 5.0f;
+					else if (weight < 0.5f)
+						weight = 0.5f;
+
+					amount = weight;
 				}
-				++count;
+				else if (input->objectType == ARMOUR)
+				{
+					amount = Armour::getArmourCraftingMaterialConsumptionRate(input->data) * 2.0f;
+				}
+				else if (input->objectType == ITEM || input->objectType == CROSSBOW || input->objectType == LIMB_REPLACEMENT || input->objectType == CONTAINER)
+				{
+					auto ingredientsIt = itemBaseData->objectReferences.find("ingredients");
+					if (ingredientsIt != itemBaseData->objectReferences.end() && ingredientsIt->second.size() != 0)
+						amount = getCostOfIngredients(self, itemBaseData, iter->second[0].sid) * input->quantity * 0.5f;
+				}
+				return amount;
 			}
 		}
 
-		if (0 < count)
-			externalFunctions->FUN_00299750(reinterpret_cast<FurnaceBuilding*>(storage), nullptr);
+		if (input->objectType == CROSSBOW || input->objectType == LIMB_REPLACEMENT || input->objectType == CONTAINER)
+		{
+			auto ingredientsIt = itemBaseData->objectReferences.find("ingredients");
+			if (ingredientsIt != itemBaseData->objectReferences.end() && ingredientsIt->second.size() != 0)
+				return self->getIronAmountInItem(itemBaseData) * input->quantity * 0.5f;
+		}
+		else
+		{
+			return FurnaceBuilding_getInputValue_orig(self, input);
+		}
+
+		return 0.0f;
+	}
+
+	void (*FurnaceBuilding_getResourcesNeededBecauseEmpty_orig)(FurnaceBuilding*, lektor<GameData*>&);
+	void FurnaceBuilding_getResourcesNeededBecauseEmpty_hook(FurnaceBuilding* self, lektor<GameData*>& out)
+	{
+		if (self->specialItemTypesOnly == WEAPON || self->specialItemTypesOnly == ARMOUR || self->specialItemTypesOnly == CONTAINER || self->specialItemTypesOnly == CROSSBOW || self->specialItemTypesOnly == LIMB_REPLACEMENT || self->specialItemTypesOnly == NEST_ITEM || self->specialItemTypesOnly == MAP_ITEM)
+		{
+			ou->gamedata.getDataOfType(out, self->specialItemTypesOnly);
+			return;
+		}
+
+		if (self->inventory != nullptr && self->manyLimitItems.size() != 0)
+		{
+			for (uint32_t i = 0; i < self->manyLimitItems.size(); i++)
+			{
+				out.push_back(self->manyLimitItems[i]->item);
+			}
+			return;
+		}
+
+		FurnaceBuilding_getResourcesNeededBecauseEmpty_orig(self, out);
+	}
+
+	bool (*AI_haveSomeResourcesFor_orig)(AI*, hand&);
+	bool AI_haveSomeResourcesFor_hook(AI* self, hand& handle)
+	{
+		auto building = handle.getBuilding();
+		if (building != nullptr)
+		{
+			auto storage = building->getFunctionStuff();
+			if (storage != nullptr && storage->specialItemTypesOnly == ITEM && storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->manyLimitItems.size() != 0)
+			{
+				for (auto iter = storage->manyLimitItems.begin(); iter != storage->manyLimitItems.end(); ++iter)
+				{
+					if (self->me->hasItem((*iter)->item))
+						return true;
+				}
+				return false;
+			}
+		}
+
+		return AI_haveSomeResourcesFor_orig(self, handle);
+	}
+
+	int (*Task_FillMachine_FUN_00340EB0_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
+	int Task_FillMachine_FUN_00340EB0_hook(Task_FillMachine* self, StorageBuilding* storage, Inventory* inventory)
+	{
+		if (storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->manyLimitItems.size() != 0)
+		{
+			int count = 0;
+			for (auto iter = storage->manyLimitItems.begin(); iter != storage->manyLimitItems.end(); ++iter)
+			{
+				while ((*iter)->inventorySection->hasRoomForItem((*iter)->item, 1))
+				{
+					auto item = inventory->takeItem_EntireStack((*iter)->item);
+					if (!(*iter)->inventorySection->addItem(item, 1))
+					{
+						inventory->addItem(item, 1, true, false);
+						break;
+					}
+					++count;
+				}
+			}
+
+			if (0 < count)
+				reinterpret_cast<FurnaceBuilding*>(storage)->incinerate(nullptr);
+
+			return count;
+		}
+
+		return Task_FillMachine_FUN_00340EB0_orig(self, storage, inventory);
+	}
+
+	int (*Task_FillMachine_FUN_00343720_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
+	int Task_FillMachine_FUN_00343720_hook(Task_FillMachine* self, StorageBuilding* storage, Inventory* inventory)
+	{
+		auto count = Task_FillMachine_FUN_00343720_orig(self, storage, inventory);
+
+		if (0 < count && storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->manyLimitItems.size() != 0)
+			reinterpret_cast<FurnaceBuilding*>(storage)->incinerate(nullptr);
 
 		return count;
 	}
-
-	return Task_FillMachine_FUN_00340EB0_orig(self, storage, inventory);
-}
-
-int KEP::ItemFurnaceExtension::Task_FillMachine_FUN_00343720_hook(Task_FillMachine* self, StorageBuilding* storage, Inventory* inventory)
-{
-	auto count = Task_FillMachine_FUN_00343720_orig(self, storage, inventory);
-
-	if (0 < count && storage->getSpecialFunction() == BF_ITEM_FURNACE && storage->storageItems.size() != 0)
-		externalFunctions->FUN_00299750(reinterpret_cast<FurnaceBuilding*>(storage), nullptr);
-
-	return count;
 }
 
 void KEP::ItemFurnaceExtension::init()
 {
 	if (settings._furnaceExtension)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0029F940, &FurnaceBuilding_setupFromData_hook, &FurnaceBuilding_setupFromData_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt1] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_setupFromData), &FurnaceBuilding_setupFromData_hook, &FurnaceBuilding_setupFromData_orig))
+			ErrorLog("[FurnaceBuilding::setupFromData] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002A5F00, &FurnaceBuilding_FUN_002A5F00_hook, &FurnaceBuilding_FUN_002A5F00_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt2] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getInputValue), &FurnaceBuilding_getInputValue_hook, &FurnaceBuilding_getInputValue_orig))
+			ErrorLog("[FurnaceBuilding::getInputValue] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0029C810, &FurnaceBuilding_FUN_0029C810_hook, &FurnaceBuilding_FUN_0029C810_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt3] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getResourcesNeededBecauseEmpty), &FurnaceBuilding_getResourcesNeededBecauseEmpty_hook, &FurnaceBuilding_getResourcesNeededBecauseEmpty_orig))
+			ErrorLog("[FurnaceBuilding::getResourcesNeededBecauseEmpty] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_005A3B60, &AI_haveSomeResourcesFor_hook, &AI_haveSomeResourcesFor_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt4] could not install hook!");
+			ErrorLog("[FUN_005A3B60] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00340EB0, &Task_FillMachine_FUN_00340EB0_hook, &Task_FillMachine_FUN_00340EB0_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt5] could not install hook!");
+			ErrorLog("[FUN_00340EB0] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00343720, &Task_FillMachine_FUN_00343720_hook, &Task_FillMachine_FUN_00343720_orig))
-			ErrorLog("KenshiExtensionPlugin: [item furnace extension pt6] could not install hook!");
+			ErrorLog("[FUN_00343720] could not install hook!");
 	}
 }
