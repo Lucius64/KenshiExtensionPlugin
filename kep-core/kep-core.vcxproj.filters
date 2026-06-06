@@ -14,10 +14,10 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files\kep">
-      <UniqueIdentifier>{8b5dfd21-8088-4b4d-ac42-60742a291304}</UniqueIdentifier>
+      <UniqueIdentifier>{a09b440b-76a3-4a8e-b909-0162b9b1e7c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\extern">
-      <UniqueIdentifier>{59176bc1-899e-4caf-b73f-8980aab40302}</UniqueIdentifier>
+      <UniqueIdentifier>{3827fb1a-c77f-465f-af3a-19fdf236ef17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +130,12 @@
       <Filter>Header Files\extern</Filter>
     </ClInclude>
     <ClInclude Include="include\extern\ZoneMapContent.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="include\extern\CharacterMemory.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="include\extern\InventoryManager.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>
   </ItemGroup>

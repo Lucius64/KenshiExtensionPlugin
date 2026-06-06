@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <cstdint>
-#include <kenshi/RootObject.h>
+#include <kenshi/Town.h>
 
 namespace Ogre
 {
@@ -28,4 +27,10 @@ public:
 	lektor<hand> _0xb8[64][64];
 	boost::unordered::unordered_set<TownBase*, boost::hash<TownBase*>, std::equal_to<TownBase*>, Ogre::STLAllocator<TownBase*, Ogre::CategorisedAllocPolicy<Ogre::MEMCATEGORY_GENERAL> > > _0x180b8;
 	TownBase* _0x180f8;
+};
+
+class Nest : public TownBase
+{
+public:
+	bool _0x338;
 };

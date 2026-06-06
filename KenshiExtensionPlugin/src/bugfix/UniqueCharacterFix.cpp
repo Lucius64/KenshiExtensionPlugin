@@ -19,7 +19,9 @@
 #include <extern/UniqueNPCManager.h>
 #include <extern/FactionWarMgr.h>
 #include <extern/Blackboard.h>
+#include <extern/AreaBiomeGroup.h>
 
+#include <kep/functions.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <bugfix/UniqueCharacterFix.h>
@@ -184,8 +186,8 @@ namespace
 		return character;
 	}
 
-	RootObject* (*RootObjectFactory_createRandomSquad_hook_orig)(RootObjectFactory*, Faction*, Ogre::Vector3&, TownBase*, int, Building*, GameData*, RootObjectContainer*, AreaBiomeGroup*, Platoon*, bool, const hand&, TownBase*, float, SquadType, bool);
-	RootObject* RootObjectFactory_createRandomSquad_hook(
+	Platoon* (*RootObjectFactory_createRandomSquad_hook_orig)(RootObjectFactory*, Faction*, Ogre::Vector3&, TownBase*, int, Building*, GameData*, RootObjectContainer*, AreaBiomeGroup*, Platoon*, bool, const hand&, TownBase*, float, SquadType, bool);
+	Platoon* RootObjectFactory_createRandomSquad_hook(
 		RootObjectFactory* self,
 		Faction* faction,
 		Ogre::Vector3 position,
@@ -204,10 +206,44 @@ namespace
 		bool isJustARefresh
 	)
 	{
-		if (KEP::settings._fixspawningOfUniqueCharacters && ownr != nullptr && ownr->getType() == DataObjectContainer::TYPE_PLATOON)
+		if ((KEP::settings._fixspawningOfUniqueCharacters || KEP::settings._fixHousemateInventoryRefresh) && ownr != nullptr && ownr->getType() == DataObjectContainer::TYPE_PLATOON)
 		{
-			auto& uniqueNPCMgr = KEP::externalFunctions->FUN_00354500();
-			UniqueNPCManager_removeStateForPlatoon(uniqueNPCMgr, reinterpret_cast<ActivePlatoon*>(ownr)->me, false); // 部隊を再生成する場合は事前にUniqueCharacterStateを削除する
+			ActivePlatoon* activePlatoon = reinterpret_cast<ActivePlatoon*>(ownr);
+			bool refreshed = activePlatoon->me->messageOnActivation == CM_REFRESH;
+			if (KEP::settings._fixspawningOfUniqueCharacters && refreshed)
+			{
+				auto& uniqueNPCMgr = KEP::externalFunctions->FUN_00354500();
+				UniqueNPCManager_removeStateForPlatoon(uniqueNPCMgr, activePlatoon->me, false); // 部隊を再生成する場合は事前にUniqueCharacterStateを削除する
+			}
+
+			if (KEP::settings._fixHousemateInventoryRefresh && home != nullptr)
+			{
+				hand previousResident = home->residentSquad;
+				auto previousResidentPlatoon = previousResident.getPlatoon();
+
+				auto platoon = RootObjectFactory_createRandomSquad_hook_orig(self, faction, position, homeTown, maxnum, home, squad, ownr, maparea, _activePlatoon, permanentsquad, AItarget, targetTown, sizeMultiplier, squadType, isJustARefresh);
+				if (previousResident == home->residentSquad || previousResidentPlatoon == nullptr)
+					return platoon;
+
+				// residentsとインベントリを復元
+				if (refreshed || previousResidentPlatoon->activePlatoon != nullptr && previousResidentPlatoon->activePlatoon->things.size() != 0 && (activePlatoon->things.size() == 0 || home->residentSquad.container < previousResident.container))
+				{
+					home->residentSquad.setNull();
+					home->setResidentSquad(previousResidentPlatoon);
+
+					if (previousResidentPlatoon->activePlatoon != nullptr && KEP::functions->VendorListManager_hasVendor(previousResidentPlatoon->activePlatoon))
+					{
+						auto residentsLeader = previousResidentPlatoon->getSquadLeader();
+						if (residentsLeader != nullptr)
+						{
+							auto trader = KEP::functions->InventoryManager_getSingleton();
+							KEP::functions->InventoryManager_refreshBuildingInventory(trader, home, previousResidentPlatoon->squadTemplate, previousResidentPlatoon, true, false);
+						}
+					}
+				}
+
+				return platoon;
+			}
 		}
 
 		return RootObjectFactory_createRandomSquad_hook_orig(self, faction, position, homeTown, maxnum, home, squad, ownr, maparea, _activePlatoon, permanentsquad, AItarget, targetTown, sizeMultiplier, squadType, isJustARefresh);
@@ -267,7 +303,7 @@ namespace
 
 					if (nearlyTowns->size() == 0)
 					{
-						auto sector = KEP::externalFunctions->FUN_008F47E0(KEP::externalGlobals->_CLASS_02133098->_0x0, spawnPos);
+						auto sector = KEP::functions->AreaManager_getAreaSector(KEP::functions->getLevelManager()->areaMgr, spawnPos);
 						if (sector != nullptr)
 							KEP::externalFunctions->FUN_008F4200(sector, spawnPos, true, self->me, 1.3f, 0.001f);
 					}

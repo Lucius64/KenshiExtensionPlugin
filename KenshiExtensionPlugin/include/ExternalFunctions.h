@@ -86,6 +86,7 @@ class NewGameWindow;
 class GunClass;
 enum StatsEnumerated;
 class StringPair;
+class GameplayOptions;
 
 namespace scythe
 {
@@ -156,25 +157,8 @@ namespace KEP
 			float _attributeXp;
 		};
 
-		//placeholder name
-		class OptionsAdvanced
-		{
-		public:
-			float _cod;
-			bool _ep;
-			float _gdm;
-			float _bs;
-			float _nonm;
-			float _rs;
-			float _ps;
-			float _ht;
-			bool _banditsLootThePlayer;
-			bool _enableAnimalHunger;
-			bool _heal;
-		};
-
 		BaseXpCombat* _gBaseXpCombat;
-		OptionsAdvanced* _optionsAdvanced;
+		GameplayOptions* _optionsAdvanced;
 		uint32_t* _playerMorphCounter;
 		std::string* _KenshiFolder;
 		UtilityT* _UtilityT;

@@ -82,22 +82,22 @@ void KEP::initialize()
 
 namespace
 {
-	std::string* _MainColorCode;
-	std::string* _SecondaryColorCode;
-	std::string* _TitleColorCode;
-	std::string* _BadColorCode;
-	std::string* _BadBrightColorCode;
-	std::string* _GoodColorCode;
-	std::string* _GoodBrightColorCode;
-	std::string* _GreyedColorCode;
-	std::string* _GreyedBrightColorCode;
-	std::string* _SpecialColorCode;
-	MyGUI::Colour* _NameTagSelectedColor;
-	MyGUI::Colour* _NameTagUnselectedColor;
-	MyGUI::Colour* _NameTagStealthHiddenColor;
-	MyGUI::Colour* _NameTagStealthAlmostSeenColor;
-	MyGUI::Colour* _NameTagStealthSeenColor;
-	MyGUI::Colour* _DialogueBubbleTextColor;
+	std::string* _MainColorCode = nullptr;
+	std::string* _SecondaryColorCode = nullptr;
+	std::string* _TitleColorCode = nullptr;
+	std::string* _BadColorCode = nullptr;
+	std::string* _BadBrightColorCode = nullptr;
+	std::string* _GoodColorCode = nullptr;
+	std::string* _GoodBrightColorCode = nullptr;
+	std::string* _GreyedColorCode = nullptr;
+	std::string* _GreyedBrightColorCode = nullptr;
+	std::string* _SpecialColorCode = nullptr;
+	MyGUI::Colour* _NameTagSelectedColor = nullptr;
+	MyGUI::Colour* _NameTagUnselectedColor = nullptr;
+	MyGUI::Colour* _NameTagStealthHiddenColor = nullptr;
+	MyGUI::Colour* _NameTagStealthAlmostSeenColor = nullptr;
+	MyGUI::Colour* _NameTagStealthSeenColor = nullptr;
+	MyGUI::Colour* _DialogueBubbleTextColor = nullptr;
 }
 
 void KEP::GUIColor::init(unsigned int platform, const std::string& version, uintptr_t baseAddr)

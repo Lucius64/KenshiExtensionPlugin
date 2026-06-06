@@ -152,9 +152,11 @@
     <ClInclude Include="include\extern\Blackboard.h" />
     <ClInclude Include="include\extern\BlueprintItem.h" />
     <ClInclude Include="include\extern\BuildingInterior.h" />
+    <ClInclude Include="include\extern\CharacterMemory.h" />
     <ClInclude Include="include\extern\FactionWarMgr.h" />
     <ClInclude Include="include\extern\GunClass.h" />
     <ClInclude Include="include\extern\InventoryLayout.h" />
+    <ClInclude Include="include\extern\InventoryManager.h" />
     <ClInclude Include="include\extern\PortraitManager.h" />
     <ClInclude Include="include\extern\ProductionBuilding.h" />
     <ClInclude Include="include\extern\RangedCombatClass.h" />

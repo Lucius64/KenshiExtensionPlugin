@@ -122,7 +122,7 @@ msgid "Fix unarmed damage bonus"
 msgstr ""
 
 #: KenshiExtensionPlugin/src/Settings.cpp:337
-msgid "The \"Unarmed Damage Bonus\" applies to martial arts skills."
+msgid "The \"Unarmed Damage Bonus\" affects martial arts damage."
 msgstr ""
 
 #: KenshiExtensionPlugin/src/Settings.cpp:339
@@ -184,6 +184,15 @@ msgstr ""
 
 #: KenshiExtensionPlugin/src/Settings.cpp:358
 msgid "Prevents characters from spawning with low blood."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:364
+msgid "Fix Animal age"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:365
+msgid ""
+"Prevents rare cases where an animal's age is not displayed as \"Elder\"."
 msgstr ""
 
 #: KenshiExtensionPlugin/src/Settings.cpp:360

@@ -136,7 +136,7 @@ namespace
 			if (referenceData == nullptr)
 				continue;
 
-			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs") + " " + referenceData->name + KEP::TranslationUtility::gettext_main("Race"), static_cast<float>(iter->values.value[0] - 100), true);
+			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs") + " " + referenceData->name, static_cast<float>(iter->values.value[0] - 100), true);
 		}
 
 		auto& raceDamage = self->data->objectReferences["race damage"];

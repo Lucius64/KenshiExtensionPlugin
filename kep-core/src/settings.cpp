@@ -31,7 +31,7 @@ namespace
 KEP::CoreOption::CoreOption()
 	: _path("")
 	, _isEnabledPlugin(true)
-	, _patchSystem(true)
+	, _patchSystem(false)
 {
 }
 
@@ -58,6 +58,8 @@ void KEP::CoreOption::loadSettings(const std::string& path)
 	if (settingsDocument.HasParseError() || !settingsDocument.IsObject())
 		return;
 
+	if (settingsDocument.HasMember("enable_kep"))
+		this->_isEnabledPlugin = settingsDocument["enable_kep"].GetBool();
 	if (settingsDocument.HasMember("enable_patch_system"))
 		this->_patchSystem = settingsDocument["enable_patch_system"].GetBool();
 }

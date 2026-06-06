@@ -80,6 +80,7 @@ namespace
 		settingsDocument.AddMember("character_extension", settings._characterExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_GetResourceFilePath", settings._fixGetResourceFilePath, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_TortureBuilding", settings._fixTortureBuilding, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_AnimalAge", settings._fixAnimalAge, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -143,6 +144,7 @@ KEP::Settings::Settings()
 	, _characterExtension(true)
 	, _fixGetResourceFilePath(true)
 	, _fixTortureBuilding(true)
+	, _fixAnimalAge(true)
 {
 }
 
@@ -288,6 +290,8 @@ void KEP::Settings::loadSettings()
 		this->_fixGetResourceFilePath = settingsDocument["fix_GetResourceFilePath"].GetBool();
 	if (settingsDocument.HasMember("fix_TortureBuilding"))
 		this->_fixTortureBuilding = settingsDocument["fix_TortureBuilding"].GetBool();
+	if (settingsDocument.HasMember("fix_AnimalAge"))
+		this->_fixAnimalAge = settingsDocument["fix_AnimalAge"].GetBool();
 }
 
 KEP::Settings::~Settings()
@@ -334,7 +338,7 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 		->setToolTip(KEP::TranslationUtility::gettext("The \"exp gain multiplier\" is applied to lockpicking XP."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix unarmed damage bonus"), &this->_fixUnarmedDamageBonus, category)
-		->setToolTip(KEP::TranslationUtility::gettext("The \"Unarmed Damage Bonus\" applies to martial arts skills."), tooltip);
+		->setToolTip(KEP::TranslationUtility::gettext("The \"Unarmed Damage Bonus\" affects martial arts damage."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix calculation of athletics effect"), &this->_fixAthleticsMultiplier, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The bonus to movement ability from backpacks applies even when wearing armor."), tooltip);
@@ -356,6 +360,9 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the blood when spawning"), &this->_fixTheBloodWhenSpawning, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Prevents characters from spawning with low blood."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix Animal age"), &this->_fixAnimalAge, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Prevents rare cases where an animal's age is not displayed as \"Elder\"."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix global damage multiplier for Crossbow"), &this->_fixGlobalDamageMultiplier, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The global damage multiplier will no longer significantly affect crossbows."), tooltip);

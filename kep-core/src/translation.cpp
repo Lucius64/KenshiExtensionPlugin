@@ -36,9 +36,9 @@ public:
 
 namespace
 {
-	std::locale* KenshiLocale;
-	std::string (boost::locale::message::* message_str)() const; // boost::locale::basic_message<char>::str
-	std::string (boost::locale::format::* format_str)(const std::locale&) const; // boost::locale::basic_format<char>::str
+	std::locale* KenshiLocale = nullptr;
+	std::string (boost::locale::message::* message_str)() const = nullptr; // boost::locale::basic_message<char>::str
+	std::string (boost::locale::format::* format_str)(const std::locale&) const = nullptr; // boost::locale::basic_format<char>::str
 	
 	std::string lang = "en_GB";
 

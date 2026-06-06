@@ -79,5 +79,6 @@ namespace KEP
 		bool _characterExtension;
 		bool _fixGetResourceFilePath;
 		bool _fixTortureBuilding;
+		bool _fixAnimalAge;
 	};
 }

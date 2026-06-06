@@ -28,6 +28,9 @@ __declspec(dllexport) void startPlugin()
 	}
 
 	KEP::coreOptions.init(kepDirectory + "\\kep_core_settings.json");
+	if (!KEP::coreOptions.getEnablePlugin())
+		return;
+
 	KEP::initialize();
 	KEP::ConfigManager::getSingleton().addItem(&KEP::coreOptions);
 }

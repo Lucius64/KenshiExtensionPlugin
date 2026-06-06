@@ -3,6 +3,7 @@
 #include <string>
 #include <boost/scoped_ptr.hpp>
 #include <ogre/OgrePrerequisites.h>
+#include <kenshi/util/OgreUnordered.h>
 #include <kep/common.h>
 
 enum TownType;
@@ -23,14 +24,21 @@ class OrdersReceiver;
 class Blackboard;
 class ActionDeque;
 class AITaskSystem;
-
-class LevelManager
-{
-public:
-	BiomeManager* biomeMgr;
-	TownList* townList;
-	ZoneManager* zoneMgr;
-};
+class Town;
+class Nest;
+class AreaSector;
+class AreaManager;
+class LevelManager;
+class BuildingInteriorDatasManager;
+class Character;
+class CharacterMemory;
+class SubjectiveTags;
+class InventoryManager;
+class Building;
+class Platoon;
+class ActivePlatoon;
+class DialogLineData;
+class GameplayOptions;
 
 namespace KEP
 {
@@ -42,6 +50,9 @@ namespace KEP
 		DECLSPEC float getTime() const;
 		DECLSPEC LevelManager* getLevelManager() const;
 		DECLSPEC const hand& getNULL_HAND() const;
+		DECLSPEC BuildingInteriorDatasManager* getInteriorMgr() const;
+		DECLSPEC ogre_unordered_map<GameData*, DialogLineData*>::type& getDialogDataManager_allDatas() const;
+		DECLSPEC GameplayOptions* getGameplayOptions() const;
 
 		bool (*EscMenu_openedOtherWindows)(EscMenu*);
 		bool (*Research_completed)(Research*, GameData*);
@@ -52,8 +63,8 @@ namespace KEP
 		void (*MessageRoller_clear)(MessageRoller*);
 		UniqueNPCManager* (*UniqueNPCManager_getSingleton)();
 		void (*UniqueNPCManager_remove)(UniqueNPCManager*, GameData*, const hand&);
-		TownBase* (*TownList_getSafeTown)(TownList*, const Ogre::Vector3&, Faction*, TownBase*, Faction*, TownType);
-		TownBase* (*TownList_getTownWithPlayer)(TownList*, const Ogre::Vector3&, bool, float);
+		Town* (*TownList_getTown)(TownList*, const Ogre::Vector3&, Faction*, TownBase*, Faction*, TownType);
+		Town* (*TownList_getTownWithPlayer)(TownList*, const Ogre::Vector3&, bool, float);
 		void (*StateBroadcastData_setSlaveState)(StateBroadcastData*, SlaveStateEnum);
 		void (*OrdersReceiver_deleteAllTask)(OrdersReceiver*);
 		void (*Blackboard_changeAI)(Blackboard*, GameData*);
@@ -63,11 +74,24 @@ namespace KEP
 		void (*OrdersReceiver_deleteAllPassiveJob)(OrdersReceiver*);
 		void (*ActionDeque_clear)(ActionDeque*);
 		void (*AITaskSystem_clear)(AITaskSystem*);
+		Nest* (*TownList_getNest)(TownList*, const Ogre::Vector3&, Faction*, TownBase*);
+		TownBase* (*TownList_getTownBase)(TownList*, const Ogre::Vector3&, Faction*, TownBase*);
+		AreaSector* (*AreaManager_getAreaSector)(AreaManager*, const Ogre::Vector3&);
+		bool (*BuildingInteriorDatasManager_hasLayout)(BuildingInteriorDatasManager*, GameData*, const std::string&, bool);
+		SubjectiveTags* (*CharacterMemory_getSubjectiveTags)(CharacterMemory*, Character*);
+		bool (*VendorListManager_hasVendor)(ActivePlatoon*);
+		InventoryManager* (*InventoryManager_getSingleton)();
+		void (*InventoryManager_refreshBuildingInventory)(InventoryManager*, Building*, GameData*, Platoon*, bool, bool);
+		void (*InventoryManager_getBuildingInventoryList)(InventoryManager*, Building*, void*);
+		void (*InventoryManager_clearAllBuildingInventory)(InventoryManager*, Building*);
 
 	private:
 		float* timer;
 		LevelManager* _levelMgr;
 		hand* NULL_HAND;
+		BuildingInteriorDatasManager* _interior;
+		ogre_unordered_map<GameData*, DialogLineData*>::type* _DialogDataManager_allDatas;
+		GameplayOptions* _GameplayOptions;
 	};
 
 	extern DECLSPEC boost::scoped_ptr<FunctionPointers> functions;

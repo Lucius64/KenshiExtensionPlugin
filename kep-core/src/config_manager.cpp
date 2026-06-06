@@ -36,6 +36,7 @@ namespace
 	void InputHandler_loadConfig_hook(InputHandler* self)
 	{
 		self->addCommand("toggle_devtools", 0, OIS::KC_F12, OIS::KC_UNASSIGNED, InputHandler::NONE_MASK, InputHandler::GLOBAL);
+		self->addCommand("toggle_info_panel", 0, OIS::KC_UNASSIGNED, OIS::KC_UNASSIGNED, InputHandler::NONE_MASK, InputHandler::GLOBAL);
 		InputHandler_loadConfig_orig(self);
 	}
 }
@@ -52,8 +53,8 @@ void KEP::ConfigManager::init(unsigned int platform, const std::string& version,
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&OptionsWindow::saveOptions), OptionsWindow_saveOptions_hook, &OptionsWindow_saveOptions_orig))
 		ErrorLog("[OptionsWindow::saveOptions] Could not add hook!");
 
-	//if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&InputHandler::loadConfig), &InputHandler_loadConfig_hook, &InputHandler_loadConfig_orig))
-	//	ErrorLog("[InputHandler::loadConfig] could not install hook!");
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&InputHandler::loadConfig), &InputHandler_loadConfig_hook, &InputHandler_loadConfig_orig))
+		ErrorLog("[InputHandler::loadConfig] could not install hook!");
 }
 
 KEP::ConfigManager& KEP::ConfigManager::getSingleton()
@@ -77,13 +78,13 @@ void KEP::ConfigManager::create(OptionsWindow* win)
 	// Controls = 0x19
 	// Mods = 0x0
 
-	auto tabCount = win->tabs->getChildCount();
+	auto tabCount = win->tabs->getItemCount();
 	std::vector<int> catList(tabCount);
 	int maxCat = 0;
 	for (size_t i = 0; i < tabCount; i++)
 	{
-		auto panel = win->tabs->getChildAt(i)->getUserData<DatapanelGUI*>(false);
-		if (panel != nullptr)
+		auto panel = win->tabs->getItemDataAt<DatapanelGUI*>(i, false);
+		if (*panel != nullptr)
 		{
 			int cat = (*panel)->currentCategory;
 			catList[i] = cat;

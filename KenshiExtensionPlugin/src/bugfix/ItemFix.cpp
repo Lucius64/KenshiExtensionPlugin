@@ -27,6 +27,9 @@
 #include <extern/BlueprintItem.h>
 #include <extern/ZoneMapContent.h>
 #include <extern/SeveredLimbItem.h>
+#include <extern/AreaBiomeGroup.h>
+
+#include <kep/functions.h>
 
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
@@ -124,71 +127,20 @@ namespace
 		return;
 	}
 
-	void (*ActivePlatoon_refreshInventory_orig)(ActivePlatoon*, bool);
-	void ActivePlatoon_refreshInventory_hook(ActivePlatoon* self, bool firstTime)
-	{
-		if (firstTime && KEP::settings._fixHousemateInventoryRefresh)
-		{
-			auto& homeBuildingHandle = self->me->getOwnerships()->_homeBuilding;
-			if (homeBuildingHandle.type != NULL_ITEM)
-			{
-				auto homeBuilding = homeBuildingHandle.getBuilding();
-				if (homeBuilding != nullptr &&
-					homeBuilding->myInterior != nullptr &&
-					homeBuilding->myInterior->physicsCollection == nullptr &&
-					(homeBuilding->residentSquad.container != self->me->handle.container || homeBuilding->residentSquad.containerSerial != self->me->handle.containerSerial))
-				{
-					hand handle = homeBuilding->residentSquad;
-
-					homeBuilding->residentSquad.type = self->me->handle.type;
-					homeBuilding->residentSquad.container = self->me->handle.container;
-					homeBuilding->residentSquad.containerSerial = self->me->handle.containerSerial;
-					homeBuilding->residentSquad.index = self->me->handle.index;
-					homeBuilding->residentSquad.serial = self->me->handle.serial;
-
-					ActivePlatoon_refreshInventory_orig(self, firstTime);
-					homeBuilding->residentSquad.type = handle.type;
-					homeBuilding->residentSquad.container = handle.container;
-					homeBuilding->residentSquad.containerSerial = handle.containerSerial;
-					homeBuilding->residentSquad.index = handle.index;
-					homeBuilding->residentSquad.serial = handle.serial;
-
-					auto residentsPlatoon = homeBuilding->residentSquad.getPlatoon();
-					if (residentsPlatoon != nullptr && residentsPlatoon->activePlatoon != nullptr && KEP::externalFunctions->FUN_00958550(residentsPlatoon->activePlatoon))
-					{
-						auto residentsLeader = residentsPlatoon->getSquadLeader();
-						if (residentsLeader != nullptr)
-						{
-							auto trader = KEP::externalFunctions->FUN_004FDE00();
-							KEP::externalFunctions->FUN_0095A340(trader, homeBuilding, residentsPlatoon->squadTemplate, residentsPlatoon, true, false);
-						}
-					}
-					return;
-				}
-			}
-		}
-
-		ActivePlatoon_refreshInventory_orig(self, firstTime);
-	}
-
 	void (*Building_setResidentSquad_orig)(Building*, Platoon*);
 	void Building_setResidentSquad_hook(Building* self, Platoon* who)
 	{
-		if (!KEP::settings._fixHousemateInventoryRefresh)
-		{
-			Building_setResidentSquad_orig(self, who);
-			return;
-		}
-
 		// residentsの上書き条件
+		// 1. キャラクター作成前
 		// 1. residentsの型がNULL_ITEM
 		// 2. residentsの部隊がnull
 		// 3. handleCがresidents <= 設定対象 and 設定対象のseparatedの型がNULL_ITEM
-		if (who == nullptr)
-			return;
-
-		hand& currentResident = self->residentSquad;
-		if (self->residentSquad.type == NULL_ITEM || self->residentSquad.getPlatoon() == nullptr || who->isSeparatedSquad.type == NULL_ITEM && self->residentSquad.container <= who->handle.container)
+		if (!KEP::settings._fixHousemateInventoryRefresh
+			|| who == nullptr
+			|| who->hasNeverBeenActivated
+			|| self->residentSquad.type == NULL_ITEM
+			|| self->residentSquad.getPlatoon() == nullptr
+			|| who->isSeparatedSquad.type == NULL_ITEM && self->residentSquad.container <= who->handle.container)
 		{
 			Building_setResidentSquad_orig(self, who);
 		}
@@ -197,8 +149,6 @@ namespace
 			auto ownerships = who->getOwnerships();
 			if (ownerships->_homeBuilding != self->handle)
 				ownerships->setHomeBuilding(self->handle, who->squadType);
-
-			return;
 		}
 	}
 
@@ -260,17 +210,14 @@ namespace
 	void SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
 	{
 		lektor<ZoneMap*> loadedZones;
-		KEP::externalGlobals->_CLASS_02133098->zoneManager->getAllActiveZones(loadedZones);
+		KEP::functions->getLevelManager()->zoneMgr->getAllActiveZones(loadedZones);
 		hand handle(self);
 
 		int count = 0;
 		for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
 		{
 			if ((*iter)->mapContent == nullptr)
-			{
-				DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
 				continue;
-			}
 
 			if ((*iter)->mapContent->_0x110.count(handle) != 0)
 				++count;
@@ -286,10 +233,7 @@ namespace
 		for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
 		{
 			if ((*iter)->mapContent == nullptr)
-			{
-				DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
 				continue;
-			}
 
 			if ((*iter)->mapContent->_0x110.count(handle) != 0)
 				++afterCount;
@@ -303,10 +247,7 @@ namespace
 			for (auto iter = loadedZones.begin(); iter != loadedZones.end(); ++iter)
 			{
 				if ((*iter)->mapContent == nullptr)
-				{
-					DebugLog("zone " + (*iter)->coordinates.getAsString() + " container is null");
 					continue;
-				}
 
 				if ((*iter)->mapContent->_0x110.count(handle) != 0)
 					Logger::logMessage(" - still in zone " + (*iter)->coordinates.getAsString(), Logger::Info);
@@ -325,9 +266,6 @@ void KEP::ItemFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ContainerItem::_NV_setProperOwner), &ContainerItem_setProperOwner_hook, &ContainerItem_setProperOwner_orig))
 		ErrorLog("[ContainerItem::setProperOwner] could not install hook!");
-
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ActivePlatoon::refreshInventory), &ActivePlatoon_refreshInventory_hook, &ActivePlatoon_refreshInventory_orig))
-		ErrorLog("[ActivePlatoon::refreshInventory] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Building::setResidentSquad), &Building_setResidentSquad_hook, &Building_setResidentSquad_orig))
 		ErrorLog("[Building::setResidentSquad] could not install hook!");

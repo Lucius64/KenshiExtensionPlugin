@@ -13,6 +13,7 @@
 #include <kenshi/RaceData.h>
 #include <kenshi/Building/Building.h>
 #include <kenshi/Damages.h>
+#include <kenshi/GameplayOptions.h>
 
 #include <extern/RobotLimbItem.h>
 
@@ -85,7 +86,7 @@ namespace
 			else if (What == 6)
 				expMult = 0.25f;
 
-			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * expMult * xpBonusSkillDiff * skillBonusRace[combatStatsEnum] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * expMult * xpBonusSkillDiff * skillBonusRace[combatStatsEnum] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 
 			increaseStat(*pSkill, exp, 101.0f);
 
@@ -104,25 +105,25 @@ namespace
 				else if (What == 6)
 					weaponExpMult = 0.1f;
 
-				exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * weaponExpMult * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+				exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * weaponExpMult * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 				increaseStat(*self->pCurrentWeaponSkill, exp, 101.0f);
 			}
 
 			if (What == CharStats::ATTACK_HIT || What == CharStats::ATTACK_WAS_BLOCKED)
 			{
-				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiff * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiff * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 				increaseStat(self->_dexterity, exp, 101.0f);
 			}
 		}
 		else if (What == CharStats::BLOCKED_IT)
 		{
 			float xpBonusSkillDiff = self->getSkillDifferenceRatio(self->getMeleeDefence(false), target->stats->getMeleeAttack());
-			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.25f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.25f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 			increaseStat(self->_meleeDefence, exp, 101.0f);
 
 			float xpBonusSkillDiffForWeapon = self->getSkillDifferenceRatio(self->getEquippedWeaponSkill(), target->stats->getMeleeAttack());
 
-			exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.1f * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+			exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.1f * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 			increaseStat(*self->pCurrentWeaponSkill, exp, 101.0f);
 
 			strengthExp *= 0.4f;
@@ -137,14 +138,14 @@ namespace
 			{
 				float xpBonusSkillDiff = self->getSkillDifferenceRatio(self->getMeleeDefence(false), target->stats->getMeleeAttack());
 
-				float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 2.0f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+				float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 2.0f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 
 				increaseStat(self->_meleeDefence, exp, 101.0f);
 			}
 
 			float xpBonusSkillDiffForToughness = self->getSkillDifferenceRatio(self->ageMult * self->_toughness, damage.blunt + damage.cut + damage.pierce + damage.extraStun);
 
-			float toughnessExp = con->XP_TOUGHNESS * KEP::externalGlobals->_gBaseXpCombat->_skillXp * xpBonusSkillDiffForToughness * skillBonusRace[STAT_TOUGHNESS] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+			float toughnessExp = con->XP_TOUGHNESS * KEP::externalGlobals->_gBaseXpCombat->_skillXp * xpBonusSkillDiffForToughness * skillBonusRace[STAT_TOUGHNESS] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 
 			increaseStat(self->_toughness, toughnessExp, 101.0f);
 
@@ -164,7 +165,7 @@ namespace
 			strengthExp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * 0.55f * strengthExp * self->weaponWeightXPMult;
 		}
 
-		strengthExp = strengthExp * skillBonusRace[STAT_STRENGTH] * KEP::externalGlobals->_optionsAdvanced->_gdm;
+		strengthExp = strengthExp * skillBonusRace[STAT_STRENGTH] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 
 		increaseStat(self->_strength, strengthExp, 101.0f);
 		return;
@@ -248,51 +249,38 @@ namespace
 	Damages(DetourCharStats::* CharStats_getTotalAttackDamageFor_orig)(Character*);
 	Damages DetourCharStats::CharStats_getTotalAttackDamageFor_hook(Character* target)
 	{
-		if (!KEP::settings._fixUnarmedDamageBonus)
+		if (!KEP::settings._fixUnarmedDamageBonus || this->currentWeaponType != SKILL_UNARMED)
 			return (this->*CharStats_getTotalAttackDamageFor_orig)(target);
 
-		float cutting;
-		float blunt;
-		float pierce;
+		int bonus = 0;
+		auto leftArm = this->me->medical.leftArm->robotLimb;
+		if (leftArm != nullptr)
+			bonus += leftArm->unarmedDamageBonus;
 
-		if (this->currentWeaponType == SKILL_UNARMED)
-		{
-			int bonus = 0;
-			auto leftArm = this->me->medical.leftArm->robotLimb;
-			if (leftArm != nullptr)
-				bonus += leftArm->unarmedDamageBonus;
+		auto rightArm = this->me->medical.rightArm->robotLimb;
+		if (rightArm != nullptr)
+			bonus += rightArm->unarmedDamageBonus;
 
-			auto rightArm = this->me->medical.rightArm->robotLimb;
-			if (rightArm != nullptr)
-				bonus += rightArm->unarmedDamageBonus;
+		auto leftLeg = this->me->medical.leftLeg->robotLimb;
+		if (leftLeg != nullptr)
+			bonus += leftLeg->unarmedDamageBonus;
 
-			auto leftLeg = this->me->medical.leftLeg->robotLimb;
-			if (leftLeg != nullptr)
-				bonus += leftLeg->unarmedDamageBonus;
+		auto rightLeg = this->me->medical.rightLeg->robotLimb;
+		if (rightLeg != nullptr)
+			bonus += rightLeg->unarmedDamageBonus;
 
-			auto rightLeg = this->me->medical.rightLeg->robotLimb;
-			if (rightLeg != nullptr)
-				bonus += rightLeg->unarmedDamageBonus;
+		auto unarmedSkill = this->getMeleeAttack_unarmed(true);
+		auto baseDamage = KEP::lerp((unarmedSkill + static_cast<float>(bonus)) * 0.01f, 0.25f, 1.0f);
+		auto strengthMult = this->medical->getHealthStatModifier(STAT_STRENGTH, true, true, false, true, false, true);
 
-			auto unarmedSkill = this->getMeleeAttack_unarmed(true);
-			auto baseDamage = KEP::lerp((unarmedSkill + static_cast<float>(bonus)) * 0.01f, 0.25f, 1.0f);
-			auto strengthMult = this->medical->getHealthStatModifier(STAT_STRENGTH, true, true, false, true, false, true);
+		baseDamage = baseDamage * ((this->_toughness * this->ageMult + strengthMult * this->strengthBase() / 0.8f) * con->UNARMED_DAMAGE_MULT + 10.0f);
+		if (baseDamage < 1.0f)
+			baseDamage = 1.0f;
 
-			baseDamage = baseDamage * ((this->_toughness * this->ageMult + strengthMult * this->strengthBase() / 0.8f) * con->UNARMED_DAMAGE_MULT + 10.0f);
-			if (baseDamage < 1.0f)
-				baseDamage = 1.0f;
-
-			auto bluntDamageRate = KEP::lerp((unarmedSkill) * 0.01f, 0.25f, 1.0f);
-			blunt = bluntDamageRate * baseDamage;
-			cutting = (1.0f - bluntDamageRate) * baseDamage;
-			pierce = 0.0f;
-		}
-		else
-		{
-			pierce = this->getAttackPierceDamage();
-			blunt = this->getAttackBluntPower();
-			cutting = this->getAttackCuttingDamage();
-		}
+		auto bluntDamageRate = KEP::lerp((unarmedSkill) * 0.01f, 0.25f, 1.0f);
+		float blunt = bluntDamageRate * baseDamage;
+		float cutting = (1.0f - bluntDamageRate) * baseDamage;
+		float pierce = 0.0f;
 
 		float raceDamageMult = 1.0f;
 		if (target != nullptr)
@@ -433,6 +421,20 @@ namespace
 		);
 	}
 
+	class DetourCharacter : public Character
+	{
+	public:
+		std::string Character_getAgeString_hook() const;
+	};
+
+	std::string(DetourCharacter::* Character_getAgeString_orig)() const;
+	std::string DetourCharacter::Character_getAgeString_hook() const
+	{
+		if (!KEP::settings._fixAnimalAge || this->getAge0to1() < 1.1f)
+			return (this->*Character_getAgeString_orig)();
+
+		return KEP::TranslationUtility::gettext_main("Elder");
+	}
 }
 
 void KEP::StatsFix::init()
@@ -453,4 +455,9 @@ void KEP::StatsFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::recalculateTotalEquipmentSkillBonus), &Character_recalculateTotalEquipmentSkillBonus_hook, &Character_recalculateTotalEquipmentSkillBonus_orig))
 		ErrorLog("[Character::recalculateTotalEquipmentSkillBonus] could not install hook!");
+
+	auto pCharacter_getAgeString_hook = &DetourCharacter::Character_getAgeString_hook;
+	auto pCharacter_getAgeString_orig = &Character_getAgeString_orig;
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::_NV_getAgeString), *(void**)&pCharacter_getAgeString_hook, *(void***)&pCharacter_getAgeString_orig))
+		ErrorLog("[Character::getAgeString] could not install hook!");
 }
