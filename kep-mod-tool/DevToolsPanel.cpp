@@ -36,6 +36,7 @@
 #include <kenshi/Building/DoorStuff.h>
 #include <kenshi/Building/UseableStuff.h>
 #include <kenshi/Town.h>
+#include <kenshi/AppearanceManager.h>
 #include <kenshi/Appearance.h>
 #include <kenshi/Dialogue.h>
 #include <kenshi/gui/ForgottenGUI.h>
@@ -591,9 +592,9 @@ void KEP::tools::DevToolsPanel::_editTheSelected(DataPanelLine* line)
 		return;
 	}
 
-	if (!character->isPlayerCharacter() && character->isIndoors().type != NULL_ITEM)
+	if (!character->isPlayerCharacter())
 	{
-		gui->messageBox(KEP::TranslationUtility::gettext("Show character editor"), KEP::TranslationUtility::gettext("Warning: Editing NPCs that are indoors may cause the game to crash. Do you want to continue?"), 6, true, new MyGUI::delegates::CMethodDelegate1<DevToolsPanel, int>(MyGUI::delegates::GetDelegateUnlink(this), this, &DevToolsPanel::_confirmEditTheSelected));
+		gui->messageBox(KEP::TranslationUtility::gettext("Show character editor"), KEP::TranslationUtility::gettext("Warning: Editing NPCs may cause the game to crash. Do you want to continue?"), 6, true, new MyGUI::delegates::CMethodDelegate1<DevToolsPanel, int>(MyGUI::delegates::GetDelegateUnlink(this), this, &DevToolsPanel::_confirmEditTheSelected));
 		return;
 	}
 
@@ -664,8 +665,6 @@ public:
 
 namespace
 {
-	KingOfRenderThread* au;
-
 	void (*GameWorld_processKeys_orig)(GameWorld*);
 	void GameWorld_processKeys_hook(GameWorld* self)
 	{
@@ -693,34 +692,6 @@ namespace
 			}
 			KEP::tools::InformationPanel::getSingletonPtr()->refresh();
 		}
-	}
-
-	bool (*MainListener_keyPressed_orig)(void*, OIS::KeyEvent*);
-	bool MainListener_keyPressed_hook(void* self, OIS::KeyEvent* arg)
-	{
-		bool out = MainListener_keyPressed_orig(self, arg);
-
-		if (au->titleScreen == nullptr)
-		{
-			if (arg->key == OIS::KC_F12 && !key->shift)
-			{
-				auto toolsPanel = KEP::tools::DevToolsPanel::getSingletonPtr();
-				if (!toolsPanel->isVisible())
-					toolsPanel->show();
-				else
-					toolsPanel->hide();
-			}
-			else if (arg->key == OIS::KC_F11 && !key->shift)
-			{
-				auto infoPanel = KEP::tools::InformationPanel::getSingletonPtr();
-				if (!infoPanel->isVisible())
-					infoPanel->show();
-				else
-					infoPanel->hide();
-			}
-		}
-
-		return out;
 	}
 
 	bool (*EscMenu_openedOtherWindows_orig)(void*);
@@ -865,11 +836,17 @@ namespace
 			controlsTab->addSpace(0x19, 1.0f);
 		}
 	}
+
+	void (*AppearanceManager_getEditorData_orig)(AppearanceManager*, ogre_unordered_map<RaceGroupData*, Ogre::FastArray<GameData*>>::type&, ogre_unordered_map<GameData*, ogre_unordered_map<AppearanceManager::Gender::Enum, AppearanceManager::AppearanceData>::type>::type&, bool, const Ogre::vector<GameDataReference>::type*);
+	void AppearanceManager_getEditorData_hook(AppearanceManager* self, ogre_unordered_map<RaceGroupData*, Ogre::FastArray<GameData*>>::type& _racesGroups, ogre_unordered_map<GameData*, ogre_unordered_map<AppearanceManager::Gender::Enum, AppearanceManager::AppearanceData>::type>::type& _raceAppearanceData, bool playableOnly, const Ogre::vector<GameDataReference>::type* filter)
+	{
+		AppearanceManager_getEditorData_orig(self, _racesGroups, _raceAppearanceData, false, filter);
+	}
 }
 
 void KEP::tools::initHook()
 {
-	bool (*MainListener_keyPressed)(void*, OIS::KeyEvent*) = nullptr;
+	void* AppearanceManager_getEditorData = nullptr;
 
 	auto baseAddr = reinterpret_cast<uintptr_t>(GetModuleHandleA(nullptr));
 
@@ -886,24 +863,19 @@ void KEP::tools::initHook()
 	{
 		if (version == "1.0.65")
 		{
-			*(uintptr_t*)&MainListener_keyPressed = baseAddr + 0x82a460;
-			*(uintptr_t*)&au = baseAddr + 0x021322b0;
+			*(uintptr_t*)&AppearanceManager_getEditorData = baseAddr + 0x79b70;
 		}
 	}
 	else if (platform == KenshiLib::BinaryVersion::GOG)
 	{
 		if (version == "1.0.65")
 		{
-			*(uintptr_t*)&MainListener_keyPressed = baseAddr + 0x829da0;
-			*(uintptr_t*)&au = baseAddr + 0x02130220;
+			*(uintptr_t*)&AppearanceManager_getEditorData = baseAddr + 0x79b70;
 		}
 	}
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GameWorld::processKeys), &GameWorld_processKeys_hook, &GameWorld_processKeys_orig))
 		ErrorLog("[GameWorld::processKeys] could not install hook!");
-
-	//if (KenshiLib::SUCCESS != KenshiLib::AddHook(MainListener_keyPressed, &MainListener_keyPressed_hook, &MainListener_keyPressed_orig))
-	//	ErrorLog("[MainListener::keyPressed] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->EscMenu_openedOtherWindows, &EscMenu_openedOtherWindows_hook, &EscMenu_openedOtherWindows_orig))
 		ErrorLog("[EscMenu::openedOtherWindows] could not install hook!");
@@ -931,4 +903,7 @@ void KEP::tools::initHook()
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&OptionsWindow::create), OptionsWindow_create_hook, &OptionsWindow_create_orig))
 		ErrorLog("[OptionsWindow::create] Could not add hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(AppearanceManager_getEditorData, AppearanceManager_getEditorData_hook, &AppearanceManager_getEditorData_orig))
+		ErrorLog("[AppearanceManager::getEditorData] Could not add hook!");
 }

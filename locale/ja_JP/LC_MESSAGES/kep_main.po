@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: KEP\n"
-"POT-Creation-Date: 2026-06-06 20:48+0900\n"
-"PO-Revision-Date: 2026-06-06 20:48+0900\n"
+"POT-Creation-Date: 2026-06-09 22:45+0900\n"
+"PO-Revision-Date: 2026-06-09 22:46+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -14,6 +14,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: KenshiExtensionPlugin/src\n"
 "X-Poedit-SearchPath-1: kep-core/src\n"
+"X-Poedit-SearchPath-2: kep-mod-tool\n"
 
 #: KenshiExtensionPlugin/src/ItemExtension.cpp:55
 msgid "Martial arts class"
@@ -24,6 +25,7 @@ msgid "Turret class"
 msgstr "砲台クラス"
 
 #: KenshiExtensionPlugin/src/ItemExtension.cpp:109
+#: kep-mod-tool/DevToolsPanel.cpp:194
 msgid "Harpoon damage"
 msgstr "ハープーンダメージ"
 
@@ -601,3 +603,607 @@ msgstr ""
 "各Modのpatchフォルダから追加のModファイルを読み込みます。Modの制作者は、言語"
 "設定に合わせてModをローカライズしたり、他のアクティブなModとの互換性パッチを"
 "適用したりする機能を提供できます(再起動が必要)"
+
+#: kep-mod-tool/DevToolsPanel.cpp:118 kep-mod-tool/GamePlayOptionsTab.cpp:57
+msgid "Developer tools"
+msgstr "開発者ツール"
+
+#: kep-mod-tool/DevToolsPanel.cpp:149
+msgid "Main"
+msgstr "メイン"
+
+#: kep-mod-tool/DevToolsPanel.cpp:150 kep-mod-tool/SpawnTool.cpp:144
+msgid "Spawn"
+msgstr "スポーン"
+
+#: kep-mod-tool/DevToolsPanel.cpp:151 kep-mod-tool/StatsTool.cpp:36
+msgid "Stats"
+msgstr "ステータス"
+
+#: kep-mod-tool/DevToolsPanel.cpp:152
+msgid "Task"
+msgstr "タスク"
+
+#: kep-mod-tool/DevToolsPanel.cpp:167
+msgid "Give money"
+msgstr "入金"
+
+#: kep-mod-tool/DevToolsPanel.cpp:168
+msgid "Take money"
+msgstr "出金"
+
+#: kep-mod-tool/DevToolsPanel.cpp:170
+msgid "Complete Reseach"
+msgstr "研究を完了"
+
+#: kep-mod-tool/DevToolsPanel.cpp:171
+msgid "Complete All Reseach"
+msgstr "全ての研究を完了"
+
+#: kep-mod-tool/DevToolsPanel.cpp:173
+msgid "Complete Building"
+msgstr "建築"
+
+#: kep-mod-tool/DevToolsPanel.cpp:174
+msgid "Complete All Building"
+msgstr "全て建築"
+
+#: kep-mod-tool/DevToolsPanel.cpp:176
+msgid "Discover all towns"
+msgstr "全ての町を発見"
+
+#: kep-mod-tool/DevToolsPanel.cpp:178
+msgid "Teleport"
+msgstr "テレポート"
+
+#: kep-mod-tool/DevToolsPanel.cpp:179
+msgid "Unlock cage"
+msgstr "檻を開ける"
+
+#: kep-mod-tool/DevToolsPanel.cpp:180
+msgid "Free selected"
+msgstr "対象を解放"
+
+#: kep-mod-tool/DevToolsPanel.cpp:182
+msgid "Destroy"
+msgstr "デストロイ"
+
+#: kep-mod-tool/DevToolsPanel.cpp:185
+msgid "[Health]"
+msgstr "[健康]"
+
+#: kep-mod-tool/DevToolsPanel.cpp:187
+msgid "Heal selected"
+msgstr "対象を回復"
+
+#: kep-mod-tool/DevToolsPanel.cpp:190
+msgid "Damage"
+msgstr "ダメージ"
+
+#: kep-mod-tool/DevToolsPanel.cpp:199
+msgid "Squish"
+msgstr "潰す"
+
+#: kep-mod-tool/DevToolsPanel.cpp:203 kep-mod-tool/SpawnTool.cpp:1471
+msgid "Left Arm"
+msgstr "左腕"
+
+#: kep-mod-tool/DevToolsPanel.cpp:204 kep-mod-tool/SpawnTool.cpp:1472
+msgid "Right Arm"
+msgstr "右腕"
+
+#: kep-mod-tool/DevToolsPanel.cpp:205 kep-mod-tool/SpawnTool.cpp:1473
+msgid "Left Leg"
+msgstr "左脚"
+
+#: kep-mod-tool/DevToolsPanel.cpp:206 kep-mod-tool/SpawnTool.cpp:1474
+msgid "Right Leg"
+msgstr "右脚"
+
+#: kep-mod-tool/DevToolsPanel.cpp:209
+msgid "Amputate"
+msgstr "切断"
+
+#: kep-mod-tool/DevToolsPanel.cpp:210
+msgid "Join limb"
+msgstr "四肢を付ける"
+
+#: kep-mod-tool/DevToolsPanel.cpp:213
+msgid "[Misc]"
+msgstr "[その他]"
+
+#: kep-mod-tool/DevToolsPanel.cpp:214 kep-mod-tool/DevToolsPanel.cpp:597
+msgid "Show character editor"
+msgstr "キャラクターエディターを表示"
+
+#: kep-mod-tool/DevToolsPanel.cpp:218
+msgid "Show roads on map"
+msgstr "マップに道を表示"
+
+#: kep-mod-tool/DevToolsPanel.cpp:224 kep-mod-tool/InformationPanel.cpp:176
+msgid "Information Panel"
+msgstr "情報パネル"
+
+#: kep-mod-tool/DevToolsPanel.cpp:337 kep-mod-tool/SpawnTool.cpp:505
+msgid "Error: Please select a building."
+msgstr "エラー：建物を選択してください"
+
+#: kep-mod-tool/DevToolsPanel.cpp:411 kep-mod-tool/DevToolsPanel.cpp:523
+#: kep-mod-tool/DevToolsPanel.cpp:579 kep-mod-tool/DevToolsPanel.cpp:591
+#: kep-mod-tool/PlatoonTool.cpp:212 kep-mod-tool/PlatoonTool.cpp:264
+#: kep-mod-tool/PlatoonTool.cpp:286 kep-mod-tool/PlatoonTool.cpp:308
+#: kep-mod-tool/SpawnTool.cpp:671 kep-mod-tool/SpawnTool.cpp:724
+#: kep-mod-tool/StatsTool.cpp:206 kep-mod-tool/StatsTool.cpp:263
+msgid "Error: Please select a character."
+msgstr "エラー：キャラクターを選択してください"
+
+#: kep-mod-tool/DevToolsPanel.cpp:597
+msgid ""
+"Warning: Editing NPCs may cause the game to crash. Do you want to continue?"
+msgstr ""
+"警告：NPCを編集するとゲームがクラッシュする可能性があります。続行しますか？"
+
+#: kep-mod-tool/DevToolsPanel.cpp:834
+msgid "KEP: Developer tools"
+msgstr "KEP：開発者ツール"
+
+#: kep-mod-tool/DevToolsPanel.cpp:835
+msgid "KEP: Information Panel"
+msgstr "KEP：情報パネル"
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:59
+msgid "Use Level Editor camera"
+msgstr "Level Editorカメラを使用"
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:60
+msgid "Fast travel mode"
+msgstr "ファストトラベルモード"
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:61
+msgid "NPC Inventory"
+msgstr "NPCのインベントリ"
+
+#: kep-mod-tool/InformationPanel.cpp:184
+msgid "Combat"
+msgstr "戦闘"
+
+#: kep-mod-tool/InformationPanel.cpp:185
+msgid "VIPs"
+msgstr "重要人物"
+
+#: kep-mod-tool/PlatoonTool.cpp:38
+msgid "AI package"
+msgstr "AIパッケージ"
+
+#: kep-mod-tool/PlatoonTool.cpp:39
+msgid "Diagloue"
+msgstr "ダイアログ"
+
+#: kep-mod-tool/PlatoonTool.cpp:61
+msgid "[Task]"
+msgstr "[タスク]"
+
+#: kep-mod-tool/PlatoonTool.cpp:63
+msgid "Search for ai package"
+msgstr "AIパッケージを検索"
+
+#: kep-mod-tool/PlatoonTool.cpp:69
+msgid "Change AI"
+msgstr "AIを変更"
+
+#: kep-mod-tool/PlatoonTool.cpp:72
+msgid "Reset AI"
+msgstr "AIをリセット"
+
+#: kep-mod-tool/PlatoonTool.cpp:77
+msgid "[Dialog]"
+msgstr "[ダイアログ]"
+
+#: kep-mod-tool/PlatoonTool.cpp:79
+msgid "Search for dialog"
+msgstr "ダイアログを検索"
+
+#: kep-mod-tool/PlatoonTool.cpp:85
+msgid "Trigger dialog"
+msgstr "ダイアログを発動"
+
+#: kep-mod-tool/PlatoonTool.cpp:88
+msgid "Clear all dialog timers"
+msgstr "全ダイアログのタイマーをクリア"
+
+#: kep-mod-tool/PlatoonTool.cpp:91
+msgid "Lock dialog"
+msgstr "ダイアログをロック"
+
+#: kep-mod-tool/PlatoonTool.cpp:94
+msgid "Unlock dialog"
+msgstr "ダイアログをアンロック"
+
+#: kep-mod-tool/PlatoonTool.cpp:97
+msgid "Clear all dialog locks and unlocks"
+msgstr "全ダイアログのロックとアンロックをクリア"
+
+#: kep-mod-tool/PlatoonTool.cpp:102
+msgid "Clear all tags"
+msgstr "全てのタグをクリア"
+
+#: kep-mod-tool/PlatoonTool.cpp:116 kep-mod-tool/PlatoonTool.cpp:145
+#: kep-mod-tool/PlatoonTool.cpp:180
+msgid "Error: Please select a NPC."
+msgstr "エラー：NPCを選択してください"
+
+#: kep-mod-tool/PlatoonTool.cpp:187
+msgid "Error: Platoon not found"
+msgstr "エラー：部隊が見つかりません"
+
+#: kep-mod-tool/PlatoonTool.cpp:205 kep-mod-tool/PlatoonTool.cpp:257
+#: kep-mod-tool/PlatoonTool.cpp:279
+msgid "Error: Dialogue not found."
+msgstr "エラー：ダイアログが見つかりません"
+
+#: kep-mod-tool/PlatoonTool.cpp:218
+msgid "Error: Please select a character who is conscious."
+msgstr "エラー：意識のあるキャラクターを選択してください"
+
+#: kep-mod-tool/SpawnTool.cpp:59
+msgid "Player Faction"
+msgstr "プレイヤー勢力"
+
+#: kep-mod-tool/SpawnTool.cpp:64
+msgid "Weapons"
+msgstr "武器"
+
+#: kep-mod-tool/SpawnTool.cpp:65
+msgid "Models"
+msgstr "モデル"
+
+#: kep-mod-tool/SpawnTool.cpp:66
+msgid "Gear Level"
+msgstr "装備レベル"
+
+#: kep-mod-tool/SpawnTool.cpp:67
+msgid "Random"
+msgstr "ランダム"
+
+#: kep-mod-tool/SpawnTool.cpp:68
+msgid "Search for items"
+msgstr "アイテムを検索"
+
+#: kep-mod-tool/SpawnTool.cpp:69
+msgid "Search for weapons"
+msgstr "武器を検索"
+
+#: kep-mod-tool/SpawnTool.cpp:70
+msgid "Item category"
+msgstr "アイテムカテゴリ"
+
+#: kep-mod-tool/SpawnTool.cpp:71
+msgid "Item subcategory"
+msgstr "アイテムサブカテゴリ"
+
+#: kep-mod-tool/SpawnTool.cpp:72
+msgid "Campaigns"
+msgstr "キャンペーン"
+
+#: kep-mod-tool/SpawnTool.cpp:122
+msgid "[Characters]"
+msgstr "[キャラクター]"
+
+#: kep-mod-tool/SpawnTool.cpp:124 kep-mod-tool/SpawnTool.cpp:258
+#: kep-mod-tool/SpawnTool.cpp:268
+msgid "Search for factions"
+msgstr "勢力を検索"
+
+#: kep-mod-tool/SpawnTool.cpp:132
+msgid "Search for squads"
+msgstr "部隊を検索"
+
+#: kep-mod-tool/SpawnTool.cpp:138
+msgid "Spawn method"
+msgstr "スポーン方法"
+
+#: kep-mod-tool/SpawnTool.cpp:139
+msgid "Roaming"
+msgstr "ローミング"
+
+#: kep-mod-tool/SpawnTool.cpp:140
+msgid "Bar"
+msgstr "バー"
+
+#: kep-mod-tool/SpawnTool.cpp:141
+msgid "Resident"
+msgstr "住民"
+
+#: kep-mod-tool/SpawnTool.cpp:149 kep-mod-tool/SpawnTool.cpp:288
+msgid "Search for characters"
+msgstr "キャラクターを検索"
+
+#: kep-mod-tool/SpawnTool.cpp:156
+msgid "Age"
+msgstr "年齢"
+
+#: kep-mod-tool/SpawnTool.cpp:159
+msgid "Add character"
+msgstr "キャラクターを追加"
+
+#: kep-mod-tool/SpawnTool.cpp:164
+msgid "[Items]"
+msgstr "[アイテム]"
+
+#: kep-mod-tool/SpawnTool.cpp:168 kep-mod-tool/SpawnTool.cpp:205
+#: kep-mod-tool/SpawnTool.cpp:1441
+msgid "All"
+msgstr "全て"
+
+#: kep-mod-tool/SpawnTool.cpp:171
+msgid "Nest item"
+msgstr "巣のアイテム"
+
+#: kep-mod-tool/SpawnTool.cpp:203
+msgid "Weapon category"
+msgstr "武器カテゴリ"
+
+#: kep-mod-tool/SpawnTool.cpp:228
+msgid "Quantity"
+msgstr "個数"
+
+#: kep-mod-tool/SpawnTool.cpp:232
+msgid "Give item"
+msgstr "アイテムを与える"
+
+#: kep-mod-tool/SpawnTool.cpp:237
+msgid "Refresh Inventory"
+msgstr "インベントリを更新"
+
+#: kep-mod-tool/SpawnTool.cpp:242
+msgid "[Campaigns]"
+msgstr "[キャンペーン]"
+
+#: kep-mod-tool/SpawnTool.cpp:244
+msgid "Search for campaigns"
+msgstr "キャンペーンを検索"
+
+#: kep-mod-tool/SpawnTool.cpp:250
+msgid "Trigger"
+msgstr "発動"
+
+#: kep-mod-tool/SpawnTool.cpp:255
+msgid "[Faction Relations]"
+msgstr "[勢力の関係]"
+
+#: kep-mod-tool/SpawnTool.cpp:276
+msgid "Relation"
+msgstr "関係値"
+
+#: kep-mod-tool/SpawnTool.cpp:280
+msgid "Overwrite relation"
+msgstr "関係値を上書き"
+
+#: kep-mod-tool/SpawnTool.cpp:285
+msgid "[Unique Character States]"
+msgstr "[ユニークキャラクターの状態]"
+
+#: kep-mod-tool/SpawnTool.cpp:292
+msgid "Unique characters"
+msgstr "ユニークキャラクター"
+
+#: kep-mod-tool/SpawnTool.cpp:295
+msgid "State"
+msgstr "状態"
+
+#: kep-mod-tool/SpawnTool.cpp:296
+msgid "Not spawned"
+msgstr "未スポーン"
+
+#: kep-mod-tool/SpawnTool.cpp:297
+msgid "Living"
+msgstr "生存"
+
+#: kep-mod-tool/SpawnTool.cpp:298
+msgid "Imprisoned"
+msgstr "投獄"
+
+#: kep-mod-tool/SpawnTool.cpp:299
+msgid "Imprisoned (player involvement)"
+msgstr "投獄(プレイヤー関与)"
+
+#: kep-mod-tool/SpawnTool.cpp:300
+msgid "Dead"
+msgstr "死亡"
+
+#: kep-mod-tool/SpawnTool.cpp:301
+msgid "Dead (player involvement)"
+msgstr "死亡(プレイヤー関与)"
+
+#: kep-mod-tool/SpawnTool.cpp:304
+msgid "Change unique character state"
+msgstr "ユニークキャラクターの状態を変更"
+
+#: kep-mod-tool/SpawnTool.cpp:432 kep-mod-tool/SpawnTool.cpp:473
+#: kep-mod-tool/SpawnTool.cpp:496
+msgid "Warning: The spawned squad is empty"
+msgstr "警告：スポーンした部隊は空です"
+
+#: kep-mod-tool/SpawnTool.cpp:489
+msgid "Error: Please move the camera within the town range."
+msgstr "エラー：カメラを町の範囲内に移動してください"
+
+#: kep-mod-tool/SpawnTool.cpp:514
+msgid "Error: Squads cannot spawn in this building."
+msgstr "エラー：この建物に部隊は出現できません"
+
+#: kep-mod-tool/SpawnTool.cpp:521
+msgid "Error: Please select a building in the town."
+msgstr "エラー：町の建物を選択してください"
+
+#: kep-mod-tool/SpawnTool.cpp:549 kep-mod-tool/SpawnTool.cpp:629
+msgid "Error: The interior layout did not match."
+msgstr "エラー：内装レイアウトが一致しません"
+
+#: kep-mod-tool/SpawnTool.cpp:789
+msgid ""
+"Error: Faction not found. Please configure [campaigns] or [faction override]."
+msgstr ""
+"エラー：勢力が見つかりません。[campaigns]または[faction override]を設定してく"
+"ださい"
+
+#: kep-mod-tool/SpawnTool.cpp:796
+msgid "Error: Player base not found."
+msgstr "エラー：プレイヤーの拠点が見つかりません"
+
+#: kep-mod-tool/SpawnTool.cpp:842
+msgid "Error: Player or unoccupied building inventories cannot be updated."
+msgstr "エラー：プレイヤーまたは空き家のインベントリは更新できません"
+
+#: kep-mod-tool/SpawnTool.cpp:858
+msgid ""
+"Error: For the \"from\" field, please select a faction other than the player."
+msgstr "エラー：「from」にはプレイヤー以外の勢力を選択してください"
+
+#: kep-mod-tool/SpawnTool.cpp:864
+msgid "Error: Please select a different faction."
+msgstr "エラー：異なる勢力を選択してください"
+
+#: kep-mod-tool/SpawnTool.cpp:1444
+msgid "General item"
+msgstr "一般アイテム"
+
+#: kep-mod-tool/SpawnTool.cpp:1445
+msgid "Medical or repair"
+msgstr "医療または修理"
+
+#: kep-mod-tool/SpawnTool.cpp:1446
+msgid "Food"
+msgstr "食べ物"
+
+#: kep-mod-tool/SpawnTool.cpp:1447
+msgid "Restricted food"
+msgstr "制限付き食べ物"
+
+#: kep-mod-tool/SpawnTool.cpp:1448
+msgid "Alcohol or drug"
+msgstr "アルコールまたはクスリ"
+
+#: kep-mod-tool/SpawnTool.cpp:1449
+msgid "Tool"
+msgstr "工具"
+
+#: kep-mod-tool/SpawnTool.cpp:1450
+msgid "Ammo"
+msgstr "弾薬"
+
+#: kep-mod-tool/SpawnTool.cpp:1451
+msgid "Research"
+msgstr "研究"
+
+#: kep-mod-tool/SpawnTool.cpp:1452
+msgid "Book"
+msgstr "本"
+
+#: kep-mod-tool/SpawnTool.cpp:1453
+msgid "Money"
+msgstr "お金"
+
+#: kep-mod-tool/SpawnTool.cpp:1454
+msgid "Servered limb"
+msgstr "切断された四肢"
+
+#: kep-mod-tool/SpawnTool.cpp:1465
+msgid "Eyes"
+msgstr "目"
+
+#: kep-mod-tool/SpawnTool.cpp:1466
+msgid "Gloves"
+msgstr "グローブ"
+
+#: kep-mod-tool/SpawnTool.cpp:1467
+msgid "Neck"
+msgstr "首"
+
+#: kep-mod-tool/StatsTool.cpp:37
+msgid "Stats data"
+msgstr "ステータスデータ"
+
+#: kep-mod-tool/StatsTool.cpp:38
+msgid "Slave state"
+msgstr "奴隷状態"
+
+#: kep-mod-tool/StatsTool.cpp:39
+msgid "Personality"
+msgstr "性格"
+
+#: kep-mod-tool/StatsTool.cpp:141
+msgid "[Stats]"
+msgstr "[ステータス]"
+
+#: kep-mod-tool/StatsTool.cpp:150
+msgid "Give XP"
+msgstr "経験値を獲得"
+
+#: kep-mod-tool/StatsTool.cpp:158
+msgid "Overwrite stats"
+msgstr "ステータスを上書き"
+
+#: kep-mod-tool/StatsTool.cpp:166
+msgid "Set slave state"
+msgstr "奴隷状態を設定"
+
+#: kep-mod-tool/StatsTool.cpp:174
+msgid "Change personality"
+msgstr "性格を変更"
+
+#: kep-mod-tool/StatsTool.cpp:372
+msgid "honorable"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:373
+msgid "traitorous"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:374
+msgid "smart"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:375
+msgid "dumb"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:376
+msgid "brave"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:377
+msgid "fearful"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:378
+msgid "maniac"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:379
+msgid "warm kind"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:380
+msgid "cold cruel"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:381
+msgid "normal"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:382
+msgid "unknown 3"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:383
+msgid "unknown 4"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:384
+msgid "unknown 7"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:385
+msgid "unknown 8"
+msgstr ""

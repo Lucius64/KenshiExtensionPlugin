@@ -138,6 +138,7 @@ void KEP::tools::SpawnTool::refresh()
 	auto dropbox = this->_panel->setLineDropBox(KEP::TranslationUtility::gettext("Spawn method"), this->_category, &this->_squadSpawnMethodType, false, 0.7f);
 	dropbox->addAValue(KEP::TranslationUtility::gettext("Roaming"), 0);
 	dropbox->addAValue(KEP::TranslationUtility::gettext("Bar"), 1);
+	dropbox->addAValue(KEP::TranslationUtility::gettext("Resident"), 2);
 	dropbox->setSelectedValue(0);
 
 	auto button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Spawn"), this->_category, 0.7f, "Kenshi_Button2");
@@ -258,7 +259,7 @@ void KEP::tools::SpawnTool::refresh()
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeFromFactionSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxFromFaction, this->_category, &this->_selectedFromFaction, false, 0.7f);
-	dropbox->s1 = "from";
+	dropbox->w1->setCaption("from");
 	_updateFromFactionList("");
 
 	this->_panel->addSpace(this->_category, 0.5f);
@@ -268,7 +269,7 @@ void KEP::tools::SpawnTool::refresh()
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeToFactionSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxToFaction, this->_category, &this->_selectedToFaction, false, 0.7f);
-	dropbox->s1 = "to";
+	dropbox->w1->setCaption("to");
 	_updateToFactionList("");
 
 	this->_panel->addSpace(this->_category, 0.25f);
@@ -479,7 +480,7 @@ namespace
 		pos.y = UtilityT::getTerrainHeightFast(pos.x, pos.z, nullptr);
 
 		TownBase* home = KEP::functions->TownList_getTown(KEP::functions->getLevelManager()->townList, pos, nullptr, nullptr, nullptr, TOWN_NULL);
-		
+
 		auto homePos = home->getPosition();
 		float homeDistance = Ogre::Math::Sqrt((homePos.x - pos.x) * (homePos.x - pos.x) + (homePos.z - pos.z) * (homePos.z - pos.z));
 		float radius = home->getRadius();
@@ -494,6 +495,147 @@ namespace
 		{
 			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Warning: The spawned squad is empty"), true);
 		}
+	}
+
+	void _spawnResidentSquad(Faction* faction, GameData* squad)
+	{
+		auto building = gui->selectedObject.getBuilding();
+		if (building == nullptr)
+		{
+			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Please select a building."), true);
+			return;
+		}
+
+		if (building->imADoor)
+			building = building->doorStuff()->doorParentBuilding();
+
+		if (building == nullptr || building->myInterior == nullptr && building->isGate() == nullptr || building->isAWall() != nullptr && building->isGate() == nullptr)
+		{
+			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Squads cannot spawn in this building."), true);
+			return;
+		}
+
+		auto home = building->getRealTown();
+		if (home == nullptr)
+		{
+			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Please select a building in the town."), true);
+			return;
+		}
+
+		lektor<GameData*> datas;
+		std::set<GameData*> likes;
+		squad->getAllFromListAsDatas("building", datas, &ou->gamedata, BUILDING);
+		for (auto iter = datas.begin(); iter != datas.end(); ++iter)
+		{
+			likes.insert(*iter);
+		}
+
+		bool matched = false;
+		if (building->isGate() == nullptr)
+		{
+			const auto& layout = squad->sdata["layout interior"];
+			if (!layout.empty())
+			{
+				matched = KEP::functions->BuildingInteriorDatasManager_hasLayout(KEP::functions->getInteriorMgr(), building->data, layout, true);
+			}
+		}
+		else
+		{
+			matched = likes.find(building->data) != likes.end();
+		}
+
+		if (!matched)
+		{
+			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: The interior layout did not match."), true);
+			return;
+		}
+
+		auto owner = building->getFaction();
+		auto& handle = building->getHandle();
+		owner->factionOwnerships->removeOwnedObject(handle);
+
+		lektor<Platoon*> squads;
+		owner->getAllSquadsThatOwn(squads, building);
+		lektor<RootObject*> destroyChars;
+
+		for (auto iter = squads.begin(); iter != squads.end(); ++iter)
+		{
+			auto ownerships = (*iter)->getOwnerships();
+			ownerships->_homeBuilding = KEP::functions->getNULL_HAND();
+			ownerships->removeOwnedObject(handle);
+
+			auto activePlatoon = (*iter)->activePlatoon;
+			if (activePlatoon != nullptr)
+			{
+				for (auto charaIter = activePlatoon->things.begin(); charaIter != activePlatoon->things.end(); ++charaIter)
+				{
+					destroyChars.push_back(*charaIter);
+				}
+			}
+			(*iter)->setPersistentSquad(false);
+		}
+
+		for (auto iter = destroyChars.begin(); iter != destroyChars.end(); ++iter)
+		{
+			ou->destroy(*iter, false, "_spawnResidentSquad");
+		}
+
+		building->residentSquad.setNull();
+
+		if (building->myInterior != nullptr)
+		{
+			for (auto iter = building->myInterior->furnitures.begin(); iter != building->myInterior->furnitures.end(); ++iter)
+			{
+				auto furniture = iter->getBuilding();
+				if (furniture != nullptr)
+				{
+					auto stuff = furniture->getUseableStuff();
+					if (stuff != nullptr)
+					{
+						if (stuff->currentOperators.size() != 0)
+						{
+							auto it = stuff->currentOperators.begin();
+							auto character = it->getCharacter();
+							if (character != nullptr)
+							{
+								character->setBedMode(false, nullptr);
+								character->setPrisonMode(false, nullptr);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (building->isDestroyed())
+		{
+			building->setDestroyed(false);
+			auto buildState = building->getBuildState();
+			building->addConstructionProgress(10000000.f);
+			buildState->constructionProgress = buildState->totalMats;
+		}
+
+		auto residentFaction = ou->factionMgr->getFactionByStringID(squad->getFromList("faction", 0));
+		if (residentFaction == nullptr)
+			residentFaction = home->getFaction();
+
+		bool needDelete = home->factionsResidentHere.find(residentFaction) == home->factionsResidentHere.end();
+
+		KEP::functions->BuildingInterior_destroyAllInternalBuildings(building->myInterior, true);
+		KEP::functions->NodeList_destroyNodesByBuilding(ou->nodeList, building->handle, false);
+
+		if (!home->_setMainResident(building, squad, false))
+		{
+			ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: The interior layout did not match."), true);
+			return;
+		}
+
+		building->setFaction(faction, nullptr);
+
+		if (needDelete)
+			home->factionsResidentHere.erase(residentFaction);
+
+		ou->theFactory->populateBuilding(building);
 	}
 }
 
@@ -514,6 +656,8 @@ void KEP::tools::SpawnTool::_spawnSquad(DataPanelLine* line)
 		_spawnRoamingSquad(faction, squad);
 	else if (this->_squadSpawnMethodType == 1)
 		_spawnBarSquad(faction, squad);
+	else if (this->_squadSpawnMethodType == 2)
+		_spawnResidentSquad(faction, squad);
 }
 
 void KEP::tools::SpawnTool::_addCharacter(DataPanelLine* line)
@@ -556,7 +700,7 @@ namespace
 		switch (rarity) {
 		case 0:
 			return 5;
-		case 1:
+		case 2:
 			return 40;
 		case 3:
 			return 60;
