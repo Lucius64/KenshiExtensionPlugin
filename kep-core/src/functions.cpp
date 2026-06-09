@@ -34,6 +34,8 @@ KEP::FunctionPointers::FunctionPointers()
 	, InventoryManager_refreshBuildingInventory(nullptr)
 	, InventoryManager_getBuildingInventoryList(nullptr)
 	, InventoryManager_clearAllBuildingInventory(nullptr)
+	, BuildingInterior_destroyAllInternalBuildings(nullptr)
+	, NodeList_destroyNodesByBuilding(nullptr)
 	, timer(nullptr)
 	, _levelMgr(nullptr)
 	, NULL_HAND(nullptr)
@@ -79,6 +81,8 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_refreshBuildingInventory = baseAddr + 0x95a340;
 			*(uintptr_t*)&InventoryManager_getBuildingInventoryList = baseAddr + 0x955420;
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x955600;
+			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ea40;
+			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a5e0;
 			*(uintptr_t*)&timer = baseAddr + 0x2132730;
 			*(uintptr_t*)&_levelMgr = baseAddr + 0x2133098;
 			*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e395f8;
@@ -121,6 +125,8 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_refreshBuildingInventory = baseAddr + 0x959a60;
 			*(uintptr_t*)&InventoryManager_getBuildingInventoryList = baseAddr + 0x954b40;
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x954d20;
+			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ed50;
+			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a200;
 			*(uintptr_t*)&timer = baseAddr + 0x21306a0;
 			*(uintptr_t*)&_levelMgr = baseAddr + 0x2131008;
 			*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e375f8;

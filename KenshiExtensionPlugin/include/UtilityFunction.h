@@ -34,7 +34,7 @@ namespace KEP
 		switch (rarity) {
 		case 0:
 			return 5;
-		case 1:
+		case 2:
 			return 40;
 		case 3:
 			return 60;

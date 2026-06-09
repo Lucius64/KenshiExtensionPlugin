@@ -39,6 +39,8 @@ class Platoon;
 class ActivePlatoon;
 class DialogLineData;
 class GameplayOptions;
+class BuildingInterior;
+class NodeList;
 
 namespace KEP
 {
@@ -84,6 +86,8 @@ namespace KEP
 		void (*InventoryManager_refreshBuildingInventory)(InventoryManager*, Building*, GameData*, Platoon*, bool, bool);
 		void (*InventoryManager_getBuildingInventoryList)(InventoryManager*, Building*, void*);
 		void (*InventoryManager_clearAllBuildingInventory)(InventoryManager*, Building*);
+		void (*BuildingInterior_destroyAllInternalBuildings)(BuildingInterior*, bool);
+		void (*NodeList_destroyNodesByBuilding)(NodeList*, const hand&, bool);
 
 	private:
 		float* timer;
