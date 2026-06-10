@@ -171,7 +171,7 @@ namespace
 	Item* (*Character_generateWeapon_orig)(Character*, GameData*, GameData*);
 	Item* Character_generateWeapon_hook(Character* self, GameData* weapon, GameData* manufacturer)
 	{
-		auto models = self->data->getReferenceListIfExists("weapon model");
+		auto models = self->data->getReferenceListIfExists("weapon models");
 
 		if (manufacturer != nullptr && models != nullptr)
 		{
@@ -202,7 +202,7 @@ namespace
 	{
 		auto weaponMesh = self->data->getFromListAsData("weapon", 0, &ou->gamedata, WEAPON);
 		auto gamedata = self->data->getFromListAsData("weapon level", 0, &ou->gamedata, WEAPON_MANUFACTURER);
-		auto models = self->data->getReferenceListIfExists("weapon model");
+		auto models = self->data->getReferenceListIfExists("weapon models");
 
 		if (self->naturalWeapon != nullptr)
 			ou->destroy((RootObject*)self->naturalWeapon, false, "undefined");
