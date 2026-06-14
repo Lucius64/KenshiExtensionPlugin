@@ -57,6 +57,7 @@ namespace
 		{
 			KenshiLibVersion = KEP::VersionInfo(0, 1, 0);
 		}
+		DebugLog("Detected KenshiLib version: " + KenshiLibVersion.toString());
 	}
 }
 
@@ -192,7 +193,7 @@ const std::string& KEP::GUIColor::getTitle() { return *_TitleColorCode; }
 const std::string& KEP::GUIColor::getBad() { return *_BadColorCode; }
 const std::string& KEP::GUIColor::getBadBright() { return *_BadBrightColorCode; }
 const std::string& KEP::GUIColor::getGood() { return *_GoodColorCode; }
-const std::string& KEP::GUIColor::getGooddBright() { return *_GoodBrightColorCode; }
+const std::string& KEP::GUIColor::getGoodBright() { return *_GoodBrightColorCode; }
 const std::string& KEP::GUIColor::getGreyed() { return *_GreyedColorCode; }
 const std::string& KEP::GUIColor::getGreyedBright() { return *_GreyedBrightColorCode; }
 const std::string& KEP::GUIColor::getSpecial() { return *_SpecialColorCode; }

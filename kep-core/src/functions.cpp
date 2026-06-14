@@ -36,6 +36,10 @@ KEP::FunctionPointers::FunctionPointers()
 	, InventoryManager_clearAllBuildingInventory(nullptr)
 	, BuildingInterior_destroyAllInternalBuildings(nullptr)
 	, NodeList_destroyNodesByBuilding(nullptr)
+	, Blackboard_getGUIData(nullptr)
+	, CharacterMemory_getGUIData(nullptr)
+	, Research_init(nullptr)
+	, KingOfRenderThread_newGameWithCharEdit(nullptr)
 	, timer(nullptr)
 	, _levelMgr(nullptr)
 	, NULL_HAND(nullptr)
@@ -75,7 +79,7 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&TownList_getTownBase = baseAddr + 0x926ce0;
 			*(uintptr_t*)&AreaManager_getAreaSector = baseAddr + 0x8f47e0;
 			*(uintptr_t*)&BuildingInteriorDatasManager_hasLayout = baseAddr + 0x55a2b0;
-			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x0;
+			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x673000;
 			*(uintptr_t*)&VendorListManager_hasVendor = baseAddr + 0x958550;
 			*(uintptr_t*)&InventoryManager_getSingleton = baseAddr + 0x4fde00;
 			*(uintptr_t*)&InventoryManager_refreshBuildingInventory = baseAddr + 0x95a340;
@@ -83,6 +87,10 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x955600;
 			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ea40;
 			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a5e0;
+			*(uintptr_t*)&Blackboard_getGUIData = baseAddr + 0x26a4e0;
+			*(uintptr_t*)&CharacterMemory_getGUIData = baseAddr + 0x674bf0;
+			*(uintptr_t*)&Research_init = baseAddr + 0x833ca0;
+			*(uintptr_t*)&KingOfRenderThread_newGameWithCharEdit = baseAddr + 0x871f30;
 			*(uintptr_t*)&timer = baseAddr + 0x2132730;
 			*(uintptr_t*)&_levelMgr = baseAddr + 0x2133098;
 			*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e395f8;
@@ -119,7 +127,7 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&TownList_getTownBase = baseAddr + 0x926400;
 			*(uintptr_t*)&AreaManager_getAreaSector = baseAddr + 0x8f3f00;
 			*(uintptr_t*)&BuildingInteriorDatasManager_hasLayout = baseAddr + 0x55a5c0;
-			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x0;
+			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x673310;
 			*(uintptr_t*)&VendorListManager_hasVendor = baseAddr + 0x957c70;
 			*(uintptr_t*)&InventoryManager_getSingleton = baseAddr + 0x4fe110;
 			*(uintptr_t*)&InventoryManager_refreshBuildingInventory = baseAddr + 0x959a60;
@@ -127,6 +135,10 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x954d20;
 			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ed50;
 			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a200;
+			*(uintptr_t*)&Blackboard_getGUIData = baseAddr + 0x26a070;
+			*(uintptr_t*)&CharacterMemory_getGUIData = baseAddr + 0x674f00;
+			*(uintptr_t*)&Research_init = baseAddr + 0x8335e0;
+			*(uintptr_t*)&KingOfRenderThread_newGameWithCharEdit = baseAddr + 0x871710;
 			*(uintptr_t*)&timer = baseAddr + 0x21306a0;
 			*(uintptr_t*)&_levelMgr = baseAddr + 0x2131008;
 			*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e375f8;

@@ -41,6 +41,8 @@ class DialogLineData;
 class GameplayOptions;
 class BuildingInterior;
 class NodeList;
+class DatapanelGUI;
+class KingOfRenderThread;
 
 namespace KEP
 {
@@ -88,6 +90,10 @@ namespace KEP
 		void (*InventoryManager_clearAllBuildingInventory)(InventoryManager*, Building*);
 		void (*BuildingInterior_destroyAllInternalBuildings)(BuildingInterior*, bool);
 		void (*NodeList_destroyNodesByBuilding)(NodeList*, const hand&, bool);
+		void (*Blackboard_getGUIData)(Blackboard*, DatapanelGUI*, int);
+		void (*CharacterMemory_getGUIData)(CharacterMemory*, DatapanelGUI*, int);
+		void (*Research_init)(Research*);
+		void (*KingOfRenderThread_newGameWithCharEdit)(KingOfRenderThread*, GameData*);
 
 	private:
 		float* timer;

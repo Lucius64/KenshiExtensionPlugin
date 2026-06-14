@@ -18,7 +18,7 @@ const std::string& KEP::getPluginPath()
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep-core 1.0.0");
+	DebugLog("kep-core 1.0.2");
 
 	fs::path modulePath = kepDirectory;
 	if (!fs::exists(modulePath / "LICENSE") || !fs::exists(modulePath / "NOTICE.md"))
@@ -29,10 +29,14 @@ __declspec(dllexport) void startPlugin()
 
 	KEP::coreOptions.init(kepDirectory + "\\kep_core_settings.json");
 	if (!KEP::coreOptions.getEnablePlugin())
+	{
+		DebugLog("This plugin has been disabled in the settings. path: " + kepDirectory + "\\kep_core_settings.json");
 		return;
+	}
 
 	KEP::initialize();
 	KEP::ConfigManager::getSingleton().addItem(&KEP::coreOptions);
+	DebugLog("Installed");
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)

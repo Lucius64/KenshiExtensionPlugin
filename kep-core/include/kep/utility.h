@@ -20,7 +20,7 @@ namespace KEP
 		DECLSPEC const std::string& getBad();
 		DECLSPEC const std::string& getBadBright();
 		DECLSPEC const std::string& getGood();
-		DECLSPEC const std::string& getGooddBright();
+		DECLSPEC const std::string& getGoodBright();
 		DECLSPEC const std::string& getGreyed();
 		DECLSPEC const std::string& getGreyedBright();
 		DECLSPEC const std::string& getSpecial();

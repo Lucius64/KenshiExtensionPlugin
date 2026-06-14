@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include <ogre/OgreStringConverter.h>
 #include <kep/version_info.h>
 
 KEP::VersionInfo::VersionInfo()
@@ -53,4 +54,9 @@ bool KEP::VersionInfo::operator==(const VersionInfo& other) const
 bool KEP::VersionInfo::operator!=(const VersionInfo& other) const
 {
 	return !(*this == other);
+}
+
+std::string KEP::VersionInfo::toString() const
+{
+	return Ogre::StringConverter::toString(major) + "." + Ogre::StringConverter::toString(minor) + "." + Ogre::StringConverter::toString(micro);
 }

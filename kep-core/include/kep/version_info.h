@@ -16,6 +16,8 @@ namespace KEP
 		bool operator==(const VersionInfo& other) const;
 		bool operator!=(const VersionInfo& other) const;
 
+		std::string toString() const;
+
 	private:
 		int major;
 		int minor;
