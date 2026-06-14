@@ -41,7 +41,7 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep 0.15.0");
+	DebugLog("kep 0.15.4");
 
 	auto& libVersion = KEP::getKenshiLibVersion();
 	if (libVersion < KEP::VersionInfo(0, 3, 0))
@@ -59,8 +59,6 @@ __declspec(dllexport) void startPlugin()
 		ErrorLog("error!");
 		return;
 	}
-
-	DebugLog("installing");
 
 	fs::path modulePath = KEP::getPluginPath();
 	if (!fs::exists(modulePath / "LICENSE") || !fs::exists(modulePath / "NOTICE.md"))
@@ -97,6 +95,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::AnimalExtension::init();
 	KEP::CraftingExtension::init();
 	KEP::ItemExtension::init();
+	DebugLog("Installed");
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  fdwReason, LPVOID lpvReserved)

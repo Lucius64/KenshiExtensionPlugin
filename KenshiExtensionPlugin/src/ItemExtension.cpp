@@ -21,6 +21,7 @@
 #include <extern/RobotLimbItem.h>
 #include <extern/Research.h>
 
+#include <kep/functions.h>
 #include <kep/translation.h>
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
@@ -29,6 +30,9 @@
 
 namespace
 {
+	const auto msg_craftedBy = "Crafted by {1}";
+	const auto msg_kg = "{1,num} kg";
+
 	void (*Sword_getTooltipData1_orig)(Sword*, Ogre::vector<StringPair>::type&);
 	void Sword_getTooltipData1_hook(Sword* self, Ogre::vector<StringPair>::type& lines)
 	{
@@ -136,7 +140,7 @@ namespace
 			if (referenceData == nullptr)
 				continue;
 
-			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs") + " " + referenceData->name, static_cast<float>(iter->values.value[0] - 100), true);
+			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::format(boost::locale::format(boost::locale::translate("Damage vs {1} race")) % referenceData->name), static_cast<float>(iter->values.value[0] - 100), true);
 		}
 
 		auto& raceDamage = self->data->objectReferences["race damage"];
@@ -158,7 +162,7 @@ namespace
 		lines.push_back(
 			StringPair(
 				secondaryColour + "-" + KEP::TranslationUtility::gettext_main("Weight"),
-				secondaryColour + KEP::TranslationUtility::format_main(boost::locale::format("{1,num} kg") % static_cast<int>(weight))
+				secondaryColour + KEP::TranslationUtility::format_main(boost::locale::format(boost::locale::translate(msg_kg)) % static_cast<int>(weight))
 			)
 		);
 
@@ -300,7 +304,7 @@ namespace
 					self->currentWeaponLength *= lengthMult;
 			}
 		}
-		
+
 		self->attackSpeed = self->calculateAttackOrBlockSpeed(self->weaponWeightSpeedMult, self->getMeleeAttack(), false);
 		self->blockSpeed = self->calculateAttackOrBlockSpeed(self->weaponWeightSpeedMult, self->getMeleeDefence(true), true);
 	}
@@ -316,7 +320,7 @@ namespace
 
 			lines.push_back(
 				StringPair(
-					mainColour + "[" + KEP::TranslationUtility::format_main(boost::locale::format(boost::locale::translate("Crafted by {1}")) % self->crafter) + "]"
+					mainColour + "[" + KEP::TranslationUtility::format_main(boost::locale::format(boost::locale::translate(msg_craftedBy)) % self->crafter) + "]"
 				)
 			);
 
@@ -341,7 +345,7 @@ namespace
 
 			lines.push_back(
 				StringPair(
-					mainColour + "[" + KEP::TranslationUtility::format_main(boost::locale::format(boost::locale::translate("Crafted by {1}")) % self->crafter) + "]"
+					mainColour + "[" + KEP::TranslationUtility::format_main(boost::locale::format(boost::locale::translate(msg_craftedBy)) % self->crafter) + "]"
 				)
 			);
 
