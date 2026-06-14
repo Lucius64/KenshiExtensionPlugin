@@ -16,7 +16,7 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep-mod-tool 0.1.0");
+	DebugLog("kep-mod-tool 1.0.2");
 
 	auto& libVersion = KEP::getKenshiLibVersion();
 	if (libVersion < KEP::VersionInfo(0, 3, 0))
@@ -33,12 +33,13 @@ __declspec(dllexport) void startPlugin()
 	}
 
 	KEP::tools::initHook();
+	DebugLog("Installed");
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
-					   DWORD  ul_reason_for_call,
-					   LPVOID lpReserved
-					 )
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
 {
 	switch (ul_reason_for_call)
 	{

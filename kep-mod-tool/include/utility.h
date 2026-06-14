@@ -4,6 +4,33 @@
 
 namespace KEP
 {
+	inline float lerp(float t, float a, float b)
+	{
+		return (b - a) * t + a;
+	}
+
+	inline float linear(float t, float zero, float one)
+	{
+		return (t - zero) / (one - zero);
+	}
+
+	inline int getLevel(int rarity)
+	{
+		switch (rarity) {
+		case 0:
+			return 5;
+		case 2:
+			return 40;
+		case 3:
+			return 60;
+		case 4:
+			return 80;
+		case 5:
+			return 95;
+		}
+		return 20;
+	}
+
 	namespace tools
 	{
 		struct LessGameData

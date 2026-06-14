@@ -60,7 +60,8 @@ void KEP::tools::PlatoonTool::refresh()
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Task]"), "", this->_category, false, true);
 
-	auto textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for ai package"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	auto textbox = this->_panel->setLineTextEditable("Search for ai package", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<PlatoonTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &PlatoonTool::_changeAIPackageSearchText);
 
 	this->_panel->setLineDropBox(lineBoxAIPackage, this->_category, &this->_selectedAIPackage, false, 0.7f);
@@ -76,7 +77,8 @@ void KEP::tools::PlatoonTool::refresh()
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Dialog]"), "", this->_category, false, true);
 
-	textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for dialog"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox = this->_panel->setLineTextEditable("Search for dialog", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<PlatoonTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &PlatoonTool::_changeDialogSearchText);
 
 	this->_panel->setLineDropBox(lineBoxDialogue, this->_category, &this->_selectedDialog, false, 0.7f);
@@ -84,6 +86,9 @@ void KEP::tools::PlatoonTool::refresh()
 
 	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Trigger dialog"), this->_category, 0.7f, "Kenshi_Button2");
 	button->callback = new MyGUI::delegates::CMethodDelegate1<PlatoonTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &PlatoonTool::_triggerDialog);
+
+	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Trigger player conversation"), this->_category, 0.7f, "Kenshi_Button2");
+	button->callback = new MyGUI::delegates::CMethodDelegate1<PlatoonTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &PlatoonTool::_triggerPlayerConversation);
 
 	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Clear all dialog timers"), this->_category, 0.7f, "Kenshi_Button2");
 	button->callback = new MyGUI::delegates::CMethodDelegate1<PlatoonTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &PlatoonTool::_clearDialogTimers);
@@ -229,7 +234,7 @@ void KEP::tools::PlatoonTool::_triggerDialog(DataPanelLine* line)
 	for (auto iter = characters.begin(); iter != characters.end(); ++iter)
 	{
 		auto target = reinterpret_cast<Character*>(*iter);
-		if (target != nullptr && !character->isAlly(target, false) && !target->isAnimal() && !target->isUnconcious())
+		if (target != nullptr && target != character && !character->isAlly(target, false) && !target->isAnimal() && !target->isUnconcious())
 		{
 			float distance = target->getPosition().distance(pos);
 			if (distance < minDistance)
@@ -244,6 +249,64 @@ void KEP::tools::PlatoonTool::_triggerDialog(DataPanelLine* line)
 	list.add(gamedata, nullptr);
 	auto dialogLine = character->dialogue->_chooseDialog(&list, nearestTarget, false);
 	character->dialogue->startConversation(nearestTarget, dialogLine, EV_I_SEE_NEUTRAL_SQUAD, true);
+}
+
+void KEP::tools::PlatoonTool::_triggerPlayerConversation(DataPanelLine* line)
+{
+	if (this->_selectedDialog < 1)
+		return;
+
+	auto gamedata = this->_dialogList[this->_selectedDialog];
+	if (DialogDataManager::getData(gamedata) == nullptr)
+	{
+		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Dialogue not found."), true);
+		return;
+	}
+
+	auto character = gui->selectedObject.getCharacter();
+	if (character == nullptr)
+	{
+		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Please select a character."), true);
+		return;
+	}
+
+	if (character->isUnconcious())
+	{
+		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Please select a character who is conscious."), true);
+		return;
+	}
+
+	lektor<RootObject*> characters;
+	auto pos = character->getPosition();
+	ou->getCharactersWithinSphere(characters, pos, 40.0f, 0.0f, 0.0f, 40, 0, character);
+
+	Character* nearestTarget = nullptr;
+	float minDistance = 100000.0f;
+
+	for (auto iter = characters.begin(); iter != characters.end(); ++iter)
+	{
+		auto target = reinterpret_cast<Character*>(*iter);
+		if (target != nullptr && target != character && target->isPlayerCharacter() && !target->isAnimal() && !target->isUnconcious())
+		{
+			float distance = target->getPosition().distance(pos);
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				nearestTarget = target;
+			}
+		}
+	}
+
+	if (nearestTarget == nullptr)
+	{
+		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: There are no player characters nearby."), true);
+		return;
+	}
+
+	DialogChoiceList list;
+	list.add(gamedata, nullptr);
+	auto dialogLine = character->dialogue->_chooseDialog(&list, nearestTarget, false);
+	character->dialogue->startPlayerConversation(nearestTarget, dialogLine);
 }
 
 void KEP::tools::PlatoonTool::_lockDialog(DataPanelLine* line)
@@ -349,11 +412,14 @@ void KEP::tools::PlatoonTool::_updateAIPackageList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedAIPackage;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_AIPackageList.size(); ++i)
 		{
 			dropBox->addAValue(this->_AIPackageList[i]->name, i);
@@ -371,7 +437,7 @@ void KEP::tools::PlatoonTool::_updateAIPackageList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -398,11 +464,14 @@ void KEP::tools::PlatoonTool::_updateDialogList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedDialog;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_dialogList.size(); ++i)
 		{
 			dropBox->addAValue(this->_dialogList[i]->name, i);
@@ -420,7 +489,7 @@ void KEP::tools::PlatoonTool::_updateDialogList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}

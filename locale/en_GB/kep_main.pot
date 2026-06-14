@@ -1,21 +1,26 @@
-#: KenshiExtensionPlugin/src/ItemExtension.cpp:55
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:59
 msgid "Martial arts class"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/ItemExtension.cpp:57
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:61
 msgid "Turret class"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/ItemExtension.cpp:109
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:113
 #: kep-mod-tool/DevToolsPanel.cpp:194
 msgid "Harpoon damage"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/ItemExtension.cpp:167
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:143
+#, c++-format
+msgid "Damage vs {1} race"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:171
 msgid "Required Strength"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/ItemExtension.cpp:182
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:186
 msgid "Length"
 msgstr ""
 
@@ -549,7 +554,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:150 kep-mod-tool/SpawnTool.cpp:144
+#: kep-mod-tool/DevToolsPanel.cpp:150 kep-mod-tool/SpawnTool.cpp:154
 msgid "Spawn"
 msgstr ""
 
@@ -621,19 +626,19 @@ msgstr ""
 msgid "Squish"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:203 kep-mod-tool/SpawnTool.cpp:1471
+#: kep-mod-tool/DevToolsPanel.cpp:203 kep-mod-tool/SpawnTool.cpp:1536
 msgid "Left Arm"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:204 kep-mod-tool/SpawnTool.cpp:1472
+#: kep-mod-tool/DevToolsPanel.cpp:204 kep-mod-tool/SpawnTool.cpp:1537
 msgid "Right Arm"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:205 kep-mod-tool/SpawnTool.cpp:1473
+#: kep-mod-tool/DevToolsPanel.cpp:205 kep-mod-tool/SpawnTool.cpp:1538
 msgid "Left Leg"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:206 kep-mod-tool/SpawnTool.cpp:1474
+#: kep-mod-tool/DevToolsPanel.cpp:206 kep-mod-tool/SpawnTool.cpp:1539
 msgid "Right Leg"
 msgstr ""
 
@@ -661,16 +666,17 @@ msgstr ""
 msgid "Information Panel"
 msgstr ""
 
-#: kep-mod-tool/DevToolsPanel.cpp:337 kep-mod-tool/SpawnTool.cpp:505
+#: kep-mod-tool/DevToolsPanel.cpp:337 kep-mod-tool/SpawnTool.cpp:555
 msgid "Error: Please select a building."
 msgstr ""
 
 #: kep-mod-tool/DevToolsPanel.cpp:411 kep-mod-tool/DevToolsPanel.cpp:523
 #: kep-mod-tool/DevToolsPanel.cpp:579 kep-mod-tool/DevToolsPanel.cpp:591
-#: kep-mod-tool/PlatoonTool.cpp:212 kep-mod-tool/PlatoonTool.cpp:264
-#: kep-mod-tool/PlatoonTool.cpp:286 kep-mod-tool/PlatoonTool.cpp:308
-#: kep-mod-tool/SpawnTool.cpp:671 kep-mod-tool/SpawnTool.cpp:724
-#: kep-mod-tool/StatsTool.cpp:206 kep-mod-tool/StatsTool.cpp:263
+#: kep-mod-tool/PlatoonTool.cpp:217 kep-mod-tool/PlatoonTool.cpp:269
+#: kep-mod-tool/PlatoonTool.cpp:327 kep-mod-tool/PlatoonTool.cpp:349
+#: kep-mod-tool/PlatoonTool.cpp:371 kep-mod-tool/SpawnTool.cpp:721
+#: kep-mod-tool/SpawnTool.cpp:754 kep-mod-tool/StatsTool.cpp:206
+#: kep-mod-tool/StatsTool.cpp:263
 msgid "Error: Please select a character."
 msgstr ""
 
@@ -719,338 +725,327 @@ msgstr ""
 msgid "[Task]"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:63
-msgid "Search for ai package"
+#: kep-mod-tool/PlatoonTool.cpp:64 kep-mod-tool/PlatoonTool.cpp:81
+#: kep-mod-tool/SpawnTool.cpp:133 kep-mod-tool/SpawnTool.cpp:142
+#: kep-mod-tool/SpawnTool.cpp:160 kep-mod-tool/SpawnTool.cpp:196
+#: kep-mod-tool/SpawnTool.cpp:216 kep-mod-tool/SpawnTool.cpp:225
+#: kep-mod-tool/SpawnTool.cpp:248 kep-mod-tool/SpawnTool.cpp:276
+#: kep-mod-tool/SpawnTool.cpp:290 kep-mod-tool/SpawnTool.cpp:300
+#: kep-mod-tool/SpawnTool.cpp:320
+msgid "Search"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:69
+#: kep-mod-tool/PlatoonTool.cpp:70
 msgid "Change AI"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:72
+#: kep-mod-tool/PlatoonTool.cpp:73
 msgid "Reset AI"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:77
+#: kep-mod-tool/PlatoonTool.cpp:78
 msgid "[Dialog]"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:79
-msgid "Search for dialog"
-msgstr ""
-
-#: kep-mod-tool/PlatoonTool.cpp:85
+#: kep-mod-tool/PlatoonTool.cpp:87
 msgid "Trigger dialog"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:88
+#: kep-mod-tool/PlatoonTool.cpp:90
+msgid "Trigger player conversation"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:93
 msgid "Clear all dialog timers"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:91
+#: kep-mod-tool/PlatoonTool.cpp:96
 msgid "Lock dialog"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:94
+#: kep-mod-tool/PlatoonTool.cpp:99
 msgid "Unlock dialog"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:97
+#: kep-mod-tool/PlatoonTool.cpp:102
 msgid "Clear all dialog locks and unlocks"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:102
+#: kep-mod-tool/PlatoonTool.cpp:107
 msgid "Clear all tags"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:116 kep-mod-tool/PlatoonTool.cpp:145
-#: kep-mod-tool/PlatoonTool.cpp:180
+#: kep-mod-tool/PlatoonTool.cpp:121 kep-mod-tool/PlatoonTool.cpp:150
+#: kep-mod-tool/PlatoonTool.cpp:185
 msgid "Error: Please select a NPC."
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:187
+#: kep-mod-tool/PlatoonTool.cpp:192
 msgid "Error: Platoon not found"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:205 kep-mod-tool/PlatoonTool.cpp:257
-#: kep-mod-tool/PlatoonTool.cpp:279
+#: kep-mod-tool/PlatoonTool.cpp:210 kep-mod-tool/PlatoonTool.cpp:262
+#: kep-mod-tool/PlatoonTool.cpp:320 kep-mod-tool/PlatoonTool.cpp:342
 msgid "Error: Dialogue not found."
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:218
+#: kep-mod-tool/PlatoonTool.cpp:223 kep-mod-tool/PlatoonTool.cpp:275
 msgid "Error: Please select a character who is conscious."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:59
+#: kep-mod-tool/PlatoonTool.cpp:302
+msgid "Error: There are no player characters nearby."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:62
 msgid "Player Faction"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:64
+#: kep-mod-tool/SpawnTool.cpp:67
 msgid "Weapons"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:65
+#: kep-mod-tool/SpawnTool.cpp:68
 msgid "Models"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:66
+#: kep-mod-tool/SpawnTool.cpp:69
 msgid "Gear Level"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:67
+#: kep-mod-tool/SpawnTool.cpp:70
 msgid "Random"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:68
-msgid "Search for items"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:69
-msgid "Search for weapons"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:70
+#: kep-mod-tool/SpawnTool.cpp:73
 msgid "Item category"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:71
+#: kep-mod-tool/SpawnTool.cpp:74
 msgid "Item subcategory"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:72
+#: kep-mod-tool/SpawnTool.cpp:75
 msgid "Campaigns"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:122
+#: kep-mod-tool/SpawnTool.cpp:80
+msgid "Uniform"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:130
 msgid "[Characters]"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:124 kep-mod-tool/SpawnTool.cpp:258
-#: kep-mod-tool/SpawnTool.cpp:268
-msgid "Search for factions"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:132
-msgid "Search for squads"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:138
+#: kep-mod-tool/SpawnTool.cpp:148
 msgid "Spawn method"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:139
+#: kep-mod-tool/SpawnTool.cpp:149
 msgid "Roaming"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:140
+#: kep-mod-tool/SpawnTool.cpp:150
 msgid "Bar"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:141
+#: kep-mod-tool/SpawnTool.cpp:151
 msgid "Resident"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:149 kep-mod-tool/SpawnTool.cpp:288
-msgid "Search for characters"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:156
+#: kep-mod-tool/SpawnTool.cpp:167
 msgid "Age"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:159
+#: kep-mod-tool/SpawnTool.cpp:170
 msgid "Add character"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:164
+#: kep-mod-tool/SpawnTool.cpp:175
 msgid "[Items]"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:168 kep-mod-tool/SpawnTool.cpp:205
-#: kep-mod-tool/SpawnTool.cpp:1441
+#: kep-mod-tool/SpawnTool.cpp:179 kep-mod-tool/SpawnTool.cpp:235
+#: kep-mod-tool/SpawnTool.cpp:1506
 msgid "All"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:171
+#: kep-mod-tool/SpawnTool.cpp:182
 msgid "Nest item"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:203
+#: kep-mod-tool/SpawnTool.cpp:233
 msgid "Weapon category"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:228
+#: kep-mod-tool/SpawnTool.cpp:259
 msgid "Quantity"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:232
+#: kep-mod-tool/SpawnTool.cpp:263
 msgid "Give item"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:237
+#: kep-mod-tool/SpawnTool.cpp:268
 msgid "Refresh Inventory"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:242
+#: kep-mod-tool/SpawnTool.cpp:273
 msgid "[Campaigns]"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:244
-msgid "Search for campaigns"
-msgstr ""
-
-#: kep-mod-tool/SpawnTool.cpp:250
+#: kep-mod-tool/SpawnTool.cpp:282
 msgid "Trigger"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:255
+#: kep-mod-tool/SpawnTool.cpp:287
 msgid "[Faction Relations]"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:276
+#: kep-mod-tool/SpawnTool.cpp:308
 msgid "Relation"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:280
+#: kep-mod-tool/SpawnTool.cpp:312
 msgid "Overwrite relation"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:285
+#: kep-mod-tool/SpawnTool.cpp:317
 msgid "[Unique Character States]"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:292
+#: kep-mod-tool/SpawnTool.cpp:324
 msgid "Unique characters"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:295
+#: kep-mod-tool/SpawnTool.cpp:327
 msgid "State"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:296
+#: kep-mod-tool/SpawnTool.cpp:328
 msgid "Not spawned"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:297
+#: kep-mod-tool/SpawnTool.cpp:329
 msgid "Living"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:298
+#: kep-mod-tool/SpawnTool.cpp:330
 msgid "Imprisoned"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:299
+#: kep-mod-tool/SpawnTool.cpp:331
 msgid "Imprisoned (player involvement)"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:300
+#: kep-mod-tool/SpawnTool.cpp:332
 msgid "Dead"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:301
+#: kep-mod-tool/SpawnTool.cpp:333
 msgid "Dead (player involvement)"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:304
+#: kep-mod-tool/SpawnTool.cpp:336
 msgid "Change unique character state"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:432 kep-mod-tool/SpawnTool.cpp:473
-#: kep-mod-tool/SpawnTool.cpp:496
+#: kep-mod-tool/SpawnTool.cpp:482 kep-mod-tool/SpawnTool.cpp:523
+#: kep-mod-tool/SpawnTool.cpp:546
 msgid "Warning: The spawned squad is empty"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:489
+#: kep-mod-tool/SpawnTool.cpp:539
 msgid "Error: Please move the camera within the town range."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:514
+#: kep-mod-tool/SpawnTool.cpp:564
 msgid "Error: Squads cannot spawn in this building."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:521
+#: kep-mod-tool/SpawnTool.cpp:571
 msgid "Error: Please select a building in the town."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:549 kep-mod-tool/SpawnTool.cpp:629
+#: kep-mod-tool/SpawnTool.cpp:599 kep-mod-tool/SpawnTool.cpp:679
 msgid "Error: The interior layout did not match."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:789
+#: kep-mod-tool/SpawnTool.cpp:825
 msgid ""
 "Error: Faction not found. Please configure [campaigns] or [faction override]."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:796
+#: kep-mod-tool/SpawnTool.cpp:832
 msgid "Error: Player base not found."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:842
+#: kep-mod-tool/SpawnTool.cpp:878
 msgid "Error: Player or unoccupied building inventories cannot be updated."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:858
+#: kep-mod-tool/SpawnTool.cpp:894
 msgid ""
 "Error: For the \"from\" field, please select a faction other than the player."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:864
+#: kep-mod-tool/SpawnTool.cpp:900
 msgid "Error: Please select a different faction."
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1444
+#: kep-mod-tool/SpawnTool.cpp:1509
 msgid "General item"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1445
+#: kep-mod-tool/SpawnTool.cpp:1510
 msgid "Medical or repair"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1446
+#: kep-mod-tool/SpawnTool.cpp:1511
 msgid "Food"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1447
+#: kep-mod-tool/SpawnTool.cpp:1512
 msgid "Restricted food"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1448
+#: kep-mod-tool/SpawnTool.cpp:1513
 msgid "Alcohol or drug"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1449
+#: kep-mod-tool/SpawnTool.cpp:1514
 msgid "Tool"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1450
+#: kep-mod-tool/SpawnTool.cpp:1515
 msgid "Ammo"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1451
+#: kep-mod-tool/SpawnTool.cpp:1516
 msgid "Research"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1452
+#: kep-mod-tool/SpawnTool.cpp:1517
 msgid "Book"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1453
+#: kep-mod-tool/SpawnTool.cpp:1518
 msgid "Money"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1454
+#: kep-mod-tool/SpawnTool.cpp:1519
 msgid "Servered limb"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1465
+#: kep-mod-tool/SpawnTool.cpp:1530
 msgid "Eyes"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1466
+#: kep-mod-tool/SpawnTool.cpp:1531
 msgid "Gloves"
 msgstr ""
 
-#: kep-mod-tool/SpawnTool.cpp:1467
+#: kep-mod-tool/SpawnTool.cpp:1532
 msgid "Neck"
 msgstr ""
 

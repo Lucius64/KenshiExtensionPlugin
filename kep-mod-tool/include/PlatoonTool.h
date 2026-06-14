@@ -26,6 +26,7 @@ namespace KEP
 			void _resetAI(DataPanelLine* line);
 			void _clearAllTag(DataPanelLine* line);
 			void _triggerDialog(DataPanelLine* line);
+			void _triggerPlayerConversation(DataPanelLine* line);
 			void _lockDialog(DataPanelLine* line);
 			void _unlockDialog(DataPanelLine* line);
 			void _clearDialogTimers(DataPanelLine* line);

@@ -18,6 +18,7 @@
 #include <kenshi/Building/UseableStuff.h>
 #include <kenshi/Platoon.h>
 #include <kenshi/Character.h>
+#include <kenshi/Gear.h>
 #include <kenshi/Town.h>
 #include <kenshi/RootObjectFactory.h>
 #include <kenshi/gui/ForgottenGUI.h>
@@ -53,6 +54,8 @@ namespace
 	std::string lineBoxFromFaction;
 	std::string lineBoxToFaction;
 	std::string lineBoxUniqueNpc;
+	std::string lineBoxFactionUniform;
+	std::string lineBoxItemColor;
 
 	void initLineKey()
 	{
@@ -65,8 +68,8 @@ namespace
 		lineBoxModel = KEP::TranslationUtility::gettext("Models");
 		lineBoxGearLevel = KEP::TranslationUtility::gettext("Gear Level");
 		lineLabelRandom = KEP::TranslationUtility::gettext("Random");
-		lineTextItem = KEP::TranslationUtility::gettext("Search for items");
-		lineTextWeapon = KEP::TranslationUtility::gettext("Search for weapons");
+		lineTextItem = "Search for items";
+		lineTextWeapon = "Search for weapons";
 		lineBoxItemCategory = KEP::TranslationUtility::gettext("Item category");
 		lineBoxtemSubCategory = KEP::TranslationUtility::gettext("Item subcategory");
 		lineBoxCampaign = KEP::TranslationUtility::gettext("Campaigns");
@@ -74,6 +77,8 @@ namespace
 		lineBoxFromFaction = "from faction";
 		lineBoxToFaction = "to faction";
 		lineBoxUniqueNpc = "unique npc";
+		lineBoxFactionUniform = KEP::TranslationUtility::gettext("Uniform");
+		lineBoxItemColor = KEP::TranslationUtility::gettext_main("Colour");
 	}
 }
 
@@ -99,6 +104,8 @@ KEP::tools::SpawnTool::SpawnTool()
 	, _relation(0.0f)
 	, _selectedUniqueCharacter(0)
 	, _uniqueState(3)
+	, _selectedFactionUniform(-2)
+	, _selectedItemColor(-2)
 {
 	initLineKey();
 
@@ -110,6 +117,7 @@ KEP::tools::SpawnTool::SpawnTool()
 	_initModelList();
 	_initCampaignList();
 	_initUniqueCharacters();
+	_initColorList();
 }
 
 void KEP::tools::SpawnTool::refresh()
@@ -121,7 +129,8 @@ void KEP::tools::SpawnTool::refresh()
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Characters]"), "", this->_category, false, true);
 
-	auto textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for factions"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	auto textbox = this->_panel->setLineTextEditable("Search for factions", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeFactionSearchText);
 
 	this->_panel->setLineDropBox(lineBoxFaction, this->_category, &this->_selectedSpawnFaction, false, 0.7f);
@@ -129,7 +138,8 @@ void KEP::tools::SpawnTool::refresh()
 
 	this->_panel->addSpace(this->_category, 0.5f);
 
-	textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for squads"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox = this->_panel->setLineTextEditable("Search for squads", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeSquadSearchText);
 
 	this->_panel->setLineDropBox(lineBoxSquads, this->_category, &this->_selectedSpawnSquad, false, 0.7f);
@@ -146,7 +156,8 @@ void KEP::tools::SpawnTool::refresh()
 
 	this->_panel->addSpace(this->_category, 0.5f);
 
-	textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for characters"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox = this->_panel->setLineTextEditable("Search for characters", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeCharacterSearchText);
 
 	this->_panel->setLineDropBox(lineBoxCharacter, this->_category, &this->_selectedSpawnCharacter, false, 0.7f);
@@ -182,12 +193,11 @@ void KEP::tools::SpawnTool::refresh()
 	this->_updateItemSubcategorylList();
 
 	textbox = this->_panel->setLineTextEditable(lineTextItem, "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeItemSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxItem, this->_category, &this->_selectedItem, false, 0.7f);
 	dropbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_selectItemList);
-
-	this->_panel->addSpace(this->_category, 0.5f);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxGearLevel, this->_category, &this->_gearLevel, false, 0.7f);
 	dropbox->addAValue(KEP::TranslationUtility::gettext_main("Prototype"), 0);
@@ -197,8 +207,6 @@ void KEP::tools::SpawnTool::refresh()
 	dropbox->addAValue(KEP::TranslationUtility::gettext_main("Specialist"), 4);
 	dropbox->addAValue(KEP::TranslationUtility::gettext_main("Masterwork"), 5);
 	dropbox->setSelectedValue(4);
-
-	this->_panel->addSpace(this->_category, 0.5f);
 
 	dropbox = this->_panel->setLineDropBox(KEP::TranslationUtility::gettext("Weapon category"), this->_category, &this->_searchWeaponCategory, false, 0.7f);
 	dropbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_selectWeaponCategoryList);
@@ -215,6 +223,7 @@ void KEP::tools::SpawnTool::refresh()
 	dropbox->setSelectedValue(0);
 
 	textbox = this->_panel->setLineTextEditable(lineTextWeapon, "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeWeaponSearchText);
 
 	this->_panel->setLineDropBox(lineBoxWeapon, this->_category, &this->_selectedWeapon, false, 0.7f);
@@ -223,6 +232,24 @@ void KEP::tools::SpawnTool::refresh()
 	_updateItemList("");
 	_updateModelList();
 	_updateWeaponList("");
+
+	this->_panel->addSpace(this->_category, 0.25f);
+
+	textbox = this->_panel->setLineTextEditable("Search for color", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
+	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeColorSearchText);
+
+	this->_panel->setLineDropBox(lineBoxItemColor, this->_category, &this->_selectedItemColor, false, 0.7f);
+	_updateColorList("");
+
+	this->_panel->addSpace(this->_category, 0.25f);
+
+	textbox = this->_panel->setLineTextEditable("Search for unifroms", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
+	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeUniformSearchText);
+
+	this->_panel->setLineDropBox(lineBoxFactionUniform, this->_category, &this->_selectedFactionUniform, false, 0.7f);
+	_updateUniformList("");
 
 	this->_panel->addSpace(this->_category, 0.25f);
 	slider = this->_panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Quantity"), this->_category, true, 1.0f, 50.0f, &this->_quantity);
@@ -241,7 +268,8 @@ void KEP::tools::SpawnTool::refresh()
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Campaigns]"), "", this->_category, false, true);
 
-	textbox = this->_panel->setLineTextEditable(KEP::TranslationUtility::gettext("Search for campaigns"), "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox = this->_panel->setLineTextEditable("Search for campaigns", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeCampaignSearchText);
 
 	this->_panel->setLineDropBox(lineBoxCampaign, this->_category, &this->_selectedCampaign, false, 0.7f);
@@ -255,7 +283,7 @@ void KEP::tools::SpawnTool::refresh()
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Faction Relations]"), "", this->_category, false, true);
 
 	textbox = this->_panel->setLineTextEditable("search for fromFactions", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
-	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search for factions"));
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeFromFactionSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxFromFaction, this->_category, &this->_selectedFromFaction, false, 0.7f);
@@ -265,7 +293,7 @@ void KEP::tools::SpawnTool::refresh()
 	this->_panel->addSpace(this->_category, 0.5f);
 
 	textbox = this->_panel->setLineTextEditable("search for toFactions", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
-	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search for factions"));
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeToFactionSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxToFaction, this->_category, &this->_selectedToFaction, false, 0.7f);
@@ -285,7 +313,7 @@ void KEP::tools::SpawnTool::refresh()
 	this->_panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[Unique Character States]"), "", this->_category, false, true);
 
 	textbox = this->_panel->setLineTextEditable("search for uniqueNpcs", "", this->_category, true, false, MyGUI::Align::Left, 0.7f);
-	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search for characters"));
+	textbox->nameText->setCaption(KEP::TranslationUtility::gettext("Search"));
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_changeUniqueNpcSearchText);
 
 	dropbox = this->_panel->setLineDropBox(lineBoxUniqueNpc, this->_category, &this->_selectedUniqueCharacter, false, 0.7f);
@@ -417,6 +445,24 @@ void KEP::tools::SpawnTool::_changeUniqueNpcSearchText(DataPanelLine* line)
 		keyword = reinterpret_cast<DataPanelLine_TextEditable*>(line)->editBox->getOnlyText();
 
 	_updateUniqueNpcList(keyword);
+}
+
+void KEP::tools::SpawnTool::_changeUniformSearchText(DataPanelLine* line)
+{
+	std::string keyword = "";
+	if (line != nullptr && line->classType == DataPanelLine::DPL_TEXT_EDIT)
+		keyword = reinterpret_cast<DataPanelLine_TextEditable*>(line)->editBox->getOnlyText();
+
+	_updateUniformList(keyword);
+}
+
+void KEP::tools::SpawnTool::_changeColorSearchText(DataPanelLine* line)
+{
+	std::string keyword = "";
+	if (line != nullptr && line->classType == DataPanelLine::DPL_TEXT_EDIT)
+		keyword = reinterpret_cast<DataPanelLine_TextEditable*>(line)->editBox->getOnlyText();
+
+	_updateColorList(keyword);
 }
 
 namespace
@@ -693,26 +739,6 @@ void KEP::tools::SpawnTool::_addCharacter(DataPanelLine* line)
 		obj->setSquadMemberType(SQUAD_1);
 }
 
-namespace
-{
-	int getLevel(int rarity)
-	{
-		switch (rarity) {
-		case 0:
-			return 5;
-		case 2:
-			return 40;
-		case 3:
-			return 60;
-		case 4:
-			return 80;
-		case 5:
-			return 95;
-		}
-		return 20;
-	}
-}
-
 void KEP::tools::SpawnTool::_giveItem(DataPanelLine* line)
 {
 	if (this->_selectedItem < 0)
@@ -741,22 +767,28 @@ void KEP::tools::SpawnTool::_giveItem(DataPanelLine* line)
 			model = this->_spawnModelList[this->_selectedModel];
 	}
 
+	Faction* uniform = nullptr;
+	if (data->type == ARMOUR && -1 < this->_selectedFactionUniform)
+		uniform = ou->factionMgr->getFactionByStringID(this->_spawnFactionList[this->_selectedFactionUniform]->stringID);
+
 	int quantity = static_cast<int>(this->_quantity);
 	for (int i = 0; i < quantity; i++)
 	{
-		auto item = ou->theFactory->createItem(data, hand(), weapon, model, level, nullptr);
+		auto item = ou->theFactory->createItem(data, hand(), weapon, model, level, uniform);
+		if (item->coloriseData == nullptr && -1 < this->_selectedItemColor && (item->slotType != ATTACH_NONE && item->slotType != ATTACH_HAIR && item->slotType != ATTACH_BEARD))
+			item->coloriseData = this->_itemColorList[this->_selectedItemColor];
 
-		if (data->type == LIMB_REPLACEMENT && character->medical.robotLimbs != nullptr)
+		if (item->objectType == LIMB_REPLACEMENT && character->medical.robotLimbs != nullptr)
 		{
 			RobotLimbs::Limb limb = RobotLimbs::NULL_LIMB;
-			int slot = data->idata["slot"] - 0x32;
-			if (slot == 0)
+			auto slot = item->slotType;
+			if (slot == ATTACH_LEFT_ARM)
 				limb = RobotLimbs::LEFT_ARM;
-			else if (slot == 1)
+			else if (slot == ATTACH_RIGHT_ARM)
 				limb = RobotLimbs::RIGHT_ARM;
-			else if (slot == 2)
+			else if (slot == ATTACH_LEFT_LEG)
 				limb = RobotLimbs::LEFT_LEG;
-			else if (slot == 3)
+			else if (slot == ATTACH_RIGHT_LEG)
 				limb = RobotLimbs::RIGHT_LEG;
 
 			if (limb < RobotLimbs::NULL_LIMB && character->medical.robotLimbs->getState(limb) == LIMB_STUMP)
@@ -1094,17 +1126,35 @@ void KEP::tools::SpawnTool::_initUniqueCharacters()
 	}
 }
 
+void KEP::tools::SpawnTool::_initColorList()
+{
+	lektor<GameData*> datas;
+	ou->gamedata.getDataOfType(datas, COLOR_DATA);
+	std::sort(datas.begin(), datas.end(), LessGameData());
+
+	this->_itemColorList.resize(datas.size());
+	for (uint32_t i = 0; i < datas.size(); ++i)
+	{
+		this->_itemColorList[i] = datas[i];
+	}
+}
+
+
 void KEP::tools::SpawnTool::_updateFactionList(const std::string& keyword)
 {
 	auto dropBox = reinterpret_cast<DataPanelLine_DropBox*>(this->_panel->getLine(lineBoxFaction, this->_category));
 	if (dropBox == nullptr)
 		return;
 
-	int selectVal = 0;
+	int currentSelected = this->_selectedSpawnFaction;
+	if (currentSelected < 0)
+		currentSelected = 0;
+	int selectVal = -1;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelPlayerFaction, 0);
 	if (keyword.empty())
 	{
+		selectVal = currentSelected;
 		for (uint32_t i = 1; i < this->_spawnFactionList.size(); ++i)
 		{
 			dropBox->addAValue(this->_spawnFactionList[i]->name, i);
@@ -1122,7 +1172,7 @@ void KEP::tools::SpawnTool::_updateFactionList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == 0)
+				if (selectVal == 0 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1136,11 +1186,14 @@ void KEP::tools::SpawnTool::_updateSquadList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedSpawnSquad;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_spawnSquadList.size(); ++i)
 		{
 			dropBox->addAValue(this->_spawnSquadList[i]->name, i);
@@ -1158,7 +1211,7 @@ void KEP::tools::SpawnTool::_updateSquadList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1172,11 +1225,14 @@ void KEP::tools::SpawnTool::_updateCharacterList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedSpawnCharacter;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_spawnCharacterList.size(); ++i)
 		{
 			dropBox->addAValue(this->_spawnCharacterList[i]->name, i);
@@ -1194,7 +1250,7 @@ void KEP::tools::SpawnTool::_updateCharacterList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1304,6 +1360,9 @@ void KEP::tools::SpawnTool::_updateItemList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedItem;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
@@ -1317,7 +1376,7 @@ void KEP::tools::SpawnTool::_updateItemList(const std::string& keyword)
 					dropBox->addAValue(data->name, i);
 				else
 					dropBox->addAValue(data->name + blueprintSuffix, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1337,7 +1396,7 @@ void KEP::tools::SpawnTool::_updateItemList(const std::string& keyword)
 					dropBox->addAValue(data->name, i);
 				else
 					dropBox->addAValue(data->name + blueprintSuffix, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1353,6 +1412,7 @@ void KEP::tools::SpawnTool::_updateWeaponList(const std::string& keyword)
 
 	int category = this->_searchWeaponCategory - 1;
 
+	int currentSelected = this->_selectedWeapon;
 	int selectVal = -1;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelRandom, -1);
@@ -1364,7 +1424,7 @@ void KEP::tools::SpawnTool::_updateWeaponList(const std::string& keyword)
 			if (category < 0 || data->idata["skill category"] == category)
 			{
 				dropBox->addAValue(data->name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1382,7 +1442,7 @@ void KEP::tools::SpawnTool::_updateWeaponList(const std::string& keyword)
 			if ((category < 0 || data->idata["skill category"] == category) && s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1404,6 +1464,7 @@ void KEP::tools::SpawnTool::_updateModelList()
 			manufacturer = data;
 	}
 
+	int currentSelected = this->_selectedModel;
 	int selectVal = -1;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelRandom, -1);
@@ -1420,7 +1481,7 @@ void KEP::tools::SpawnTool::_updateModelList()
 					if (iter->sid == model->stringID)
 					{
 						dropBox->addAValue(model->name, i);
-						if (selectVal == -1)
+						if (selectVal == -1 || i == currentSelected)
 							selectVal = i;
 						break;
 					}
@@ -1482,11 +1543,14 @@ void KEP::tools::SpawnTool::_updateCampaginList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedCampaign;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_campaignList.size(); ++i)
 		{
 			dropBox->addAValue(this->_campaignList[i]->name, i);
@@ -1504,7 +1568,7 @@ void KEP::tools::SpawnTool::_updateCampaginList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1518,11 +1582,14 @@ void KEP::tools::SpawnTool::_updateFromFactionList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedFromFaction;
+	if (currentSelected < 1)
+		currentSelected = 1;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 1;
+		selectVal = currentSelected;
 		for (uint32_t i = 1; i < this->_spawnFactionList.size(); ++i)
 		{
 			dropBox->addAValue(this->_spawnFactionList[i]->name, i);
@@ -1540,7 +1607,7 @@ void KEP::tools::SpawnTool::_updateFromFactionList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1554,11 +1621,15 @@ void KEP::tools::SpawnTool::_updateToFactionList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
-	int selectVal = 0;
+	int currentSelected = this->_selectedToFaction;
+	if (currentSelected < 0)
+		currentSelected = 0;
+	int selectVal = -1;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelPlayerFaction, 0);
 	if (keyword.empty())
 	{
+		selectVal = currentSelected;
 		for (uint32_t i = 1; i < this->_spawnFactionList.size(); ++i)
 		{
 			dropBox->addAValue(this->_spawnFactionList[i]->name, i);
@@ -1576,7 +1647,7 @@ void KEP::tools::SpawnTool::_updateToFactionList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == 0)
+				if (selectVal == 0 || i == currentSelected)
 					selectVal = i;
 			}
 		}
@@ -1590,11 +1661,14 @@ void KEP::tools::SpawnTool::_updateUniqueNpcList(const std::string& keyword)
 	if (dropBox == nullptr)
 		return;
 
+	int currentSelected = this->_selectedUniqueCharacter;
+	if (currentSelected < 0)
+		currentSelected = 0;
 	int selectVal = -1;
 	dropBox->clearValues();
 	if (keyword.empty())
 	{
-		selectVal = 0;
+		selectVal = currentSelected;
 		for (uint32_t i = 0; i < this->_uniqueCharacterList.size(); ++i)
 		{
 			dropBox->addAValue(this->_uniqueCharacterList[i]->name, i);
@@ -1612,7 +1686,88 @@ void KEP::tools::SpawnTool::_updateUniqueNpcList(const std::string& keyword)
 			if (s2.find(s1) != std::string::npos)
 			{
 				dropBox->addAValue(name, i);
-				if (selectVal == -1)
+				if (selectVal == -1 || i == currentSelected)
+					selectVal = i;
+			}
+		}
+	}
+	dropBox->setSelectedValue(selectVal);
+}
+
+void KEP::tools::SpawnTool::_updateUniformList(const std::string& keyword)
+{
+	auto dropBox = reinterpret_cast<DataPanelLine_DropBox*>(this->_panel->getLine(lineBoxFactionUniform, this->_category));
+	if (dropBox == nullptr)
+		return;
+
+	int currentSelected = this->_selectedFactionUniform;
+	if (currentSelected < 0)
+		currentSelected = -2;
+	int selectVal = -2;
+	dropBox->clearValues();
+	dropBox->addAValue("-", -2);
+	dropBox->addAValue(lineLabelPlayerFaction, 0);
+	if (keyword.empty())
+	{
+		selectVal = currentSelected;
+		for (uint32_t i = 1; i < this->_spawnFactionList.size(); ++i)
+		{
+			dropBox->addAValue(this->_spawnFactionList[i]->name, i);
+		}
+	}
+	else
+	{
+		std::string s1 = keyword;
+		std::transform(s1.begin(), s1.end(), s1.begin(), [](char c) { return std::toupper(c); });
+		for (uint32_t i = 1; i < this->_spawnFactionList.size(); ++i)
+		{
+			std::string& name = this->_spawnFactionList[i]->name;
+			std::string s2 = name;
+			std::transform(s2.begin(), s2.end(), s2.begin(), [](char c) { return std::toupper(c); });
+			if (s2.find(s1) != std::string::npos)
+			{
+				dropBox->addAValue(name, i);
+				if (selectVal == -2 || i == currentSelected)
+					selectVal = i;
+			}
+		}
+	}
+	dropBox->setSelectedValue(selectVal);
+}
+
+void KEP::tools::SpawnTool::_updateColorList(const std::string& keyword)
+{
+	auto dropBox = reinterpret_cast<DataPanelLine_DropBox*>(this->_panel->getLine(lineBoxItemColor, this->_category));
+	if (dropBox == nullptr)
+		return;
+
+	int currentSelected = this->_selectedItemColor;
+	if (currentSelected < 0)
+		currentSelected = -2;
+	int selectVal = -2;
+	dropBox->clearValues();
+	dropBox->addAValue("-", -2);
+	if (keyword.empty())
+	{
+		selectVal = currentSelected;
+		for (uint32_t i = 0; i < this->_itemColorList.size(); ++i)
+		{
+			dropBox->addAValue(this->_itemColorList[i]->name, i);
+		}
+	}
+	else
+	{
+		std::string s1 = keyword;
+		std::transform(s1.begin(), s1.end(), s1.begin(), [](char c) { return std::toupper(c); });
+		for (uint32_t i = 0; i < this->_itemColorList.size(); ++i)
+		{
+			std::string& name = this->_itemColorList[i]->name;
+			std::string s2 = name;
+			std::transform(s2.begin(), s2.end(), s2.begin(), [](char c) { return std::toupper(c); });
+			if (s2.find(s1) != std::string::npos)
+			{
+				dropBox->addAValue(name, i);
+				if (selectVal == -2 || i == currentSelected)
 					selectVal = i;
 			}
 		}

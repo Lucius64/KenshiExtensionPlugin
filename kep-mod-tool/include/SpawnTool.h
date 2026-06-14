@@ -43,6 +43,8 @@ namespace KEP
 			void _changeFromFactionSearchText(DataPanelLine* line);
 			void _changeToFactionSearchText(DataPanelLine* line);
 			void _changeUniqueNpcSearchText(DataPanelLine* line);
+			void _changeUniformSearchText(DataPanelLine* line);
+			void _changeColorSearchText(DataPanelLine* line);
 
 			void _initFactionList();
 			void _initSquadList();
@@ -52,6 +54,7 @@ namespace KEP
 			void _initModelList();
 			void _initCampaignList();
 			void _initUniqueCharacters();
+			void _initColorList();
 			void _updateFactionList(const std::string& keyword);
 			void _updateSquadList(const std::string& keyword);
 			void _updateCharacterList(const std::string& keyword);
@@ -63,6 +66,8 @@ namespace KEP
 			void _updateFromFactionList(const std::string& keyword);
 			void _updateToFactionList(const std::string& keyword);
 			void _updateUniqueNpcList(const std::string& keyword);
+			void _updateUniformList(const std::string& keyword);
+			void _updateColorList(const std::string& keyword);
 
 			DatapanelGUI* _panel;
 			const int _category;
@@ -75,6 +80,7 @@ namespace KEP
 			Ogre::FastArray<GameData*> _campaignList;
 			Ogre::FastArray<GameData*> _uniqueCharacterList;
 			std::set<GameData*> _uniquePrisonerList;
+			Ogre::FastArray<GameData*> _itemColorList;
 			int _gearLevel;
 			int _selectedSpawnFaction;
 			int _selectedSpawnSquad;
@@ -94,6 +100,8 @@ namespace KEP
 			float _relation;
 			int _selectedUniqueCharacter;
 			int _uniqueState;
+			int _selectedFactionUniform;
+			int _selectedItemColor;
 		};
 	}
 }

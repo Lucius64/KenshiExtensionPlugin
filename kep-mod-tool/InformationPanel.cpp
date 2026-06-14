@@ -248,6 +248,7 @@ void KEP::tools::InformationPanel::_displayBuildingInformation()
 		return;
 	}
 
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Handle:", KEP::GUIColor::getMain() + building->handle.toString(), cat_building, false, true);
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Name", KEP::GUIColor::getMain() + building->displayName, cat_building, false, true);
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Faction", KEP::GUIColor::getMain() + building->getFaction()->name, cat_building, false, true);
 
@@ -305,6 +306,9 @@ void KEP::tools::InformationPanel::_displayBuildingInformation()
 	{
 		for (auto itemIter = iter->inventory->_allItems.begin(); itemIter != iter->inventory->_allItems.end(); ++itemIter)
 		{
+			if ((*itemIter)->itemFunction == ITEM_MONEY)
+				continue;
+
 			switch ((*itemIter)->objectType)
 			{
 			case ITEM:
@@ -371,7 +375,11 @@ void KEP::tools::InformationPanel::_displayCharacterInformation()
 		return;
 	}
 
+	this->_panel->setLine(KEP::GUIColor::getMain() + "-----------CHARACTER-------------", "", cat_character, false, true);
+
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Handle:", KEP::GUIColor::getMain() + obj->handle.toString(), cat_character, false, true);
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Name:", KEP::GUIColor::getMain() + obj->displayName, cat_character, false, true);
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Template:", KEP::GUIColor::getMain() + obj->getGameData()->stringID, cat_character, false, true);
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Faction:", KEP::GUIColor::getMain() + obj->getFaction()->name, cat_character, false, true);
 
 	auto race = obj->getRace();
@@ -380,7 +388,6 @@ void KEP::tools::InformationPanel::_displayCharacterInformation()
 	this->_panel->setLine(KEP::GUIColor::getMain() + "NPC type:", KEP::GUIColor::getMain() + getCharacterTypeEnumName(obj->stateBroadcast->npcClass), cat_character, false, true);
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Personality:", KEP::GUIColor::getMain() + getPersonalityTagsName(obj->stateBroadcast->personality), cat_character, false, true);
-
 
 	this->_panel->addSpace(cat_character, 0.5f);
 }
@@ -403,7 +410,7 @@ void KEP::tools::InformationPanel::_displayCombatInformation()
 	this->_panel->setLine(KEP::GUIColor::getMain() + "combat mode:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(combat->combatModeActive), cat_combat, false, true);
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Num Slots:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(combat->attackSlots.getNumAttackSlots()), cat_combat, false, true);
-	
+
 	if (combat->combatModeActive)
 		this->_panel->setLine(KEP::GUIColor::getMain() + "State:", KEP::GUIColor::getMain() + getSwordStateEnumName(combat->combatState), cat_combat, false, true);
 	else
