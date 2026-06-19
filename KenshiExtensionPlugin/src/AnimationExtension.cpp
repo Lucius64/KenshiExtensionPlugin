@@ -4,112 +4,121 @@
 #include <core/Functions.h>
 #include <Debug.h>
 
-#include <kenshi/CombatTechniqueData.h>
+#include <kenshi/Globals.h>
+#include <kenshi/GameWorld.h>
+#include <kenshi/combat/CombatTechniqueData.h>
 #include <kenshi/Character.h>
 #include <kenshi/CharMovement.h>
+#include <kenshi/Animation/AnimationClass.h>
+#include <kenshi/GunClass.h>
+#include <kenshi/combat/RangedCombatClass.h>
+#include <kenshi/CharStats.h>
+#include <kenshi/Gear.h>
+#include <kenshi/Faction.h>
 
-#include <extern/AnimationClass.h>
-#include <extern/RangedCombatClass.h>
-#include <extern/GunClass.h>
-
-#include <ExternalFunctions.h>
+#include <kep/functions.h>
 #include <Settings.h>
 #include <AnimationExtension.h>
-
 
 namespace
 {
 	AnimationData* (*AnimationData__CONTRUCTOR_orig)(AnimationData*, GameData*);
-	AnimationData* AnimationData__CONTRUCTOR_hook(AnimationData* self, GameData* baseData)
+	AnimationData* AnimationData__CONTRUCTOR_hook(AnimationData* self, GameData* dat)
 	{
-		AnimationData__CONTRUCTOR_orig(self, baseData);
+		AnimationData__CONTRUCTOR_orig(self, dat);
 
-		if (baseData->bdata["turrets"])
-			self->skillTypes |= 0x80;
+		if (KEP::settings._animationEx && dat->bdata["turrets"])
+			self->weaponTypeFlags |= 0x80;
 
 		return self;
 	}
 
 	CombatTechniqueData* (*CombatTechniqueData__CONTRUCTOR_orig)(CombatTechniqueData*, GameData*);
-	CombatTechniqueData* CombatTechniqueData__CONTRUCTOR_hook(CombatTechniqueData* self, GameData* baseData)
+	CombatTechniqueData* CombatTechniqueData__CONTRUCTOR_hook(CombatTechniqueData* self, GameData* data)
 	{
+		if (!KEP::settings._animationEx)
+		{
+			CombatTechniqueData__CONTRUCTOR_orig(self, data);
+			return self;
+		}
+
 		self->skillTypes[0x16] = false;
 		self->skillTypes[0x17] = false;
 
-		CombatTechniqueData__CONTRUCTOR_orig(self, baseData);
+		CombatTechniqueData__CONTRUCTOR_orig(self, data);
 
-		if (baseData->idata["animal"] < 0x9)
-			self->skillTypes[0x7] = baseData->bdata["turrets"];
+		if (data->idata["animal"] < 0x9)
+			self->skillTypes[0x7] = data->bdata["turrets"];
 
 		return self;
 	}
 
-	void (*RangedCombatClass_FUN_0051DA50_orig)(RangedCombatClass*, const hand&, const Ogre::Vector3&, Character*);
-	void RangedCombatClass_FUN_0051DA50_hook(RangedCombatClass* self, const hand& handle, const Ogre::Vector3& pos, Character* target)
+	void (*RangedCombatClass_animationUpdate_orig)(RangedCombatClass*, float, const Ogre::Vector3&, RootObject*);
+	void RangedCombatClass_animationUpdate_hook(RangedCombatClass* self, float frameTime, const Ogre::Vector3& aimpos, RootObject* target)
 	{
-		if (!KEP::settings._aimAnimationExtension)
+		if (!KEP::settings._animationEx)
 		{
-			RangedCombatClass_FUN_0051DA50_orig(self, handle, pos, target);
+			RangedCombatClass_animationUpdate_orig(self, frameTime, aimpos, target);
 			return;
 		}
 
-		if (self->turret.type != NULL_ITEM || self->gunClass == nullptr)
+		if (self->turret.type != NULL_ITEM || self->gun == nullptr)
 			return;
 
-		self->gunClass->vfunc0x40(false);
+		self->gun->setAnimationReadyToShoot(false);
 
 		std::string aimAnimationName = "aimH";
 
-		auto iterator = self->gunClass->data->objectReferences.find("aim anim");
-		if (iterator != self->gunClass->data->objectReferences.end() && iterator->second.size() != 0)
+		auto iterator = self->gun->gunData->objectReferences.find("aim anim");
+		if (iterator != self->gun->gunData->objectReferences.end() && iterator->second.size() != 0)
 		{
 			auto refdata = iterator->second[0].ptr;
 			if (refdata != nullptr)
 			{
 				auto aimAnimationData = self->me->animation->getAnimationData(refdata->name);
 				if (aimAnimationData != nullptr)
-					aimAnimationName = aimAnimationData->name;
+					aimAnimationName = aimAnimationData->dataName;
 			}
 		}
 
-		if (self->_0x0 == 1)
+		if (self->state == 1)
 		{
-			KEP::externalFunctions->FUN_005B33B0(self->me->animation, aimAnimationName);
+			self->me->animation->stopAnimation(aimAnimationName);
 		}
 		else if (self->me->isOnScreen)
 		{
-			auto reloadAnimationData = self->me->animation->getAnimationData(self->gunClass->reloadAnim);
+			auto reloadAnimationData = self->me->animation->getAnimationData(self->gun->reloadAnimation);
 			if (reloadAnimationData == nullptr)
 				reloadAnimationData = self->me->animation->getAnimationData("reload 1 phase");
 
 			auto aimAnimationData = self->me->animation->getAnimationData(aimAnimationName);
 
-			if (self->_0x80)
+			if (self->_isReloading)
 			{
-				float frame = self->gunClass->animFrame;
-				if (0.0f < frame && self->gunClass->bulletCount == 0)
+				float frame = self->gun->reloadState;
+				if (0.0f < frame && self->gun->numShotsCurrent == 0)
 				{
-					KEP::externalFunctions->FUN_005B7240(self->me->animation, reloadAnimationData, frame, 1.0f);
-					KEP::externalFunctions->FUN_005B33B0(self->me->animation, aimAnimationName);
+					self->me->animation->runAnimation_manualTiming(reloadAnimationData, frame, 1.0f);
+					self->me->animation->stopAnimation(aimAnimationName);
 					return;
 				}
 			}
-			KEP::externalFunctions->FUN_005B3380(self->me->animation, reloadAnimationData);
+			self->me->animation->stopAnimation(reloadAnimationData);
 
 			if (target == nullptr)
 			{
-				KEP::externalFunctions->FUN_005B33B0(self->me->animation, aimAnimationName);
+				self->me->animation->stopAnimation(aimAnimationName);
 			}
 			else
 			{
-				if (pos != Ogre::Vector3::ZERO)
-					self->me->movement->lookatPosition(pos);
+				if (aimpos != Ogre::Vector3::ZERO)
+					self->me->movement->lookatPosition(aimpos);
 
 				if (aimAnimationData != nullptr)
-					KEP::externalFunctions->FUN_005B7030(self->me->animation, aimAnimationData, 0.0f, aimAnimationData->layer, 1.0f);
+					self->me->animation->runAnimation(aimAnimationData, 0.0f, aimAnimationData->layername, 1.0f);
 
-				float weight = KEP::externalFunctions->FUN_005B3020(self->me->animation, aimAnimationData);
-				self->gunClass->vfunc0x40(0.9f < weight);
+				float weight = self->me->animation->getAnimationCurrentWeight(aimAnimationData);
+				self->gun->setAnimationReadyToShoot(0.9f < weight);
 			}
 		}
 	}
@@ -117,15 +126,12 @@ namespace
 
 void KEP::AnimationExtension::init()
 {
-	if (settings._animationSkillTypeExtension)
-	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_005B97F0, AnimationData__CONTRUCTOR_hook, &AnimationData__CONTRUCTOR_orig))
-			ErrorLog("[FUN_005B97F0] Could not add hook!");
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AnimationData::_CONSTRUCTOR), AnimationData__CONTRUCTOR_hook, &AnimationData__CONTRUCTOR_orig))
+		ErrorLog("[AnimationData::AnimationData] Could not add hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CombatTechniqueData::_CONSTRUCTOR), CombatTechniqueData__CONTRUCTOR_hook, &CombatTechniqueData__CONTRUCTOR_orig))
-			ErrorLog("[CombatTechniqueData::CombatTechniqueData] Could not add hook!");
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CombatTechniqueData::_CONSTRUCTOR), CombatTechniqueData__CONTRUCTOR_hook, &CombatTechniqueData__CONTRUCTOR_orig))
+		ErrorLog("[CombatTechniqueData::CombatTechniqueData] Could not add hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0051DA50, RangedCombatClass_FUN_0051DA50_hook, &RangedCombatClass_FUN_0051DA50_orig))
-			ErrorLog("[FUN_0051DA50] Could not add hook!");
-	}
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RangedCombatClass::animationUpdate), RangedCombatClass_animationUpdate_hook, &RangedCombatClass_animationUpdate_orig))
+		ErrorLog("[RangedCombatClass::animationUpdate] Could not add hook!");
 }

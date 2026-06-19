@@ -7,6 +7,8 @@
 
 #include <kenshi/util/UtilityT.h>
 #include <kenshi/Globals.h>
+#include <kenshi/KingOfRenderThread.h>
+#include <kenshi/Renderer.h>
 #include <kenshi/GlobalConstants.h>
 #include <kenshi/GameWorld.h>
 #include <kenshi/OptionsHolder.h>
@@ -19,9 +21,7 @@
 #include <kenshi/Building/UseableStuff.h>
 #include <kenshi/ModInfo.h>
 #include <kenshi/Logger.h>
-
-#include <extern/AnimationClass.h>
-#include <extern/Renderer.h>
+#include <kenshi/Animation/AnimationClass.h>
 
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
@@ -100,7 +100,7 @@ namespace
 							bloodColour.a = 0.0f;
 
 						auto pos2 = self->me->getMovementDirection();
-						KEP::externalFunctions->FUN_008DBF80(KEP::externalGlobals->_CLASS_021322B0->renderer->terrainDecalsManager, 3, self->lastBloodPosition, pos2, 0.2f, bloodColour, 99.0f);
+						KEP::externalFunctions->FUN_008DBF80(au->render->terrainDecalManager, 3, self->lastBloodPosition, pos2, 0.2f, bloodColour, 99.0f);
 					}
 				}
 				else if (0.01f < self->currentBleedRate)
@@ -125,7 +125,7 @@ namespace
 
 							auto race = self->me->getRace();
 
-							KEP::externalFunctions->FUN_008DBF80(KEP::externalGlobals->_CLASS_021322B0->renderer->terrainDecalsManager, 2, pos, pos2, f1, race->bloodColour, 99.0f);
+							KEP::externalFunctions->FUN_008DBF80(au->render->terrainDecalManager, 2, pos, pos2, f1, race->bloodColour, 99.0f);
 
 							self->lastBloodPosition = pos;
 						}
@@ -138,7 +138,7 @@ namespace
 			{
 				auto pos = self->me->getPosition();
 				auto race = self->me->getRace();
-				KEP::externalFunctions->FUN_008DC0D0(KEP::externalGlobals->_CLASS_021322B0->renderer->terrainDecalsManager, self->me, pos, self->currentBleedRate, race->bloodColour);
+				KEP::externalFunctions->FUN_008DC0D0(au->render->terrainDecalManager, self->me, pos, self->currentBleedRate, race->bloodColour);
 
 				self->lastBloodPosition = pos;
 			}

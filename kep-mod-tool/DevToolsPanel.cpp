@@ -17,6 +17,7 @@
 #include <core/Functions.h>
 #include <kenshi/Globals.h>
 #include <kenshi/GameWorld.h>
+#include <kenshi/SharedKing.h>
 #include <kenshi/ZoneManager.h>
 #include <kenshi/InputHandler.h>
 #include <kenshi/PlayerInterface.h>
@@ -47,10 +48,11 @@
 #include <kenshi/gui/ManagementScreen.h>
 #include <kenshi/gui/MapScreen.h>
 #include <kenshi/gui/OptionsWindow.h>
-#include <extern/ZoneMapContent.h>
+#include <kenshi/ZoneMapContent.h>
 #include <extern/TownBase.h>
 #include <extern/UseableStuff.h>
-#include <extern/AI.h>
+#include <kenshi/AI/AI.h>
+#include <kenshi/AI/AITaskSystem.h>
 #include <extern/AreaBiomeGroup.h>
 
 #include <kep/translation.h>
@@ -267,7 +269,7 @@ namespace
 	void teleportAndStopCharactersMovement(Character* character, const Ogre::Vector3& pos)
 	{
 		character->getMovement()->halt();
-		KEP::functions->OrdersReceiver_deleteAllTask(character->ai->taskSystem);
+		character->ai->taskSystemAI->clearOrders();
 		character->getBody()->_endAction();
 		character->teleport(pos);
 	}
@@ -363,7 +365,7 @@ void KEP::tools::DevToolsPanel::_completeAllBuilding(DataPanelLine* line)
 
 void KEP::tools::DevToolsPanel::_discoverAllTowns(DataPanelLine* line)
 {
-	auto towns = KEP::functions->getLevelManager()->townList;
+	auto towns = shou->townList;
 	for (auto iter = towns->things.begin(); iter != towns->things.end(); ++iter)
 	{
 		auto town = reinterpret_cast<TownBase*>(*iter);
@@ -648,20 +650,6 @@ void KEP::tools::DevToolsPanel::setEditBox(const std::string& caption, int cat, 
 	auto textbox = this->_panel->setLineTextEditable(caption, text, cat, true, false, MyGUI::Align::Left, width);
 	textbox->callback = new MyGUI::delegates::CMethodDelegate1<DevToolsPanel, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, callback);
 }
-
-class Renderer;
-class Terrain;
-
-class KingOfRenderThread : private Ogre::GeneralAllocatedObject
-{
-public:
-	float TIME;
-	Renderer* renderer;
-	CameraClass* camera;
-	Terrain* terrain;
-	TitleScreen* titleScreen;
-	ogre_unordered_map<Ogre::IdString, MeshDataLookup*>::type globalMeshDataLookup;
-};
 
 namespace
 {

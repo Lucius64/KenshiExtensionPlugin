@@ -81,6 +81,9 @@
     <ClInclude Include="include\ItemExtension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\bugfix\AnimationFix.h">
+      <Filter>Header Files\bugfix</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ExternalFunctions.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="src\ItemExtension.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bugfix\AnimationFix.cpp">
+      <Filter>Source Files\bugfix</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

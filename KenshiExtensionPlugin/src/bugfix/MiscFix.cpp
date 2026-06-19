@@ -31,7 +31,6 @@
 #include <Settings.h>
 #include <bugfix/MiscFix.h>
 
-
 namespace fs = boost::filesystem;
 
 namespace
@@ -171,21 +170,21 @@ namespace
 	}
 
 	void (*FUN_004B0B60_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
-	void FUN_004B0B60_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b)
+	void FUN_004B0B60_hook(void* self, MyGUI::ItemBox* _sender, MyGUI::IntCoord& _coord, bool _drop)
 	{
 		_coord.left = 0;
 		_coord.top = 0;
-		_coord.width = parent->getClientCoord().width;
-		_coord.height = static_cast<int>(KEP::externalGlobals->_KenshiGUI->Scale.y * 28.0f);
+		_coord.width = _sender->getClientCoord().width;
+		_coord.height = static_cast<int>(gui->Scale.y * 28.0f);
 	}
 
 	void (*FUN_002C9840_orig)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool);
-	void FUN_002C9840_hook(void* self, MyGUI::ItemBox* parent, MyGUI::types::TCoord<int>& _coord, bool b)
+	void FUN_002C9840_hook(void* self, MyGUI::ItemBox* _sender, MyGUI::IntCoord& _coord, bool _drop)
 	{
 		_coord.left = 0;
 		_coord.top = 0;
-		_coord.width = parent->getClientCoord().width;
-		_coord.height = static_cast<int>(KEP::externalGlobals->_KenshiGUI->Scale.y * 28.0f);
+		_coord.width = _sender->getClientCoord().width;
+		_coord.height = static_cast<int>(gui->Scale.y * 28.0f);
 	}
 
 	void (*NewGameWindow_loadData_orig)(NewGameWindow*);

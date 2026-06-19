@@ -13,6 +13,7 @@
 
 #include <ExternalFunctions.h>
 #include <Settings.h>
+#include <bugfix/AnimationFix.h>
 #include <bugfix/AppearanceFix.h>
 #include <bugfix/UniqueCharacterFix.h>
 #include <bugfix/StatsFix.h>
@@ -41,20 +42,13 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep 0.15.4");
-
-	auto& libVersion = KEP::getKenshiLibVersion();
-	if (libVersion < KEP::VersionInfo(0, 3, 0))
-	{
-		ErrorLog("Please install KenshiLib version 0.3.0 or later.");
-		return;
-	}
+	DebugLog("kep 0.16.0");
 
 	auto versionInfo = KenshiLib::GetKenshiVersion();
 	auto platform = versionInfo.GetPlatform();
 	auto version = versionInfo.GetVersion();
 
-	if (platform == KenshiLib::BinaryVersion::UNKNOWN || (version != "1.0.65" && version != "1.0.68"))
+	if (platform == KenshiLib::BinaryVersion::UNKNOWN || version != "1.0.65")
 	{
 		ErrorLog("error!");
 		return;
@@ -78,6 +72,7 @@ __declspec(dllexport) void startPlugin()
 	auto& confMgr = KEP::ConfigManager::getSingleton();
 	confMgr.addItem(&KEP::settings);
 
+	KEP::AnimationFix::init();
 	KEP::AppearanceFix::init();
 	KEP::UniqueCharacterFix::init();
 	KEP::StatsFix::init();

@@ -25,7 +25,6 @@
 #include <Settings.h>
 #include <AnimalExtension.h>
 
-
 namespace
 {
 	GameData* _chooseClothingItemFromListForAnimal(GameData* dataList, const std::string& listName, AttachSlot slot, RaceData* race)

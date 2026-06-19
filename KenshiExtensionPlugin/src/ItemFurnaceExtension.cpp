@@ -11,13 +11,13 @@
 #include <kenshi/Gear.h>
 #include <kenshi/Character.h>
 #include <kenshi/Building/FurnaceBuilding.h>
+#include <kenshi/AI/AI.h>
 
-#include <extern/AI.h>
+#include <kep/translation.h>
 
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <ItemFurnaceExtension.h>
-
 
 namespace
 {
@@ -202,10 +202,10 @@ namespace
 		FurnaceBuilding_getResourcesNeededBecauseEmpty_orig(self, out);
 	}
 
-	bool (*AI_haveSomeResourcesFor_orig)(AI*, hand&);
-	bool AI_haveSomeResourcesFor_hook(AI* self, hand& handle)
+	bool (*AI_haveSomeResourcesFor_orig)(AI*, const hand&, const Ogre::Vector3&);
+	bool AI_haveSomeResourcesFor_hook(AI* self, const hand& subject, const Ogre::Vector3& _a2)
 	{
-		auto building = handle.getBuilding();
+		auto building = subject.getBuilding();
 		if (building != nullptr)
 		{
 			auto storage = building->getFunctionStuff();
@@ -220,7 +220,7 @@ namespace
 			}
 		}
 
-		return AI_haveSomeResourcesFor_orig(self, handle);
+		return AI_haveSomeResourcesFor_orig(self, subject, _a2);
 	}
 
 	int (*Task_FillMachine_FUN_00340EB0_orig)(Task_FillMachine*, StorageBuilding*, Inventory*);
@@ -277,8 +277,8 @@ void KEP::ItemFurnaceExtension::init()
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getResourcesNeededBecauseEmpty), &FurnaceBuilding_getResourcesNeededBecauseEmpty_hook, &FurnaceBuilding_getResourcesNeededBecauseEmpty_orig))
 			ErrorLog("[FurnaceBuilding::getResourcesNeededBecauseEmpty] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_005A3B60, &AI_haveSomeResourcesFor_hook, &AI_haveSomeResourcesFor_orig))
-			ErrorLog("[FUN_005A3B60] could not install hook!");
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AI::haveSomeResourcesFor), &AI_haveSomeResourcesFor_hook, &AI_haveSomeResourcesFor_orig))
+			ErrorLog("[AI::haveSomeResourcesFor] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00340EB0, &Task_FillMachine_FUN_00340EB0_hook, &Task_FillMachine_FUN_00340EB0_orig))
 			ErrorLog("[FUN_00340EB0] could not install hook!");

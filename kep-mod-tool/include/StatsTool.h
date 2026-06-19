@@ -27,6 +27,7 @@ namespace KEP
 			void _overwriteStats(DataPanelLine* line);
 			void _setSlaveState(DataPanelLine* line);
 			void _changePersonality(DataPanelLine* line);
+			void _changePortraitSerial(DataPanelLine* line);
 
 			void _initStatsEnumList();
 			void _initStatsDataList();
@@ -46,6 +47,8 @@ namespace KEP
 			int _selectedStatsData;
 			int _selectedSlaveState;
 			int _selectedPersonality;
+			float _portraitYaw;
+			float _portraitPitch;
 
 		};
 	}

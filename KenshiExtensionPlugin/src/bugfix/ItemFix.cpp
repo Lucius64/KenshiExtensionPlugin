@@ -21,12 +21,10 @@
 #include <kenshi/Gear.h>
 #include <kenshi/MedicalSystem.h>
 #include <kenshi/ZoneManager.h>
+#include <kenshi/ZoneMapContent.h>
+#include <kenshi/GunClass.h>
 
-#include <extern/GunClass.h>
 #include <extern/BuildingInterior.h>
-#include <extern/BlueprintItem.h>
-#include <extern/ZoneMapContent.h>
-#include <extern/SeveredLimbItem.h>
 #include <extern/AreaBiomeGroup.h>
 
 #include <kep/functions.h>
@@ -65,8 +63,8 @@ namespace
 
 		if (KEP::settings._fixGlobalDamageMultiplier)
 		{
-			self->pierceDamageMin = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage min 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage min 1"]));
-			self->pierceDamageMax = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage max 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage max 1"]));
+			self->minDamage = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage min 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage min 1"]));
+			self->maxDamage = static_cast<int>(KEP::lerp(_level, con->BOW_DAMAGE_0 * baseData->fdata["pierce damage max 0"], con->BOW_DAMAGE_99 * baseData->fdata["pierce damage max 1"]));
 		}
 
 		return self;
@@ -210,7 +208,7 @@ namespace
 	void SeveredLimbItem_destroyPhysical_hook(SeveredLimbItem* self)
 	{
 		lektor<ZoneMap*> loadedZones;
-		KEP::functions->getLevelManager()->zoneMgr->getAllActiveZones(loadedZones);
+		ou->zoneMgr->getAllActiveZones(loadedZones);
 		hand handle(self);
 
 		int count = 0;
@@ -219,7 +217,7 @@ namespace
 			if ((*iter)->mapContent == nullptr)
 				continue;
 
-			if ((*iter)->mapContent->_0x110.count(handle) != 0)
+			if ((*iter)->mapContent->items.count(handle) != 0)
 				++count;
 		}
 
@@ -235,7 +233,7 @@ namespace
 			if ((*iter)->mapContent == nullptr)
 				continue;
 
-			if ((*iter)->mapContent->_0x110.count(handle) != 0)
+			if ((*iter)->mapContent->items.count(handle) != 0)
 				++afterCount;
 		}
 
@@ -249,7 +247,7 @@ namespace
 				if ((*iter)->mapContent == nullptr)
 					continue;
 
-				if ((*iter)->mapContent->_0x110.count(handle) != 0)
+				if ((*iter)->mapContent->items.count(handle) != 0)
 					Logger::logMessage(" - still in zone " + (*iter)->coordinates.getAsString(), Logger::Info);
 			}
 		}
@@ -261,7 +259,7 @@ void KEP::ItemFix::init()
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::addArmour), &MedicalSystem_addArmour_hook, &MedicalSystem_addArmour_orig))
 		ErrorLog("[MedicalSystem::addArmour] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0043BDE0, &GunClassPersonal__CONSTRUCTOR_hook, &GunClassPersonal__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GunClassPersonal::_CONSTRUCTOR), &GunClassPersonal__CONSTRUCTOR_hook, &GunClassPersonal__CONSTRUCTOR_orig))
 		ErrorLog("[GunClassPersonal::GunClassPersonal] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ContainerItem::_NV_setProperOwner), &ContainerItem_setProperOwner_hook, &ContainerItem_setProperOwner_orig))
@@ -270,15 +268,15 @@ void KEP::ItemFix::init()
 	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Building::setResidentSquad), &Building_setResidentSquad_hook, &Building_setResidentSquad_orig))
 		ErrorLog("[Building::setResidentSquad] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002B7860, &BlueprintItem__CONSTRUCTOR_hook, &BlueprintItem__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&BlueprintItem::_CONSTRUCTOR), &BlueprintItem__CONSTRUCTOR_hook, &BlueprintItem__CONSTRUCTOR_orig))
 		ErrorLog("[BlueprintItem::BlueprintItem] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (InventorySection::*)(Item*))&InventorySection::isLimitedSlotCompatible), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (InventorySection::*)(Item*)) & InventorySection::isLimitedSlotCompatible), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
 		ErrorLog("[InventorySection::isLimitedSlotCompatible(Item*)] could not install hook!");
 
 	if (settings._enableCrashPrevention)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000CD830, &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&SeveredLimbItem::_NV_destroyPhysical), &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
 			ErrorLog("[SeveredLimbItem::destroyPhysical] could not install hook!");
 	}
 }

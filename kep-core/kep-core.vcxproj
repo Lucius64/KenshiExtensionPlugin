@@ -142,34 +142,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\extern\AI.h" />
-    <ClInclude Include="include\extern\AnimationClass.h" />
-    <ClInclude Include="include\extern\AnimsListsManager.h" />
     <ClInclude Include="include\extern\AppearanceBase.h" />
-    <ClInclude Include="include\extern\AppearanceManager.h" />
     <ClInclude Include="include\extern\AreaBiomeGroup.h" />
     <ClInclude Include="include\extern\BasePopulationManager.h" />
     <ClInclude Include="include\extern\Blackboard.h" />
-    <ClInclude Include="include\extern\BlueprintItem.h" />
     <ClInclude Include="include\extern\BuildingInterior.h" />
     <ClInclude Include="include\extern\CharacterMemory.h" />
     <ClInclude Include="include\extern\FactionWarMgr.h" />
-    <ClInclude Include="include\extern\GunClass.h" />
-    <ClInclude Include="include\extern\InventoryLayout.h" />
     <ClInclude Include="include\extern\InventoryManager.h" />
-    <ClInclude Include="include\extern\PortraitManager.h" />
     <ClInclude Include="include\extern\ProductionBuilding.h" />
-    <ClInclude Include="include\extern\RangedCombatClass.h" />
     <ClInclude Include="include\extern\Renderer.h" />
     <ClInclude Include="include\extern\Research.h" />
-    <ClInclude Include="include\extern\RobotLimbItem.h" />
-    <ClInclude Include="include\extern\SeveredLimbItem.h" />
-    <ClInclude Include="include\extern\StateBroadcastData.h" />
     <ClInclude Include="include\extern\TemporaryLimbInterface.h" />
     <ClInclude Include="include\extern\TownBase.h" />
     <ClInclude Include="include\extern\UniqueNPCManager.h" />
     <ClInclude Include="include\extern\UseableStuff.h" />
-    <ClInclude Include="include\extern\ZoneMapContent.h" />
     <ClInclude Include="include\framework.h" />
     <ClInclude Include="include\kep.h" />
     <ClInclude Include="include\kep\common.h" />

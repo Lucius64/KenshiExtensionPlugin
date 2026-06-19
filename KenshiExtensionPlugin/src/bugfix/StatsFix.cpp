@@ -14,8 +14,7 @@
 #include <kenshi/Building/Building.h>
 #include <kenshi/Damages.h>
 #include <kenshi/GameplayOptions.h>
-
-#include <extern/RobotLimbItem.h>
+#include <kenshi/Gear.h>
 
 #include <kep/translation.h>
 #include <UtilityFunction.h>
@@ -255,19 +254,19 @@ namespace
 		int bonus = 0;
 		auto leftArm = this->me->medical.leftArm->robotLimb;
 		if (leftArm != nullptr)
-			bonus += leftArm->unarmedDamageBonus;
+			bonus += leftArm->unarmedDamage;
 
 		auto rightArm = this->me->medical.rightArm->robotLimb;
 		if (rightArm != nullptr)
-			bonus += rightArm->unarmedDamageBonus;
+			bonus += rightArm->unarmedDamage;
 
 		auto leftLeg = this->me->medical.leftLeg->robotLimb;
 		if (leftLeg != nullptr)
-			bonus += leftLeg->unarmedDamageBonus;
+			bonus += leftLeg->unarmedDamage;
 
 		auto rightLeg = this->me->medical.rightLeg->robotLimb;
 		if (rightLeg != nullptr)
-			bonus += rightLeg->unarmedDamageBonus;
+			bonus += rightLeg->unarmedDamage;
 
 		auto unarmedSkill = this->getMeleeAttack_unarmed(true);
 		auto baseDamage = KEP::lerp((unarmedSkill + static_cast<float>(bonus)) * 0.01f, 0.25f, 1.0f);

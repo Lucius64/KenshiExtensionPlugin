@@ -10,7 +10,6 @@
 
 #include <extern/FactionWarMgr.h>
 
-#include <ExternalFunctions.h>
 #include <Settings.h>
 #include <WarCampaignExtension.h>
 

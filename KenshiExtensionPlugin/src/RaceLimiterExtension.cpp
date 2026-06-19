@@ -18,16 +18,15 @@
 #include <kenshi/RaceData.h>
 #include <kenshi/Inventory.h>
 #include <kenshi/Platoon.h>
+#include <kenshi/GunClass.h>
 
-#include <extern/RobotLimbItem.h>
 #include <extern/TemporaryLimbInterface.h>
-#include <extern/GunClass.h>
+#include <kep/functions.h>
 
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <RaceLimiterExtension.h>
-
 
 namespace
 {
@@ -123,7 +122,7 @@ void KEP::RaceLimiterExtension::init()
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (RaceLimiter::*)(GameData*, RootObject*))&RaceLimiter::_NV_canEquip), &RaceLimiter_canEquip_hook, &RaceLimiter_canEquip_orig))
 			ErrorLog("[RaceLimiter::canEquip] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000CE290, &RobotLimbItem__CONTRUCTOR_hook, &RobotLimbItem__CONTRUCTOR_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RobotLimbItem::_CONSTRUCTOR), &RobotLimbItem__CONTRUCTOR_hook, &RobotLimbItem__CONTRUCTOR_orig))
 			ErrorLog("[RobotLimbItem::RobotLimbItem] could not install hook!");
 
 		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RaceLimiter::addLimit), &RaceLimiter_addLimit_hook, &RaceLimiter_addLimit_orig))

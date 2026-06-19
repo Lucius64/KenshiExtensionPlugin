@@ -19,7 +19,8 @@
 #include <kenshi/gui/ForgottenGUI.h>
 #include <kenshi/gui/DatapanelGUI.h>
 #include <kenshi/gui/DataPanelLine.h>
-#include <extern/AI.h>
+#include <kenshi/AI/AI.h>
+#include <kenshi/AI/AITaskSystem.h>
 #include <extern/Blackboard.h>
 #include <extern/CharacterMemory.h>
 
@@ -133,7 +134,7 @@ void KEP::tools::PlatoonTool::_changeAI(DataPanelLine* line)
 	{
 		auto obj = reinterpret_cast<Character*>(*iter);
 		obj->getMovement()->halt();
-		KEP::functions->OrdersReceiver_deleteAllTask(obj->ai->taskSystem);
+		obj->ai->taskSystemAI->clearOrders();
 		obj->getBody()->_endAction();
 	}
 
@@ -168,11 +169,11 @@ void KEP::tools::PlatoonTool::_resetAI(DataPanelLine* line)
 	for (auto iter = platoon->things.begin(); iter != platoon->things.end(); ++iter)
 	{
 		auto obj = reinterpret_cast<Character*>(*iter);
-		KEP::functions->OrdersReceiver_deleteAllPassiveJob(obj->ai->taskSystem);
-		KEP::functions->ActionDeque_clear(&obj->ai->taskSystem->_0x300);
-		KEP::functions->AITaskSystem_clear(obj->ai->taskSystem);
+		obj->ai->taskSystemAI->clearPermajobs();
+		obj->ai->taskSystemAI->actions.clearAndDelete();
+		obj->ai->taskSystemAI->clearSlaveJobs();
 		obj->getMovement()->halt();
-		KEP::functions->OrdersReceiver_deleteAllTask(obj->ai->taskSystem);
+		obj->ai->taskSystemAI->clearOrders();
 		obj->getBody()->_endAction();
 	}
 }

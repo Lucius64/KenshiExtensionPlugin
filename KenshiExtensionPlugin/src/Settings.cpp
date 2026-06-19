@@ -12,8 +12,8 @@
 #include <kenshi/gui/DatapanelGUI.h>
 #include <kenshi/gui/DataPanelLine.h>
 
+#include <kep/utility.h>
 #include <kep/translation.h>
-#include <ExternalFunctions.h>
 
 namespace fs = boost::filesystem;
 
@@ -65,10 +65,9 @@ namespace
 		settingsDocument.AddMember("bulk_stat_max_female", settings._bulkStatMaxFemale, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("bulk_stat_min_female", settings._bulkStatMinFemale, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("idle_stance_extension", settings._idleStanceExtension, settingsDocument.GetAllocator());
-		settingsDocument.AddMember("animation_skill_type_extension", settings._animationSkillTypeExtension, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("animation_skill_type_extension", settings._animationEx, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("portrait_extension", settings._portraitExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("save_reputation", settings._saveReputation, settingsDocument.GetAllocator());
-		settingsDocument.AddMember("aim_animation_extension", settings._aimAnimationExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_athletics_multiplier", settings._fixAthleticsMultiplier, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("animal_armor", settings._animalArmor, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_tech_and_crafting_queue", settings._fixTechAndCraftingQueue, settingsDocument.GetAllocator());
@@ -81,6 +80,7 @@ namespace
 		settingsDocument.AddMember("fix_GetResourceFilePath", settings._fixGetResourceFilePath, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_TortureBuilding", settings._fixTortureBuilding, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_AnimalAge", settings._fixAnimalAge, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_idle_animation", settings._fixIdleAnimation, settingsDocument.GetAllocator());
 
 		return settingsDocument;
 	}
@@ -122,7 +122,6 @@ KEP::Settings::Settings()
 	, _furnaceExtension(true)
 	, _sortedIdleStances(true)
 	, _scythePathExtension(true)
-	, _aimAnimationExtension(true)
 	, _bulkLimitsExtension(false)
 	, _bulkStatMaxMale(500.0f)
 	, _bulkStatMinMale(-500.0f)
@@ -130,7 +129,7 @@ KEP::Settings::Settings()
 	, _bulkStatMinFemale(-500.0f)
 	, _idleStanceExtension(false)
 	, _saveReputation(false)
-	, _animationSkillTypeExtension(false)
+	, _animationEx(false)
 	, _portraitExtension(0)
 	, _fixAthleticsMultiplier(true)
 	, _animalArmor(true)
@@ -145,6 +144,7 @@ KEP::Settings::Settings()
 	, _fixGetResourceFilePath(true)
 	, _fixTortureBuilding(true)
 	, _fixAnimalAge(true)
+	, _fixIdleAnimation(true)
 {
 }
 
@@ -261,13 +261,11 @@ void KEP::Settings::loadSettings()
 	if (settingsDocument.HasMember("idle_stance_extension"))
 		this->_idleStanceExtension = settingsDocument["idle_stance_extension"].GetBool();
 	if (settingsDocument.HasMember("animation_skill_type_extension"))
-		this->_animationSkillTypeExtension = settingsDocument["animation_skill_type_extension"].GetBool();
+		this->_animationEx = settingsDocument["animation_skill_type_extension"].GetBool();
 	if (settingsDocument.HasMember("portrait_extension"))
 		this->_portraitExtension = settingsDocument["portrait_extension"].GetInt();
 	if (settingsDocument.HasMember("save_reputation"))
 		this->_saveReputation = settingsDocument["save_reputation"].GetBool();
-	if (settingsDocument.HasMember("aim_animation_extension"))
-		this->_aimAnimationExtension = settingsDocument["aim_animation_extension"].GetBool();
 	if (settingsDocument.HasMember("fix_athletics_multiplier"))
 		this->_fixAthleticsMultiplier = settingsDocument["fix_athletics_multiplier"].GetBool();
 	if (settingsDocument.HasMember("animal_armor"))
@@ -292,6 +290,8 @@ void KEP::Settings::loadSettings()
 		this->_fixTortureBuilding = settingsDocument["fix_TortureBuilding"].GetBool();
 	if (settingsDocument.HasMember("fix_AnimalAge"))
 		this->_fixAnimalAge = settingsDocument["fix_AnimalAge"].GetBool();
+	if (settingsDocument.HasMember("fix_idle_animation"))
+		this->_fixIdleAnimation = settingsDocument["fix_idle_animation"].GetBool();
 }
 
 KEP::Settings::~Settings()
@@ -305,19 +305,22 @@ void KEP::Settings::save() const
 
 void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 {
-	panel->setLine(*externalGlobals->_MainColorCode + KEP::TranslationUtility::gettext("[KEP Bug fixes]"), "", category, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[KEP Bug fixes]"), "", category, false, true);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix NPC faces"), &this->_fixShapeKey, category)
 		->setToolTip(KEP::TranslationUtility::gettext("NPC shape keys are applied correctly."), tooltip);
 
-	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix hair display in the character editor"), &this->_fixHairDisplay, category)
-		->setToolTip(KEP::TranslationUtility::gettext("Characters equipped with bandanas and similar items will now display correctly in the Character Editor window."), tooltip);
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix character editor"), &this->_fixHairDisplay, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Characters equipped with bandanas and similar items will now display correctly in the Character Editor window. Additionally, face textures will now be imported as well."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix portrait"), &this->_fixPortrait, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The idle animations added or overwritten by Mods will be reflected in the portrait. Additionally, the positions of the shoulders and neck will be displayed correctly."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix animation override"), &this->_fixAnimationOverride, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The animation will be overridden correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix idle animation"), &this->_fixIdleAnimation, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Reduces the twitching in the idle animation while carrying a character."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix spawning of unique characters"), &this->_fixspawningOfUniqueCharacters, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Prevents the loss of unique characters due to town overrides or squad regeneration."), tooltip);
@@ -411,7 +414,7 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->addSpace(category, 1.0f);
 
-	panel->setLine(*externalGlobals->_MainColorCode + KEP::TranslationUtility::gettext("[KEP Features]"), "", category, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[KEP Features]"), "", category, false, true);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Sort idle stances"), &this->_sortedIdleStances, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Sort idle stances by Mod load order and dictionary order of names. (REQURIES RESTART)"), tooltip);
@@ -465,11 +468,8 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Idle Stance"), &this->_idleStanceExtension, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Idle Stance."), tooltip);
 
-	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Animation SkillType"), &this->_animationSkillTypeExtension, category)
-		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Animation SkillType. (REQURIES RESTART)"), tooltip);
-
-	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Aim Animation"), &this->_aimAnimationExtension, category)
-		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Aim Animation."), tooltip);
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Animation"), &this->_animationEx, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Animation."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Animal Armor"), &this->_animalArmor, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Animal Armor. (REQURIES RESTART)"), tooltip);
@@ -477,8 +477,8 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Crafting item"), &this->_craftingItemExtension, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Crafting item. (REQURIES RESTART)"), tooltip);
 
-	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Weapon"), &this->_weaponExtension, category)
-		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Weapon. (REQURIES RESTART)"), tooltip);
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Item"), &this->_weaponExtension, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Item."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Extension: Dialogue"), &this->_dialogueExtension, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Enable extension function for Dialogue."), tooltip);

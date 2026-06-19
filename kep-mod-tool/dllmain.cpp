@@ -16,14 +16,7 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep-mod-tool 1.0.2");
-
-	auto& libVersion = KEP::getKenshiLibVersion();
-	if (libVersion < KEP::VersionInfo(0, 3, 0))
-	{
-		ErrorLog("Please install KenshiLib version 0.3.0 or later.");
-		return;
-	}
+	DebugLog("kep-mod-tool 1.1.0");
 
 	fs::path modulePath = myDirectory;
 	if (!fs::exists(modulePath / "LICENSE") || !fs::exists(modulePath / "NOTICE.md"))
@@ -37,9 +30,9 @@ __declspec(dllexport) void startPlugin()
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
+					   DWORD  ul_reason_for_call,
+					   LPVOID lpReserved
+					 )
 {
 	switch (ul_reason_for_call)
 	{

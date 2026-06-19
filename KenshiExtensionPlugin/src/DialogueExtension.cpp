@@ -15,9 +15,9 @@
 #include <kenshi/RaceData.h>
 #include <kenshi/SensoryData.h>
 #include <kenshi/Inventory.h>
-#include <extern/StateBroadcastData.h>
+#include <kenshi/StateBroadcastData.h>
 
-#include <ExternalFunctions.h>
+#include <kep/utility.h>
 #include <Settings.h>
 #include <DialogueExtension.h>
 
@@ -49,25 +49,25 @@ namespace
 	std::string DetourDialogue::Dialogue_getWordSwap_hook(const std::string& key, Character* _target, bool _swapMeYou, DialogLineData* _line)
 	{
 		if (key == "CLR_MAIN")
-			return *KEP::externalGlobals->_MainColorCode;
+			return KEP::GUIColor::getMain();
 		else if (key == "CLR_SECONDARY")
-			return *KEP::externalGlobals->_SecondaryColorCode;
+			return KEP::GUIColor::getSecondary();
 		else if (key == "CLR_TITLE")
-			return *KEP::externalGlobals->_TitleColorCode;
+			return KEP::GUIColor::getTitle();
 		else if (key == "CLR_BAD")
-			return *KEP::externalGlobals->_BadColorCode;
+			return KEP::GUIColor::getBad();
 		else if (key == "CLR_BAD_BRIGHT")
-			return *KEP::externalGlobals->_BadBrightColorCode;
+			return KEP::GUIColor::getBadBright();
 		else if (key == "CLR_GOOD")
-			return *KEP::externalGlobals->_GoodColorCode;
+			return KEP::GUIColor::getGood();
 		else if (key == "CLR_GOOD_BRIGHT")
-			return *KEP::externalGlobals->_GoodBrightColorCode;
+			return KEP::GUIColor::getGoodBright();
 		else if (key == "CLR_GREYED")
-			return *KEP::externalGlobals->_GreyedColorCode;
+			return KEP::GUIColor::getGreyed();
 		else if (key == "CLR_GREYED_BRIGHT")
-			return *KEP::externalGlobals->_GreyedBrightColorCode;
+			return KEP::GUIColor::getGreyedBright();
 		else if (key == "CLR_SPECIAL")
-			return *KEP::externalGlobals->_SpecialColorCode;
+			return KEP::GUIColor::getSpecial();
 		else
 		{
 			if (_target != nullptr && this->me == _target)

@@ -14,15 +14,16 @@
 #include <kenshi/PlayerInterface.h>
 #include <kenshi/Dialogue.h>
 #include <kenshi/gui/SquadManagementScreen.h>
+#include <kenshi/CharStats.h>
+#include <kenshi/StateBroadcastData.h>
+#include <kenshi/AI/AI.h>
+#include <kenshi/AI/AITaskSystem.h>
 
-#include <extern/AI.h>
 #include <extern/Blackboard.h>
-#include <extern/StateBroadcastData.h>
 
 #include <ExternalFunctions.h>
 #include <Settings.h>
 #include <CharacterExtension.h>
-
 
 namespace
 {
@@ -80,7 +81,7 @@ namespace
 		auto platoon = faction->createNewEmptyActivePlatoon(squadTemplate, true, pos);
 		platoon->activePlatoon->addActiveObject(self->dismissChar);
 
-		auto blackboard = KEP::externalFunctions->FUN_005065E0(self->dismissChar->ai);
+		auto blackboard = self->dismissChar->ai->getBlackboard();
 		if (blackboard != nullptr)
 		{
 			blackboard->_0x130 = true;
@@ -90,10 +91,10 @@ namespace
 			blackboard->slaveTasks.clear();
 			KEP::externalFunctions->FUN_002715E0(blackboard, squadTemplate);
 		}
-		KEP::externalFunctions->FUN_005067F0(self->dismissChar->ai->taskSystem);
-		KEP::externalFunctions->FUN_0050C720(&self->dismissChar->ai->taskSystem->_0x300);
-		KEP::externalFunctions->FUN_004AB930(self->dismissChar->ai->taskSystem);
-		KEP::externalFunctions->FUN_0048EA30(self);
+		self->dismissChar->ai->taskSystemAI->clearPermajobs();
+		self->dismissChar->ai->taskSystemAI->actions.clearAndDelete();
+		self->dismissChar->ai->taskSystemAI->clearSlaveJobs();
+		self->refreshSquads();
 
 		self->dismissChar = nullptr;
 		return;

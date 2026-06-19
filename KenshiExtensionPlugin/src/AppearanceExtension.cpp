@@ -18,13 +18,12 @@
 #include <kenshi/AppearanceManager.h>
 #include <kenshi/Appearance.h>
 #include <kenshi/gui/PortraitManager.h>
+#include <kenshi/Animation/AnimationClass.h>
+#include <kenshi/StateBroadcastData.h>
 
-#include <extern/AnimationClass.h>
 #include <extern/AppearanceBase.h>
-#include <extern/StateBroadcastData.h>
 
 #include <UtilityFunction.h>
-#include <ExternalFunctions.h>
 #include <Settings.h>
 #include <AppearanceExtension.h>
 
@@ -57,7 +56,7 @@ namespace
 		ogre_unordered_set<std::string>::type animNameSet;
 		for (auto iter = appearanceManager->characterIdleAnimations.begin(); iter != appearanceManager->characterIdleAnimations.end(); ++iter)
 		{
-			animNameSet.emplace((*iter)->name);
+			animNameSet.emplace((*iter)->dataName);
 		}
 
 		const std::string key = "idle stances";
@@ -150,13 +149,13 @@ namespace
 
 		if (character->isAnimal() != nullptr)
 		{
-			int32_t count = static_cast<int32_t>(character->animation->animList->idleAnims.size());
+			int32_t count = static_cast<int32_t>(character->animation->myAnimList->idleAnims.size());
 			if (0 < count)
 			{
 				if (1 < count)
-					bodydata->sdata["idle stance"] = character->animation->animList->idleAnims[UtilityT::randomInt(0, count - 1)]->name;
+					bodydata->sdata["idle stance"] = character->animation->myAnimList->idleAnims[UtilityT::randomInt(0, count - 1)]->dataName;
 				else
-					bodydata->sdata["idle stance"] = character->animation->animList->idleAnims[0]->name;
+					bodydata->sdata["idle stance"] = character->animation->myAnimList->idleAnims[0]->dataName;
 			}
 			else
 			{
@@ -221,7 +220,7 @@ namespace
 				idleStanceName = "";
 			}
 
-			auto personality = character->getStateBroadcast()->personality;
+			auto personality = character->getStateBroadcast()->myPersonality;
 			if (personality == PT_BRAVE)
 				idleStanceName = "idle_stand_guard";
 			else if (personality == PT_FEARFUL)

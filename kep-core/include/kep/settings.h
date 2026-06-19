@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <kep/config_manager.h>
+#include "config_manager.h"
 
 namespace KEP
 {

@@ -10,6 +10,7 @@
 #include <core/Functions.h>
 #include <kenshi/Globals.h>
 #include <kenshi/GameWorld.h>
+#include <kenshi/SharedKing.h>
 #include <kenshi/PlayerInterface.h>
 #include <kenshi/Faction.h>
 #include <kenshi/FactionWarMgr.h>
@@ -484,11 +485,10 @@ namespace
 		auto pos = ou->player->getCameraCenter();
 		pos.y = UtilityT::getTerrainHeightFast(pos.x, pos.z, nullptr);
 
-		auto levelMgr = KEP::functions->getLevelManager();
-		AreaSector* sector = KEP::functions->AreaManager_getAreaSector(levelMgr->areaMgr, pos);
+		AreaSector* sector = KEP::functions->AreasList_getAreaSector(shou->areasList, pos);
 
-		TownBase* town = KEP::functions->TownList_getTown(levelMgr->townList, pos, faction, nullptr, nullptr, TOWN_NULL);
-		TownBase* nest = KEP::functions->TownList_getNest(levelMgr->townList, pos, faction, nullptr);
+		TownBase* town = shou->townList->getNearestTown(pos, faction, nullptr, nullptr, TOWN_NULL);
+		TownBase* nest = shou->townList->getNearestNest(pos, faction, nullptr);
 		TownBase* home = town;
 		if (home != nullptr)
 		{
@@ -525,8 +525,8 @@ namespace
 		auto pos = ou->player->getCameraCenter();
 		pos.y = UtilityT::getTerrainHeightFast(pos.x, pos.z, nullptr);
 
-		TownBase* home = KEP::functions->TownList_getTown(KEP::functions->getLevelManager()->townList, pos, nullptr, nullptr, nullptr, TOWN_NULL);
-
+		TownBase* home = shou->townList->getNearestTown(pos, nullptr, nullptr, nullptr, TOWN_NULL);
+		
 		auto homePos = home->getPosition();
 		float homeDistance = Ogre::Math::Sqrt((homePos.x - pos.x) * (homePos.x - pos.x) + (homePos.z - pos.z) * (homePos.z - pos.z));
 		float radius = home->getRadius();
@@ -680,7 +680,7 @@ namespace
 
 		if (needDelete)
 			home->factionsResidentHere.erase(residentFaction);
-
+		
 		ou->theFactory->populateBuilding(building);
 	}
 }
@@ -822,7 +822,7 @@ void KEP::tools::SpawnTool::_triggerCampaign(DataPanelLine* line)
 			return;
 		}
 	}
-	auto town = KEP::functions->TownList_getTownWithPlayer(KEP::functions->getLevelManager()->townList, ou->player->getCameraCenter(), false, 1000000.0f);
+	auto town = shou->townList->getNearestPlayerTown(ou->player->getCameraCenter(), false, 1000000.0f);
 	if (town == nullptr)
 	{
 		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Player base not found."), true);
@@ -1149,7 +1149,7 @@ void KEP::tools::SpawnTool::_updateFactionList(const std::string& keyword)
 	int currentSelected = this->_selectedSpawnFaction;
 	if (currentSelected < 0)
 		currentSelected = 0;
-	int selectVal = -1;
+	int selectVal = 0;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelPlayerFaction, 0);
 	if (keyword.empty())
@@ -1624,7 +1624,7 @@ void KEP::tools::SpawnTool::_updateToFactionList(const std::string& keyword)
 	int currentSelected = this->_selectedToFaction;
 	if (currentSelected < 0)
 		currentSelected = 0;
-	int selectVal = -1;
+	int selectVal = 0;
 	dropBox->clearValues();
 	dropBox->addAValue(lineLabelPlayerFaction, 0);
 	if (keyword.empty())

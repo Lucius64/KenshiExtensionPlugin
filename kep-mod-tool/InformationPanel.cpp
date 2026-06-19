@@ -22,11 +22,11 @@
 #include <kenshi/SensoryData.h>
 #include <kenshi/Inventory.h>
 #include <kenshi/Building/DoorStuff.h>
-#include <kenshi/CombatClass.h>
+#include <kenshi/combat/CombatClass.h>
 
 #include <extern/InventoryManager.h>
 #include <extern/UniqueNPCManager.h>
-#include <extern/StateBroadcastData.h>
+#include <kenshi/StateBroadcastData.h>
 
 #include <kep/translation.h>
 #include <kep/functions.h>
@@ -375,6 +375,13 @@ void KEP::tools::InformationPanel::_displayCharacterInformation()
 		return;
 	}
 
+	auto activePlatoon = obj->getPlatoon();
+	if (activePlatoon != nullptr)
+	{
+		KEP::functions->Blackboard_getGUIData(activePlatoon->me->blackboard, this->_panel, cat_character);
+		KEP::functions->CharacterMemory_getGUIData(activePlatoon->_myMemory, this->_panel, cat_character);
+	}
+
 	this->_panel->setLine(KEP::GUIColor::getMain() + "-----------CHARACTER-------------", "", cat_character, false, true);
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Handle:", KEP::GUIColor::getMain() + obj->handle.toString(), cat_character, false, true);
@@ -385,9 +392,13 @@ void KEP::tools::InformationPanel::_displayCharacterInformation()
 	auto race = obj->getRace();
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Race:", KEP::GUIColor::getMain() + race->data->name, cat_character, false, true);
 
-	this->_panel->setLine(KEP::GUIColor::getMain() + "NPC type:", KEP::GUIColor::getMain() + getCharacterTypeEnumName(obj->stateBroadcast->npcClass), cat_character, false, true);
+	this->_panel->setLine(KEP::GUIColor::getMain() + "NPC type:", KEP::GUIColor::getMain() + getCharacterTypeEnumName(obj->stateBroadcast->NPCType), cat_character, false, true);
 
-	this->_panel->setLine(KEP::GUIColor::getMain() + "Personality:", KEP::GUIColor::getMain() + getPersonalityTagsName(obj->stateBroadcast->personality), cat_character, false, true);
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Personality:", KEP::GUIColor::getMain() + getPersonalityTagsName(obj->stateBroadcast->myPersonality), cat_character, false, true);
+
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Portrait serial:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(obj->portraitSerial), cat_character, false, true);
+
+	obj->getSensoryData()->getGUIData(this->_panel, cat_character);
 
 	this->_panel->addSpace(cat_character, 0.5f);
 }
@@ -410,7 +421,7 @@ void KEP::tools::InformationPanel::_displayCombatInformation()
 	this->_panel->setLine(KEP::GUIColor::getMain() + "combat mode:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(combat->combatModeActive), cat_combat, false, true);
 
 	this->_panel->setLine(KEP::GUIColor::getMain() + "Num Slots:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(combat->attackSlots.getNumAttackSlots()), cat_combat, false, true);
-
+	
 	if (combat->combatModeActive)
 		this->_panel->setLine(KEP::GUIColor::getMain() + "State:", KEP::GUIColor::getMain() + getSwordStateEnumName(combat->combatState), cat_combat, false, true);
 	else

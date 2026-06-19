@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <StatsTool.h>
 
+#include <boost/math/special_functions/round.hpp>
+
 #include <mygui/MyGUI.h>
 
 #include <Debug.h>
@@ -17,7 +19,7 @@
 #include <kenshi/gui/ForgottenGUI.h>
 #include <kenshi/gui/DatapanelGUI.h>
 #include <kenshi/gui/DataPanelLine.h>
-#include <extern/StateBroadcastData.h>
+#include <kenshi/StateBroadcastData.h>
 
 #include <kep/translation.h>
 #include <kep/functions.h>
@@ -124,6 +126,8 @@ KEP::tools::StatsTool::StatsTool()
 	, _xp(0.0f)
 	, _selectedStatsData(0)
 	, _selectedSlaveState(0)
+	, _portraitYaw(0.0f)
+	, _portraitPitch(0.0f)
 {
 	initLineKey();
 
@@ -173,6 +177,17 @@ void KEP::tools::StatsTool::refresh()
 
 	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Change personality"), this->_category, 0.7f, "Kenshi_Button2");
 	button->callback = new MyGUI::delegates::CMethodDelegate1<StatsTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &StatsTool::_changePersonality);
+
+	this->_panel->addSpace(this->_category, 1.0f);
+	
+	auto slider = this->_panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Portrait yaw"), this->_category, true, -45.0f, 44.82f, &this->_portraitYaw);
+	this->_panel->addSpace(this->_category, 0.25f);
+	
+	slider = this->_panel->setLineSliderEditable(KEP::TranslationUtility::gettext("Portrait pitch"), this->_category, true, -14.94f, 30.24f, &this->_portraitPitch);
+	this->_panel->addSpace(this->_category, 0.25f);
+
+	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Change portrait serial number"), this->_category, 0.7f, "Kenshi_Button2");
+	button->callback = new MyGUI::delegates::CMethodDelegate1<StatsTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &StatsTool::_changePortraitSerial);
 
 	this->_panel->addSpace(this->_category, 1.0f);
 }
@@ -239,7 +254,7 @@ void KEP::tools::StatsTool::_setSlaveState(DataPanelLine* line)
 		if (slave == NOT_SLAVE)
 		{
 			character->setChainedMode(false, KEP::functions->getNULL_HAND());
-			KEP::functions->StateBroadcastData_setSlaveState(character->getStateBroadcast(), slave);
+			character->getStateBroadcast()->setSlaveState(slave);
 		}
 		else if (slave == IS_SLAVE)
 		{
@@ -247,7 +262,7 @@ void KEP::tools::StatsTool::_setSlaveState(DataPanelLine* line)
 		}
 		else
 		{
-			KEP::functions->StateBroadcastData_setSlaveState(character->getStateBroadcast(), slave);
+			character->getStateBroadcast()->setSlaveState(slave);
 		}
 	}
 }
@@ -266,8 +281,53 @@ void KEP::tools::StatsTool::_changePersonality(DataPanelLine* line)
 
 	auto stateBroadcast = character->getStateBroadcast();
 	if (stateBroadcast != nullptr)
-		stateBroadcast->personality = static_cast<PersonalityTags>(this->_selectedPersonality);
+		stateBroadcast->myPersonality = static_cast<PersonalityTags>(this->_selectedPersonality);
 
+}
+
+typedef boost::math::policies::policy<boost::math::policies::rounding_error<boost::math::policies::ignore_error> > rounding_policy;
+void KEP::tools::StatsTool::_changePortraitSerial(DataPanelLine* line)
+{
+	auto character = gui->selectedObject.getCharacter();
+	if (character == nullptr)
+	{
+		ou->showPlayerAMessage(KEP::TranslationUtility::gettext("Error: Please select a character."), true);
+		return;
+	}
+
+	auto yawSerial = boost::math::iround((this->_portraitYaw * 50.0f + 2250.0f) / 9.0f, rounding_policy());
+	if (boost::math::isfinite(yawSerial))
+	{
+		if (yawSerial < 0)
+			yawSerial = 0;
+		if (499 < yawSerial)
+			yawSerial = 499;
+
+		auto pitchSerial = boost::math::iround((this->_portraitPitch * 50.0f + 747.0f) / 9.0f, rounding_policy());
+		if (boost::math::isfinite(pitchSerial))
+		{
+			if (pitchSerial < 0)
+				pitchSerial = 0;
+			if (251 < pitchSerial)
+				pitchSerial = 251;
+
+			int diff = yawSerial - pitchSerial;
+			if (diff < 0)
+				diff += 252;
+			int p = diff % 4;
+			if (p != 0)
+			{
+				if (251 < pitchSerial + p)
+					diff += 4 - p;
+				else
+					diff -= p;
+			}
+
+			character->portraitSerial = (diff % 252) * 125 + yawSerial + 126000;
+
+			ou->addPortraitUpdate(character->getHandle());
+		}
+	}
 }
 
 void KEP::tools::StatsTool::_initStatsEnumList()

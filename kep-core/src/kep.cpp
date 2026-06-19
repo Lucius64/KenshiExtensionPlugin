@@ -13,7 +13,23 @@ namespace
 		auto hKenshiLib = GetModuleHandleA("KenshiLib.dll");
 
 		FARPROC procAddr = nullptr;
-		if (GetProcAddress(hKenshiLib, "?gui@@3PEAVForgottenGUI@@EA") != nullptr)
+		if (GetProcAddress(hKenshiLib, "??0AI@@QEAA@PEAVStateBroadcastData@@PEAVCharacter@@@Z") != nullptr)
+		{
+			KenshiLibVersion = KEP::VersionInfo(0, 3, 4);
+		}
+		else if (GetProcAddress(hKenshiLib, "?shou@@3PEAVSharedKing@@EA") != nullptr)
+		{
+			KenshiLibVersion = KEP::VersionInfo(0, 3, 3);
+		}
+		else if (GetProcAddress(hKenshiLib, "??0RobotLimbItem@@QEAA@PEAVGameData@@0Vhand@@H@Z") != nullptr)
+		{
+			KenshiLibVersion = KEP::VersionInfo(0, 3, 2);
+		}
+		else if (GetProcAddress(hKenshiLib, "?au@@3PEAVKingOfRenderThread@@EA") != nullptr)
+		{
+			KenshiLibVersion = KEP::VersionInfo(0, 3, 1);
+		}
+		else if (GetProcAddress(hKenshiLib, "?gui@@3PEAVForgottenGUI@@EA") != nullptr)
 		{
 			KenshiLibVersion = KEP::VersionInfo(0, 3, 0);
 		}

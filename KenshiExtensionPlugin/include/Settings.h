@@ -57,7 +57,6 @@ namespace KEP
 		bool _furnaceExtension;
 		bool _sortedIdleStances;
 		bool _scythePathExtension;
-		bool _aimAnimationExtension;
 		bool _bulkLimitsExtension;
 		float _bulkStatMaxMale;
 		float _bulkStatMinMale;
@@ -65,7 +64,7 @@ namespace KEP
 		float _bulkStatMinFemale;
 		bool _idleStanceExtension;
 		bool _saveReputation;
-		bool _animationSkillTypeExtension;
+		bool _animationEx;
 		int _portraitExtension;
 		bool _fixAthleticsMultiplier;
 		bool _animalArmor;
@@ -80,5 +79,6 @@ namespace KEP
 		bool _fixGetResourceFilePath;
 		bool _fixTortureBuilding;
 		bool _fixAnimalAge;
+		bool _fixIdleAnimation;
 	};
 }

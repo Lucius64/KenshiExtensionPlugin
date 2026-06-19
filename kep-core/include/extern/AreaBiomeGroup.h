@@ -45,22 +45,11 @@ public:
 
 class RealWorldEditableImage;
 
-class AreaManager
+class AreasList
 {
 public:
 	RealWorldEditableImage* areamapImage;
 	boost::unordered::unordered_map<AreaBiomeGroup*, std::set<AreaSector*>, boost::hash<AreaBiomeGroup*>, std::equal_to<AreaBiomeGroup*>, Ogre::STLAllocator<std::pair<AreaBiomeGroup* const, std::set<AreaSector*>>, Ogre::CategorisedAllocPolicy<Ogre::MEMCATEGORY_GENERAL> > > sectorList;
 	boost::unordered::unordered_map<GameData*, AreaBiomeGroup, boost::hash<GameData*>, std::equal_to<GameData*>, Ogre::STLAllocator<std::pair<GameData* const, AreaBiomeGroup>, Ogre::CategorisedAllocPolicy<Ogre::MEMCATEGORY_GENERAL> > > areaList;
 	AreaSector worldMap[64][64];
-};
-
-class TownList;
-class ZoneManager;
-
-class LevelManager
-{
-public:
-	AreaManager* areaMgr;
-	TownList* townList;
-	ZoneManager* zoneMgr;
 };

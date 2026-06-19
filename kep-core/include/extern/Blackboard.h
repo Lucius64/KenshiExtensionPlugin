@@ -71,23 +71,3 @@ public:
 
 	virtual void vfunc0x0();
 };
-
-class AIPackage
-{
-public:
-	hand missionTown;
-	hand missionTarget;
-	hand missionEmployer;
-	GameData* data;
-	int priority;
-	uint32_t signalFunc;
-	uint32_t unloadedFunc;
-	Blackboard* blackbord;
-	Platoon* platoon;
-	AIPackage* leadsTo;
-	GameData* contractEndTalkPassive;
-	GameData* contractEndDialogDelivery;
-	bool isBetrayed;
-
-	virtual ~AIPackage();
-};

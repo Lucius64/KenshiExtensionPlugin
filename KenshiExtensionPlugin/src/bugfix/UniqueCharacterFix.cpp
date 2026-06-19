@@ -6,6 +6,7 @@
 
 #include <kenshi/Globals.h>
 #include <kenshi/GameWorld.h>
+#include <kenshi/SharedKing.h>
 #include <kenshi/RootObject.h>
 #include <kenshi/RootObjectFactory.h>
 #include <kenshi/GameData.h>
@@ -15,6 +16,7 @@
 #include <kenshi/WorldEventStateQuery.h>
 #include <kenshi/Town.h>
 #include <kenshi/FactionWarMgr.h>
+#include <kenshi/AI/AIPackage.h>
 
 #include <extern/UniqueNPCManager.h>
 #include <extern/FactionWarMgr.h>
@@ -303,7 +305,7 @@ namespace
 
 					if (nearlyTowns->size() == 0)
 					{
-						auto sector = KEP::functions->AreaManager_getAreaSector(KEP::functions->getLevelManager()->areaMgr, spawnPos);
+						auto sector = KEP::functions->AreasList_getAreaSector(shou->areasList, spawnPos);
 						if (sector != nullptr)
 							KEP::externalFunctions->FUN_008F4200(sector, spawnPos, true, self->me, 1.3f, 0.001f);
 					}
@@ -471,7 +473,7 @@ namespace
 
 			if (isImport && !uniqueState.playerInvolvement && uniqueState.state == IMPRISONED)
 			{
-				if (uniqueState.handle == *KEP::externalGlobals->_hand_01E395F8)
+				if (uniqueState.handle == KEP::functions->getNULL_HAND())
 				{
 					uniqueState.characterTemplate = nullptr;
 				}

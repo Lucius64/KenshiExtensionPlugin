@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="include\AnimalExtension.h" />
     <ClInclude Include="include\AppearanceExtension.h" />
+    <ClInclude Include="include\bugfix\AnimationFix.h" />
     <ClInclude Include="include\bugfix\AppearanceFix.h" />
     <ClInclude Include="include\bugfix\StatsFix.h" />
     <ClInclude Include="include\bugfix\ItemFix.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="include\WarCampaignExtension.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\bugfix\AnimationFix.cpp" />
     <ClCompile Include="src\AnimalExtension.cpp" />
     <ClCompile Include="src\AnimationExtension.cpp" />
     <ClCompile Include="src\AppearanceExtension.cpp" />
