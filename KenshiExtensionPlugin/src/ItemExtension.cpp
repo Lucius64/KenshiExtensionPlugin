@@ -86,31 +86,40 @@ namespace
 			)
 		);
 
-		auto pierceDamage = self->data->fdata["pierce damage multiplier"] * 100.0f;
+		auto pierceDamage = self->data->fdata["pierce damage multiplier"];
 		auto armourPenetration = self->data->fdata["armour penetration"] * 100.0f;
-		auto robotMult = self->data->fdata["robot damage mult"] * 100.0f;
-		auto humanMult = self->data->fdata["human damage mult"] * 100.0f;
-		auto animalMult = self->data->fdata["animal damage mult"] * 100.0f;
+		auto robotMult = self->data->fdata["robot damage mult"];
+		auto humanMult = self->data->fdata["human damage mult"];
+		auto animalMult = self->data->fdata["animal damage mult"];
 
+		ogre_unordered_map<GameData*, float>::type raceDamageMults;
 		if (self->materialData != nullptr)
 		{
-			auto modPierceDamage = self->materialData->fdata["pierce damage mod"] * 100.0f;
+			auto modPierceDamage = self->materialData->fdata["pierce damage mod"];
 			if (modPierceDamage > 0.0f)
 				pierceDamage *= modPierceDamage;
 
 			armourPenetration += self->materialData->fdata["armour penetration mod"] * 100.0f;
 
-			auto modRobotDamage = self->materialData->fdata["robot damage mod"] * 100.0f;
+			auto modRobotDamage = self->materialData->fdata["robot damage mod"];
 			if (modRobotDamage > 0.0f)
 				robotMult *= modRobotDamage;
 
-			auto modHumanDamage = self->materialData->fdata["human damage mod"] * 100.0f;
+			auto modHumanDamage = self->materialData->fdata["human damage mod"];
 			if (modHumanDamage > 0.0f)
 				humanMult *= modHumanDamage;
 
-			auto modAnimalDamage = self->materialData->fdata["animal damage mod"] * 100.0f;
+			auto modAnimalDamage = self->materialData->fdata["animal damage mod"];
 			if (modAnimalDamage > 0.0f)
 				animalMult *= modAnimalDamage;
+
+			auto& raceDamage = self->materialData->objectReferences["race damage mod"];
+			for (auto iter = raceDamage.begin(); iter != raceDamage.end(); ++iter)
+			{
+				auto referenceData = iter->getPtr(&ou->gamedata);
+				if (referenceData != nullptr)
+					raceDamageMults[referenceData] = iter->values.value[0] * 0.01f;
+			}
 		}
 
 		if (pierceDamage != 0.0f)
@@ -136,9 +145,9 @@ namespace
 		if (modIndoors != 0)
 			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Indoors bonus"), static_cast<float>(modIndoors), false);
 
-		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs robots"), robotMult - 100.0f, true);
-		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs humans"), humanMult - 100.0f, true);
-		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs animals"), animalMult - 100.0f, true);
+		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs robots"), robotMult * 100.0f - 100.0f, true);
+		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs humans"), humanMult * 100.0f - 100.0f, true);
+		KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs animals"), animalMult * 100.0f - 100.0f, true);
 
 		auto& raceGroupDamage = self->data->objectReferences["race group damage"];
 		for (auto iter = raceGroupDamage.begin(); iter != raceGroupDamage.end(); ++iter)
@@ -154,10 +163,19 @@ namespace
 		for (auto iter = raceDamage.begin(); iter != raceDamage.end(); ++iter)
 		{
 			auto referenceData = iter->getPtr(&ou->gamedata);
-			if (referenceData == nullptr)
-				continue;
+			if (referenceData != nullptr)
+			{
+				auto bonusIter = raceDamageMults.find(referenceData);
+				if (bonusIter == raceDamageMults.end())
+					raceDamageMults[referenceData] = iter->values.value[0] * 0.01f;
+				else
+					bonusIter->second *= iter->values.value[0] * 0.01f;
+			}
+		}
 
-			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs") + " " + referenceData->name, static_cast<float>(iter->values.value[0] - 100), true);
+		for (auto iter = raceDamageMults.begin(); iter != raceDamageMults.end(); ++iter)
+		{
+			KEP::externalFunctions->FUN_0079EAB0(lines, KEP::TranslationUtility::gettext_main("Damage vs") + " " + iter->first->name, iter->second * 100.0f - 100.0f, true);
 		}
 
 		auto& greyedColour = KEP::GUIColor::getGreyed();
@@ -304,7 +322,7 @@ namespace
 						if (data != nullptr)
 						{
 							auto bonusIter = self->bonusRaces.find(data);
-							if (bonusIter != self->bonusRaces.end())
+							if (bonusIter == self->bonusRaces.end())
 								self->bonusRaces[data] = iter->values.value[0] * 0.01f;
 							else
 								bonusIter->second *= iter->values.value[0] * 0.01f;
