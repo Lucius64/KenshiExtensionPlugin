@@ -216,6 +216,8 @@ namespace
 		self->animation->notifyRagdollNeedsAnUpdate();
 		self->updateAppearance();
 		self->updateCharaterTexture();
+		self->buildAttachments();
+		self->updateBloodyness();
 
 		self->body->getParentSceneNode()->setVisible(self->me->getVisible());
 	}
