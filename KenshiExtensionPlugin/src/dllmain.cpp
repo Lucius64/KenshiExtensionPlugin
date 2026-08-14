@@ -54,7 +54,7 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep 0.17.1");
+	DebugLog("kep 0.17.2");
 
 	auto versionInfo = KenshiLib::GetKenshiVersion();
 	auto platform = versionInfo.GetPlatform();

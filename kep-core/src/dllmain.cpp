@@ -26,7 +26,7 @@ const std::string& KEP::getPluginPath()
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep-core 1.1.1");
+	DebugLog("kep-core 1.1.2");
 
 	fs::path modulePath = kepDirectory;
 	if (!fs::exists(modulePath / "LICENSE") || !fs::exists(modulePath / "NOTICE.md"))

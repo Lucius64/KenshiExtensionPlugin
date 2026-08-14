@@ -25,7 +25,7 @@ namespace
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep-mod-tool 1.1.2");
+	DebugLog("kep-mod-tool 1.1.3");
 
 	fs::path modulePath = myDirectory;
 	if (!fs::exists(modulePath / "LICENSE") || !fs::exists(modulePath / "NOTICE.md"))
