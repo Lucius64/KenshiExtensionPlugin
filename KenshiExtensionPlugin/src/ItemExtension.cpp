@@ -487,21 +487,21 @@ namespace
 
 void KEP::ItemExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Sword::setupStats), &Sword_setupStats_hook, &Sword_setupStats_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Sword::setupStats), &Sword_setupStats_hook, &Sword_setupStats_orig))
 		ErrorLog("[Sword::setupStats] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::setWeapon), &CharStats_setWeapon_hook, &CharStats_setWeapon_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::setWeapon), &CharStats_setWeapon_hook, &CharStats_setWeapon_orig))
 		ErrorLog("[CharStats::setWeapon] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Sword::_NV_getTooltipData1), &Sword_getTooltipData1_hook, &Sword_getTooltipData1_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Sword::_NV_getTooltipData1), &Sword_getTooltipData1_hook, &Sword_getTooltipData1_orig))
 		ErrorLog("[Sword::getTooltipData1] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RobotLimbItem::_NV_getTooltipData2), &RobotLimbItem_getTooltipData2_hook, &RobotLimbItem_getTooltipData2_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RobotLimbItem::_NV_getTooltipData2), &RobotLimbItem_getTooltipData2_hook, &RobotLimbItem_getTooltipData2_orig))
 		ErrorLog("[RobotLimbItem::getTooltipData2] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->setTotalCoverage, &setTotalCoverage_hook, &setTotalCoverage_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->setTotalCoverage, &setTotalCoverage_hook, &setTotalCoverage_orig))
 		ErrorLog("[setTotalCoverage] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Armour::_CONSTRUCTOR), &Armour__CONSTRUCTOR_hook, &Armour__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Armour::_CONSTRUCTOR), &Armour__CONSTRUCTOR_hook, &Armour__CONSTRUCTOR_orig))
 		ErrorLog("[Armour::Armour] could not install hook!");
 }

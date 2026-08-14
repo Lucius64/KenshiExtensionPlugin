@@ -63,9 +63,6 @@
     <ClInclude Include="include\extern\BasePopulationManager.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>
-    <ClInclude Include="include\extern\Blackboard.h">
-      <Filter>Header Files\extern</Filter>
-    </ClInclude>
     <ClInclude Include="include\extern\BuildingInterior.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>

@@ -37,11 +37,11 @@ class AttachedEntity : public AttachedObject
 {
 public:
 	Ogre::Entity* entity;
-	std::string _0x88;
+	std::string material;
 	GameData* materialGameData;
 	GameData* colorGameData;
-	std::string attachPointName;
-	GameData* physicsAttachmentData;
+	std::string mesh;
+	GameData* physicsAttachment;
 	ScythePhysicsT* scytheObject;
 	bool isOverlap;
 

@@ -50,6 +50,6 @@ namespace
 
 void KEP::WarCampaignExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&TownBase::_NV_setFaction), &TownBase_setFaction_hook, &TownBase_setFaction_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&TownBase::_NV_setFaction), &TownBase_setFaction_hook, &TownBase_setFaction_orig))
 		ErrorLog("[TownBase::setFaction] could not install hook!");
 }

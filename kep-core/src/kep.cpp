@@ -105,6 +105,7 @@ void KEP::initialize()
 	TranslationUtility::initHook();
 	ConfigManager::initHook();
 	KEP::PatchSystem::initHook();
+	KenshiLib::ApplyQueuedHooks();
 }
 
 namespace

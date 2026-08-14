@@ -145,7 +145,6 @@
     <ClInclude Include="include\extern\AppearanceBase.h" />
     <ClInclude Include="include\extern\AreaBiomeGroup.h" />
     <ClInclude Include="include\extern\BasePopulationManager.h" />
-    <ClInclude Include="include\extern\Blackboard.h" />
     <ClInclude Include="include\extern\BuildingInterior.h" />
     <ClInclude Include="include\extern\CharacterMemory.h" />
     <ClInclude Include="include\extern\ConstantTracerT.h" />

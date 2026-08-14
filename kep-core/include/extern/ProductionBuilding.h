@@ -11,20 +11,6 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/util/hand.h>
 
 // KenshiLibでは未定義
-class CraftingItem
-{
-public:
-	Item* item;
-	float _0x8;
-	float progress;
-	hand _0x10;
-	int _0x30;
-	std::string _0x38;
-	int _0x60;
-	int _0x64;
-};
-
-// KenshiLibでは未定義
 struct WeaponTypeStruct
 {
 	float level;

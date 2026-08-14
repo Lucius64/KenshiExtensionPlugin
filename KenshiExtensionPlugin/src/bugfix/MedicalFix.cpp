@@ -427,18 +427,18 @@ namespace
 
 void KEP::MedicalFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::updateDamageState), &MedicalSystem_updateDamageState_hook, &MedicalSystem_updateDamageState_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::updateDamageState), &MedicalSystem_updateDamageState_hook, &MedicalSystem_updateDamageState_orig))
 		ErrorLog("[MedicalSystem::updateDamageState] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::medicalUpdate), &MedicalSystem_medicalUpdate_hook, &MedicalSystem_medicalUpdate_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::medicalUpdate), &MedicalSystem_medicalUpdate_hook, &MedicalSystem_medicalUpdate_orig))
 		ErrorLog("[MedicalSystem::medicalUpdate] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::init), &MedicalSystem_init_hook, &MedicalSystem_init_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::init), &MedicalSystem_init_hook, &MedicalSystem_init_orig))
 		ErrorLog("[MedicalSystem::init] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::precalculateFirstAidNeedScore), &MedicalSystem_precalculateFirstAidNeedScore_hook, &MedicalSystem_precalculateFirstAidNeedScore_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::precalculateFirstAidNeedScore), &MedicalSystem_precalculateFirstAidNeedScore_hook, &MedicalSystem_precalculateFirstAidNeedScore_orig))
 		ErrorLog("[MedicalSystem::precalculateFirstAidNeedScore] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::_NV_init), &CharStats_init_hook, &CharStats_init_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::_NV_init), &CharStats_init_hook, &CharStats_init_orig))
 		ErrorLog("[CharStats::init] could not install hook!");
 }

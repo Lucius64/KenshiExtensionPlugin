@@ -41,6 +41,6 @@ namespace
 
 void KEP::ScytheFileExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_001A4FB0, &PhysicsEntity_loadingPart_hook, &PhysicsEntity_loadingPart_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_001A4FB0, &PhysicsEntity_loadingPart_hook, &PhysicsEntity_loadingPart_orig))
 		ErrorLog("[PhysicsEntity::loadingPart] could not install hook!");
 }

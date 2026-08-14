@@ -254,36 +254,38 @@ void KEP::tools::initHook()
 	}
 
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GameWorld::processKeys), &GameWorld_processKeys_hook, &GameWorld_processKeys_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GameWorld::processKeys), &GameWorld_processKeys_hook, &GameWorld_processKeys_orig))
 		ErrorLog("[GameWorld::processKeys] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->EscMenu_openedOtherWindows, &EscMenu_openedOtherWindows_hook, &EscMenu_openedOtherWindows_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->EscMenu_openedOtherWindows, &EscMenu_openedOtherWindows_hook, &EscMenu_openedOtherWindows_orig))
 		ErrorLog("[EscMenu::openedOtherWindows] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CameraClass::restrictPosition), (void(*)(CameraClass*, lektor<Character*>&))(&CameraClass_restrictPosition_hook), &CameraClass_restrictPosition_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CameraClass::restrictPosition), (void(*)(CameraClass*, lektor<Character*>&))(&CameraClass_restrictPosition_hook), &CameraClass_restrictPosition_orig))
 		ErrorLog("[CameraClass::restrictPosition] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MainBarGUI::toggleInventory), &MainBarGUI_toggleInventory_hook, &MainBarGUI_toggleInventory_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MainBarGUI::toggleInventory), &MainBarGUI_toggleInventory_hook, &MainBarGUI_toggleInventory_orig))
 		ErrorLog("[MainBarGUI::toggleInventory] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MapScreen::mapMousePressed), &MapScreen_mapMousePressed_hook, &MapScreen_mapMousePressed_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MapScreen::mapMousePressed), &MapScreen_mapMousePressed_hook, &MapScreen_mapMousePressed_orig))
 		ErrorLog("[MapScreen::mapMousePressed] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MapScreen::mapMouseReleased), &MapScreen_mapMouseReleased_hook, &MapScreen_mapMouseReleased_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MapScreen::mapMouseReleased), &MapScreen_mapMouseReleased_hook, &MapScreen_mapMouseReleased_orig))
 		ErrorLog("[MapScreen::mapMouseReleased] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Building::_NV_select), &Building_select_hook, &Building_select_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Building::_NV_select), &Building_select_hook, &Building_select_orig))
 		ErrorLog("[Building::select] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MainBarGUI::_NV_autoChangeSelectedObject), &MainBarGUI_autoChangeSelectedObject_hook, &MainBarGUI_autoChangeSelectedObject_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MainBarGUI::_NV_autoChangeSelectedObject), &MainBarGUI_autoChangeSelectedObject_hook, &MainBarGUI_autoChangeSelectedObject_orig))
 		ErrorLog("[MainBarGUI::autoChangeSelectedObject] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ForgottenGUI::changeFontSize), &ForgottenGUI_changeFontSize_hook, &ForgottenGUI_changeFontSize_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ForgottenGUI::changeFontSize), &ForgottenGUI_changeFontSize_hook, &ForgottenGUI_changeFontSize_orig))
 		ErrorLog("[ForgottenGUI::changeFontSize] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&OptionsWindow::create), OptionsWindow_create_hook, &OptionsWindow_create_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&OptionsWindow::create), OptionsWindow_create_hook, &OptionsWindow_create_orig))
 		ErrorLog("[OptionsWindow::create] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(AppearanceManager_getEditorData, AppearanceManager_getEditorData_hook, &AppearanceManager_getEditorData_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(AppearanceManager_getEditorData, AppearanceManager_getEditorData_hook, &AppearanceManager_getEditorData_orig))
 		ErrorLog("[AppearanceManager::getEditorData] Could not add hook!");
+
+	KenshiLib::ApplyQueuedHooks();
 }

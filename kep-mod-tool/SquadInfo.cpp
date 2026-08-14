@@ -22,9 +22,8 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/AI/AIPackage.h>
 #include <kenshi/AI/AITaskSystem.h>
 #include <kenshi/Tasker.h>
-
-#include <extern/Blackboard.h>
-#include <extern/FactionWarMgr.h>
+#include <kenshi/AI/Blackboard.h>
+#include <kenshi/Campaign.h>
 
 #include <kep/functions.h>
 #include <kep/utility.h>
@@ -38,7 +37,7 @@ void KEP::tools::displayBlackboardInformation(Blackboard* self, DatapanelGUI* pa
 		panel->setLine(s1, s2, cat, false, true);
 	}
 
-	for (auto packageIt = self->packages.begin(); packageIt != self->packages.end(); ++packageIt)
+	for (auto packageIt = self->packagesMain.begin(); packageIt != self->packagesMain.end(); ++packageIt)
 	{
 		for (auto iter = packageIt->second.begin(); iter != packageIt->second.end(); ++iter)
 		{
@@ -62,28 +61,28 @@ void KEP::tools::displayBlackboardInformation(Blackboard* self, DatapanelGUI* pa
 		panel->setLine(KEP::GUIColor::getMain() + "Squad Mission Town:", KEP::GUIColor::getMain() + (missionTown != nullptr ? missionTown->getName() : "none"), cat, false, true);
 	}
 
-	auto campaign = self->platoon->hasCampaign();
+	auto campaign = self->squad->hasCampaign();
 	std::string campaignName = "---";
 	std::string campaignPhase = "---";
 	if (campaign != nullptr)
 	{
-		campaignName = campaign->getDisplayName();
-		campaignPhase = Ogre::StringConverter::toString(campaign->phase);
+		campaignName = campaign->getName();
+		campaignPhase = Ogre::StringConverter::toString(campaign->currentPhase);
 	}
 	panel->setLine(KEP::GUIColor::getMain() + "Squad Campaign:", KEP::GUIColor::getMain() + campaignName, cat, false, true);
 	panel->setLine(KEP::GUIColor::getMain() + "Campaign phase:", KEP::GUIColor::getMain() + campaignPhase, cat, false, true);
 
-	std::string townName = self->currentTown != nullptr ? self->currentTown->getName() : "none";
+	std::string townName = self->currentTownLocation != nullptr ? self->currentTownLocation->getName() : "none";
 	panel->setLine(KEP::GUIColor::getMain() + "Squad town:", KEP::GUIColor::getMain() + townName, cat, false, true);
 
-	panel->setLine(KEP::GUIColor::getMain() + "permanent:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(self->platoon->isPersistentSquad()), cat, false, true);
-	panel->setLine(KEP::GUIColor::getMain() + "Town time:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(ou->getTimeFromStamp(self->towntime).time), cat, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + "permanent:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(self->squad->isPersistentSquad()), cat, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + "Town time:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(ou->getTimeFromStamp(self->townArrivalTime).time), cat, false, true);
 
 	townName = self->targetTown != nullptr ? self->targetTown->getName() : "none";
 	panel->setLine(KEP::GUIColor::getMain() + "Target town:", KEP::GUIColor::getMain() + townName, cat, false, true);
-	panel->setLine(KEP::GUIColor::getMain() + "house locked", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(self->homelok), cat, false, true);
-	panel->setLine(KEP::GUIColor::getMain() + "Squad template:", KEP::GUIColor::getMain() + self->platoon->squadTemplate->name, cat, false, true);
-	panel->setLine(KEP::GUIColor::getMain() + "Squad ID:", KEP::GUIColor::getMain() + self->platoon->getName(), cat, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + "house locked", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(self->homeIsLockedUp), cat, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + "Squad template:", KEP::GUIColor::getMain() + self->squad->squadTemplate->name, cat, false, true);
+	panel->setLine(KEP::GUIColor::getMain() + "Squad ID:", KEP::GUIColor::getMain() + self->squad->getName(), cat, false, true);
 }
 
 void KEP::tools::displayAIGoalInformation(AI* self, DatapanelGUI* panel, int cat)

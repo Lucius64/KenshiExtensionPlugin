@@ -91,17 +91,17 @@ namespace
 
 void KEP::DialogueExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FactionRelations::_NV_save), &FactionRelations_save_hook, &FactionRelations_save_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FactionRelations::_NV_save), &FactionRelations_save_hook, &FactionRelations_save_orig))
 		ErrorLog("[FactionRelations::save] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FactionRelations::_NV_load), &FactionRelations_load_hook, &FactionRelations_load_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FactionRelations::_NV_load), &FactionRelations_load_hook, &FactionRelations_load_orig))
 		ErrorLog("[FactionRelations::load] could not install hook!");
 
 	if (KEP::settings._dialogueExtension)
 	{
 		auto pfuncTarget = &DetourDialogue::Dialogue_getWordSwap_hook;
 		auto pfuncOrig = &Dialogue_getWordSwap_orig;
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Dialogue::getWordSwap), *(void**)&pfuncTarget, *(void***)&pfuncOrig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Dialogue::getWordSwap), *(void**)&pfuncTarget, *(void***)&pfuncOrig))
 			ErrorLog("[Dialogue::getWordSwap] could not install hook!");
 	}
 }

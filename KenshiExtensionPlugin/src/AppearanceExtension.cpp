@@ -257,15 +257,15 @@ namespace
 
 void KEP::AppearanceExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceHuman::updatePhysiqueMuscleMults), &AppearanceHuman_updatePhysiqueMuscleMults_hook, &AppearanceHuman_updatePhysiqueMuscleMults_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceHuman::updatePhysiqueMuscleMults), &AppearanceHuman_updatePhysiqueMuscleMults_hook, &AppearanceHuman_updatePhysiqueMuscleMults_orig))
 		ErrorLog("[AppearanceHuman::updatePhysiqueMuscleMults] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceManager::randomAnimations), &AppearanceManager_randomAnimations_hook, &AppearanceManager_randomAnimations_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceManager::randomAnimations), &AppearanceManager_randomAnimations_hook, &AppearanceManager_randomAnimations_orig))
 		ErrorLog("[AppearanceManager::randomAnimations] could not install hook!");
 
 	if (settings._portraitExtension > 0)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&PortraitManager::_CONSTRUCTOR), &PortraitManager__CONSTRUCTOR_hook, &PortraitManager__CONSTRUCTOR_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&PortraitManager::_CONSTRUCTOR), &PortraitManager__CONSTRUCTOR_hook, &PortraitManager__CONSTRUCTOR_orig))
 			ErrorLog("[PortraitManager::PortraitManager] could not install hook!");
 	}
 }

@@ -446,25 +446,25 @@ namespace
 
 void KEP::StatsFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::xpMelee), &CharStats_xpMelee_hook, &CharStats_xpMelee_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::xpMelee), &CharStats_xpMelee_hook, &CharStats_xpMelee_orig))
 		ErrorLog("[CharStats::xpMeleee] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::xpLockpicking), &CharStats_xpLockpicking_hook, &CharStats_xpLockpicking_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::xpLockpicking), &CharStats_xpLockpicking_hook, &CharStats_xpLockpicking_orig))
 		ErrorLog("[CharStats::xpLockpicking] could not install hook!");
 
 	auto pCharStats_getTotalAttackDamageFor_hook = &DetourCharStats::CharStats_getTotalAttackDamageFor_hook;
 	auto pCharStats_getTotalAttackDamageFor_orig = &CharStats_getTotalAttackDamageFor_orig;
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::getTotalAttackDamageFor), *(void**)&pCharStats_getTotalAttackDamageFor_hook, *(void***)&pCharStats_getTotalAttackDamageFor_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::getTotalAttackDamageFor), *(void**)&pCharStats_getTotalAttackDamageFor_hook, *(void***)&pCharStats_getTotalAttackDamageFor_orig))
 		ErrorLog("&CharStats::skillBonusAttack_unarmed] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::getStatName), &CharStats_getStatName_hook, &CharStats_getStatName_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::getStatName), &CharStats_getStatName_hook, &CharStats_getStatName_orig))
 		ErrorLog("[CharStats::getStatName] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::recalculateTotalEquipmentSkillBonus), &Character_recalculateTotalEquipmentSkillBonus_hook, &Character_recalculateTotalEquipmentSkillBonus_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::recalculateTotalEquipmentSkillBonus), &Character_recalculateTotalEquipmentSkillBonus_hook, &Character_recalculateTotalEquipmentSkillBonus_orig))
 		ErrorLog("[Character::recalculateTotalEquipmentSkillBonus] could not install hook!");
 
 	auto pCharacter_getAgeString_hook = &DetourCharacter::Character_getAgeString_hook;
 	auto pCharacter_getAgeString_orig = &Character_getAgeString_orig;
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::_NV_getAgeString), *(void**)&pCharacter_getAgeString_hook, *(void***)&pCharacter_getAgeString_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::_NV_getAgeString), *(void**)&pCharacter_getAgeString_hook, *(void***)&pCharacter_getAgeString_orig))
 		ErrorLog("[Character::getAgeString] could not install hook!");
 }

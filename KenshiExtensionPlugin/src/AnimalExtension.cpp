@@ -148,13 +148,13 @@ void KEP::AnimalExtension::init()
 {
 	if (settings._animalArmor)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharacterAnimal::_NV_setupInventorySections), &CharacterAnimal_setupInventorySections_hook, &CharacterAnimal_setupInventorySections_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharacterAnimal::_NV_setupInventorySections), &CharacterAnimal_setupInventorySections_hook, &CharacterAnimal_setupInventorySections_orig))
 			ErrorLog("[CharacterAnimal::setupInventorySections] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AnimalInventoryLayout::_CONSTRUCTOR), &AnimalInventoryLayout__CONSTRUCTOR_hook, &AnimalInventoryLayout__CONSTRUCTOR_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AnimalInventoryLayout::_CONSTRUCTOR), &AnimalInventoryLayout__CONSTRUCTOR_hook, &AnimalInventoryLayout__CONSTRUCTOR_orig))
 			ErrorLog("[AnimalInventoryLayout::AnimalInventoryLayout] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_0014F530, &AnimalInventoryLayout_setupSections_hook, &AnimalInventoryLayout_setupSections_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_0014F530, &AnimalInventoryLayout_setupSections_hook, &AnimalInventoryLayout_setupSections_orig))
 			ErrorLog("[AnimalInventoryLayout::setupSections] could not install hook!");
 	}
 }

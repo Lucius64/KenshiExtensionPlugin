@@ -106,6 +106,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::ResearchEx::init();
 	KEP::InventoryEx::init();
 	KEP::PlatoonEx::init();
+	KenshiLib::ApplyQueuedHooks();
 	DebugLog("Installed");
 }
 

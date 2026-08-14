@@ -270,24 +270,24 @@ namespace
 
 void KEP::ItemFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::addArmour), &MedicalSystem_addArmour_hook, &MedicalSystem_addArmour_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::addArmour), &MedicalSystem_addArmour_hook, &MedicalSystem_addArmour_orig))
 		ErrorLog("[MedicalSystem::addArmour] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GunClassPersonal::_CONSTRUCTOR), &GunClassPersonal__CONSTRUCTOR_hook, &GunClassPersonal__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GunClassPersonal::_CONSTRUCTOR), &GunClassPersonal__CONSTRUCTOR_hook, &GunClassPersonal__CONSTRUCTOR_orig))
 		ErrorLog("[GunClassPersonal::GunClassPersonal] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ContainerItem::_NV_setProperOwner), &ContainerItem_setProperOwner_hook, &ContainerItem_setProperOwner_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ContainerItem::_NV_setProperOwner), &ContainerItem_setProperOwner_hook, &ContainerItem_setProperOwner_orig))
 		ErrorLog("[ContainerItem::setProperOwner] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Building::setResidentSquad), &Building_setResidentSquad_hook, &Building_setResidentSquad_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Building::setResidentSquad), &Building_setResidentSquad_hook, &Building_setResidentSquad_orig))
 		ErrorLog("[Building::setResidentSquad] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&BlueprintItem::_CONSTRUCTOR), &BlueprintItem__CONSTRUCTOR_hook, &BlueprintItem__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&BlueprintItem::_CONSTRUCTOR), &BlueprintItem__CONSTRUCTOR_hook, &BlueprintItem__CONSTRUCTOR_orig))
 		ErrorLog("[BlueprintItem::BlueprintItem] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (InventorySection::*)(Item*))&InventorySection::isLimitedSlotCompatible), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress((bool (InventorySection::*)(Item*))&InventorySection::isLimitedSlotCompatible), &InventorySection_isLimitedSlotCompatible_hook, &InventorySection_isLimitedSlotCompatible_orig))
 		ErrorLog("[InventorySection::isLimitedSlotCompatible(Item*)] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&SeveredLimbItem::_NV_destroyPhysical), &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SeveredLimbItem::_NV_destroyPhysical), &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
 		ErrorLog("[SeveredLimbItem::destroyPhysical] could not install hook!");
 }

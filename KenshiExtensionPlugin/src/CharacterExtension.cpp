@@ -28,8 +28,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/StateBroadcastData.h>
 #include <kenshi/AI/AI.h>
 #include <kenshi/AI/AITaskSystem.h>
-
-#include <extern/Blackboard.h>
+#include <kenshi/AI/Blackboard.h>
 
 #include <ExternalFunctions.h>
 #include <Settings.h>
@@ -94,12 +93,12 @@ namespace
 		auto blackboard = self->dismissChar->ai->getBlackboard();
 		if (blackboard != nullptr)
 		{
-			blackboard->_0x130 = true;
-			blackboard->leaderTasks.clear();
-			blackboard->squad1Tasks.clear();
-			blackboard->squad2Tasks.clear();
-			blackboard->slaveTasks.clear();
-			KEP::externalFunctions->FUN_002715E0(blackboard, squadTemplate);
+			blackboard->_flagCleared = true;
+			blackboard->leaderJobs.clear();
+			blackboard->squadJobs.clear();
+			blackboard->squadJobs2.clear();
+			blackboard->slaveJobs.clear();
+			blackboard->addPackages(squadTemplate);
 		}
 		self->dismissChar->ai->taskSystemAI->clearPermajobs();
 		self->dismissChar->ai->taskSystemAI->actions.clearAndDelete();
@@ -257,19 +256,19 @@ namespace
 
 void KEP::CharacterExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&SquadManagementScreen::dismissCharacter), &SquadManagementScreen_dismissCharacter_hook, &SquadManagementScreen_dismissCharacter_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SquadManagementScreen::dismissCharacter), &SquadManagementScreen_dismissCharacter_hook, &SquadManagementScreen_dismissCharacter_orig))
 		ErrorLog("[SquadManagementScreen::dismissCharacter] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::_NV_giveBirth), &Character_giveBirth_hook, &Character_giveBirth_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::_NV_giveBirth), &Character_giveBirth_hook, &Character_giveBirth_orig))
 		ErrorLog("[Character::giveBirth] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (PlayerInterface::*)(const lektor<Character*>&, bool))&PlayerInterface::recruit), &PlayerInterface_recruit_hook, &PlayerInterface_recruit_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress((bool (PlayerInterface::*)(const lektor<Character*>&, bool))&PlayerInterface::recruit), &PlayerInterface_recruit_hook, &PlayerInterface_recruit_orig))
 		ErrorLog("[PlayerInterface::recruit] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::generateWeapon), &Character_generateWeapon_hook, &Character_generateWeapon_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::generateWeapon), &Character_generateWeapon_hook, &Character_generateWeapon_orig))
 			ErrorLog("[Character::generateWeapon] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::_NV_reCalculateNaturalWeapon), &Character_reCalculateNaturalWeapon_hook, &Character_reCalculateNaturalWeapon_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::_NV_reCalculateNaturalWeapon), &Character_reCalculateNaturalWeapon_hook, &Character_reCalculateNaturalWeapon_orig))
 			ErrorLog("[Character::reCalculateNaturalWeapon] could not install hook!");
 
 }

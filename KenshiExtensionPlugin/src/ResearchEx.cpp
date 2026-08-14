@@ -156,15 +156,15 @@ namespace
 
 void KEP::ResearchEx::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00830B90, &Research_FUN_00830b90_hook, &Research_FUN_00830b90_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_00830B90, &Research_FUN_00830b90_hook, &Research_FUN_00830b90_orig))
 		ErrorLog("FUN_00830B90] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->Research_createBlueprint, &Research_createBlueprint_hook, &Research_createBlueprint_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->Research_createBlueprint, &Research_createBlueprint_hook, &Research_createBlueprint_orig))
 		ErrorLog("[Research::createBlueprint] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->Research_init, &Research_init_hook, &Research_init_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->Research_init, &Research_init_hook, &Research_init_orig))
 		ErrorLog("[Research::init] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&KingOfRenderThread::newGameWithCharEdit), &KingOfRenderThread_newGameWithCharEdit_hook, &KingOfRenderThread_newGameWithCharEdit_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&KingOfRenderThread::newGameWithCharEdit), &KingOfRenderThread_newGameWithCharEdit_hook, &KingOfRenderThread_newGameWithCharEdit_orig))
 		ErrorLog("[KingOfRenderThread::newGameWithCharEdit] could not install hook!");
 }

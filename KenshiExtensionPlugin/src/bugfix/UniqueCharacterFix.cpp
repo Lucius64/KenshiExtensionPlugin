@@ -24,11 +24,11 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/WorldEventStateQuery.h>
 #include <kenshi/Town.h>
 #include <kenshi/FactionWarMgr.h>
+#include <kenshi/Campaign.h>
 #include <kenshi/AI/AIPackage.h>
+#include <kenshi/AI/Blackboard.h>
 
 #include <extern/UniqueNPCManager.h>
-#include <extern/FactionWarMgr.h>
-#include <extern/Blackboard.h>
 #include <extern/AreaBiomeGroup.h>
 
 #include <kep/functions.h>
@@ -280,13 +280,12 @@ namespace
 			return;
 		}
 
-		auto targetTownPos = target->getPosition();
-		auto nearlyTowns = KEP::externalFunctions->FUN_009429B0(KEP::externalGlobals->_UtilityT, targetTownPos, self->myTowns, 4);
+		auto nearlyTowns = KEP::externalFunctions->FUN_009429B0(KEP::externalGlobals->_UtilityT, target->getPosition(), self->myTowns, 4);
 		auto& uniqueNPCMgr = KEP::externalFunctions->FUN_00354500();
 
 		const std::string refKey = "leader";
 
-		for (auto leaderIter = campaign->data->specialLeaders.begin(); leaderIter != campaign->data->specialLeaders.end(); ++leaderIter)
+		for (auto leaderIter = campaign->myData->specificLeaderCharacter.begin(); leaderIter != campaign->myData->specificLeaderCharacter.end(); ++leaderIter)
 		{
 			hand uniqueNPCHandle = (uniqueNPCMgr.*KEP::externalFunctions->FUN_009AFCA0)(*leaderIter);
 			if (uniqueNPCHandle.type != NULL_ITEM)
@@ -296,7 +295,7 @@ namespace
 					auto platoon = uniqueNPCHandle.getPlatoon();
 					if (platoon != nullptr && platoon->owner == self->me)
 					{
-						campaign->addPlatoon(platoon, true);
+						campaign->addToCampaign(platoon, true);
 						break;
 					}
 				}
@@ -325,20 +324,20 @@ namespace
 
 					hand handle;
 					auto plat = ou->theFactory->createRandomSquad(self->me, spawnPos, homeTown, 999, nullptr, squads[0], nullptr, nullptr, nullptr, true, handle, nullptr, 1.0f, SQ_ROAMING, false);
-					campaign->addPlatoon(plat, false);
+					campaign->addToCampaign(plat, false);
 					break;
 				}
 			}
 		}
 
-		if (campaign->numForces <= campaign->numForcesMin)
+		if (campaign->manPowerLastCount <= campaign->manPowerMin)
 		{
 			for (auto platoonIter = self->me->activePlatoons.begin(); platoonIter != self->me->activePlatoons.end(); ++platoonIter)
 			{
 				if (KEP::externalFunctions->FUN_009C3510(*platoonIter, campaign, nullptr))
 				{
-					campaign->addPlatoon(*platoonIter, false);
-					if (campaign->numForcesMin < campaign->numForces) return;
+					campaign->addToCampaign(*platoonIter, false);
+					if (campaign->manPowerMin < campaign->manPowerLastCount) return;
 				}
 			}
 
@@ -347,36 +346,36 @@ namespace
 				for (auto platoonsIter = self->forces.begin(); platoonsIter != self->forces.end(); ++platoonsIter)
 				{
 					if (platoonsIter->second == nullptr && (KEP::externalFunctions->FUN_009C3510(platoonsIter->first, campaign, *tonwIter)))
-						campaign->addPlatoon(platoonsIter->first, false);
+						campaign->addToCampaign(platoonsIter->first, false);
 
-					if (campaign->numForcesMin < campaign->numForces)
+					if (campaign->manPowerMin < campaign->manPowerLastCount)
 						return;
 				}
 
-				if (campaign->numForcesMin < campaign->numForces || (self->_generateForcesForTown(*tonwIter, campaign), campaign->numForcesMin < campaign->numForces))
+				if (campaign->manPowerMin < campaign->manPowerLastCount || (self->_generateForcesForTown(*tonwIter, campaign), campaign->manPowerMin < campaign->manPowerLastCount))
 					break;
 			}
 		}
 	}
 
-	bool (*CampaignData_FUN_009C4000_orig)(CampaignData*);
-	bool CampaignData_FUN_009C4000_hook(CampaignData* self)
+	bool (*CampaignData_canStart_orig)(CampaignData*);
+	bool CampaignData_canStart_hook(CampaignData* self)
 	{
 		if (!KEP::settings._fixSpecialLeader)
-			return CampaignData_FUN_009C4000_orig(self);
+			return CampaignData_canStart_orig(self);
 
-		if (self->specialLeaders.size() != 0)
+		if (self->specificLeaderCharacter.size() != 0)
 		{
 			auto& uniqueNPCMgr = KEP::externalFunctions->FUN_00354500();
 			bool isAllUnavailable = true;
 
-			for (auto leaderIter = self->specialLeaders.begin(); leaderIter != self->specialLeaders.end(); ++leaderIter)
+			for (auto leaderIter = self->specificLeaderCharacter.begin(); leaderIter != self->specificLeaderCharacter.end(); ++leaderIter)
 			{
 				hand uniqueNPCHandle = (uniqueNPCMgr.*KEP::externalFunctions->FUN_009AFCA0)(*leaderIter);
 				if (uniqueNPCHandle.type != NULL_ITEM)
 				{
 					auto platoon = uniqueNPCHandle.getPlatoon();
-					if (platoon != nullptr && platoon->owner != self->owner) // イベント発動元と別勢力として出現済みの場合は生存チェックをスキップ
+					if (platoon != nullptr && platoon->owner != self->me) // イベント発動元と別勢力として出現済みの場合は生存チェックをスキップ
 						continue;
 				}
 				if (KEP::externalFunctions->FUN_005E7D60(uniqueNPCMgr, *leaderIter) == ALIVE)
@@ -389,7 +388,7 @@ namespace
 				return false;
 		}
 
-		return self->worldState.isTrue();
+		return self->worldStateRequirements.isTrue();
 	}
 
 	void (*ActivePlatoon__checkForUniqueCharactersOnUnload_orig)(ActivePlatoon*);
@@ -399,7 +398,7 @@ namespace
 		{
 			auto platoon = self->me;
 			auto campaign = platoon->owner->warMgr->getCurrentCampaign(platoon);
-			if (campaign != nullptr && campaign->phase != 2) // 撤退フェーズに移行するまでは初期化判定の対象外とする
+			if (campaign != nullptr && campaign->currentPhase != RETREATING) // 撤退フェーズに移行するまでは初期化判定の対象外とする
 			{
 				return;
 			}
@@ -520,24 +519,24 @@ namespace
 
 void KEP::UniqueCharacterFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RootObjectFactory::createRandomCharacter), &RootObjectFactory_createRandomCharacter_hook, &RootObjectFactory_createRandomCharacter_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RootObjectFactory::createRandomCharacter), &RootObjectFactory_createRandomCharacter_hook, &RootObjectFactory_createRandomCharacter_orig))
 		ErrorLog("[RootObjectFactory::createRandomCharacter] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RootObjectFactory::createRandomSquad), &RootObjectFactory_createRandomSquad_hook, &RootObjectFactory_createRandomSquad_hook_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RootObjectFactory::createRandomSquad), &RootObjectFactory_createRandomSquad_hook, &RootObjectFactory_createRandomSquad_hook_orig))
 		ErrorLog("[RootObjectFactory::createRandomSquad] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ActivePlatoon::setupCheck), &ActivePlatoon_setupCheck_hook, &ActivePlatoon_setupCheck_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ActivePlatoon::setupCheck), &ActivePlatoon_setupCheck_hook, &ActivePlatoon_setupCheck_orig))
 		ErrorLog("[ActivePlatoon::setupCheck] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ActivePlatoon::_checkForUniqueCharactersOnUnload), &ActivePlatoon__checkForUniqueCharactersOnUnload_hook, &ActivePlatoon__checkForUniqueCharactersOnUnload_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ActivePlatoon::_checkForUniqueCharactersOnUnload), &ActivePlatoon__checkForUniqueCharactersOnUnload_hook, &ActivePlatoon__checkForUniqueCharactersOnUnload_orig))
 		ErrorLog("[ActivePlatoon::_checkForUniqueCharactersOnUnload] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_009A93A0, &UniqueNPCManager_FUN_009A93A0_hook, &UniqueNPCManager_FUN_009A93A0_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_009A93A0, &UniqueNPCManager_FUN_009A93A0_hook, &UniqueNPCManager_FUN_009A93A0_orig))
 		ErrorLog("[FUN_009A93A0] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FactionWarMgr::getAllTheForces), &FactionWarMgr_getAllTheForces_hook, &FactionWarMgr_getAllTheForces_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FactionWarMgr::getAllTheForces), &FactionWarMgr_getAllTheForces_hook, &FactionWarMgr_getAllTheForces_orig))
 		ErrorLog("[FactionWarMgr::getAllTheForces] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_009C4000, &CampaignData_FUN_009C4000_hook, &CampaignData_FUN_009C4000_orig))
-		ErrorLog("[FUN_009C4000] could not install hook!");
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CampaignData::_NV_canStart), &CampaignData_canStart_hook, &CampaignData_canStart_orig))
+		ErrorLog("[CampaignData::canStart] could not install hook!");
 }

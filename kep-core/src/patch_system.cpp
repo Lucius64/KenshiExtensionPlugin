@@ -361,7 +361,7 @@ void KEP::PatchSystem::initHook()
 {
 	if (KEP::coreOptions.getEnablePatchSystem())
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GameDataManager::postProcessingTheDatas), &GameDataManager_postProcessingTheDatas_hook, &GameDataManager_postProcessingTheDatas_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GameDataManager::postProcessingTheDatas), &GameDataManager_postProcessingTheDatas_hook, &GameDataManager_postProcessingTheDatas_orig))
 			ErrorLog("[GameDataManager::postProcessingTheDatas] could not install hook!");
 	}
 }

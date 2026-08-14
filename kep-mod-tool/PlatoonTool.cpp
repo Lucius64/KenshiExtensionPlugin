@@ -29,7 +29,8 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/gui/DataPanelLine.h>
 #include <kenshi/AI/AI.h>
 #include <kenshi/AI/AITaskSystem.h>
-#include <extern/Blackboard.h>
+#include <kenshi/AI/Blackboard.h>
+
 #include <extern/CharacterMemory.h>
 
 #include <kep/translation.h>
@@ -152,7 +153,7 @@ void KEP::tools::PlatoonTool::_changeAI(DataPanelLine* line)
 
 	auto data = this->_AIPackageList[this->_selectedAIPackage];
 
-	KEP::functions->Blackboard_changeAI(platoon->me->blackboard, data);
+	platoon->me->blackboard->replaceAIPackage(data);
 }
 
 void KEP::tools::PlatoonTool::_resetAI(DataPanelLine* line)
@@ -172,11 +173,11 @@ void KEP::tools::PlatoonTool::_resetAI(DataPanelLine* line)
 	if (blackboard == nullptr)
 		return;
 
-	blackboard->replacementAI = "";
+	blackboard->replacementAIPackageSID = "";
 
-	KEP::functions->Blackboard_deleteAllPackage(platoon->me->blackboard);
-	KEP::functions->Blackboard_setFallbackPackage(blackboard, platoon->me->squadTemplate);
-	KEP::functions->Blackboard_setSquadPackage(blackboard, platoon->me->squadTemplate);
+	platoon->me->blackboard->clearAllPackages();
+	blackboard->addFallbackPackages(platoon->me->squadTemplate);
+	blackboard->addPackages(platoon->me->squadTemplate);
 
 	for (auto iter = platoon->things.begin(); iter != platoon->things.end(); ++iter)
 	{

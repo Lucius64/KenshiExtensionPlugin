@@ -24,7 +24,6 @@ class Character;
 class CampaignInstance;
 class AreaSector;
 class Platoon;
-class CampaignData;
 class hand;
 class TownBase;
 class Town;
@@ -34,7 +33,6 @@ class DistantTown;
 class Research;
 template<typename T>
 class lektor;
-class Blackboard;
 class Task_FillMachine;
 class StorageBuilding;
 class Inventory;
@@ -107,7 +105,6 @@ namespace KEP
 		WorldStateEnum (*FUN_005E7D60)(UniqueNPCManager&, GameData*); // Get character world state
 		void (*FUN_009A7AA0)(UniqueNPCManager&); // Init UniqueCharacterState
 		void (*FUN_009A93A0)(UniqueNPCManager&, GameData*, bool); // Load UniqueCharacterState
-		bool (*FUN_009C4000)(CampaignData*); // Check world state
 		bool (*FUN_009C3510)(Platoon*, CampaignInstance*, TownBase*); // Participate in events
 		lektor<TownBase*>* (*FUN_009429B0)(UtilityT*, const Ogre::Vector3&, lektor<TownBase*>&, int); // List of nearest towns
 		bool (*FUN_008F4200)(AreaSector*, const Ogre::Vector3&, bool, Faction*, float, float); // Calculate spawn position
@@ -116,7 +113,6 @@ namespace KEP
 		float(*FUN_008DC0D0)(TerrainDecalsManager*, Character*, Ogre::Vector3&, float, Ogre::ColourValue&);
 		DistantTown* (*FUN_000D5FD0)(DistantTown*, Town*); // DistantTown(Town*)
 		void (*FUN_00830B90)(Research*, GameData*); // Set BuildingUpgrades
-		void (*FUN_002715E0)(Blackboard*, GameData*); // Set squad AI package
 		int (*FUN_00340EB0)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_00343720)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_001A4FB0)(scythe::data::PhysicsEntity*, const char*); // Load scythe file

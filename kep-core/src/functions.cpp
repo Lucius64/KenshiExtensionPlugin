@@ -21,10 +21,6 @@ KEP::FunctionPointers::FunctionPointers()
 	, MessageRoller_clear(nullptr)
 	, UniqueNPCManager_getSingleton(nullptr)
 	, UniqueNPCManager_remove(nullptr)
-	, Blackboard_changeAI(nullptr)
-	, Blackboard_setSquadPackage(nullptr)
-	, Blackboard_deleteAllPackage(nullptr)
-	, Blackboard_setFallbackPackage(nullptr)
 	, AreasList_getAreaSector(nullptr)
 	, BuildingInteriorDatasManager_hasLayout(nullptr)
 	, CharacterMemory_getSubjectiveTags(nullptr)
@@ -35,7 +31,6 @@ KEP::FunctionPointers::FunctionPointers()
 	, InventoryManager_clearAllBuildingInventory(nullptr)
 	, BuildingInterior_destroyAllInternalBuildings(nullptr)
 	, NodeList_destroyNodesByBuilding(nullptr)
-	, Blackboard_getGUIData(nullptr)
 	, CharacterMemory_getGUIData(nullptr)
 	, Research_init(nullptr)
 	, setTotalCoverage(nullptr)
@@ -57,6 +52,8 @@ KEP::FunctionPointers::FunctionPointers()
 	, _blocks(nullptr)
 	, _harpoon(nullptr)
 	, _shapeBuffer(nullptr)
+	, _handleMgr(nullptr)
+	, _TaskDatas(nullptr)
 {
 }
 
@@ -75,10 +72,6 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&MessageRoller_clear = baseAddr + 0x7239a0;
 			*(uintptr_t*)&UniqueNPCManager_getSingleton = baseAddr + 0x354500;
 			*(uintptr_t*)&UniqueNPCManager_remove = baseAddr + 0x505d50;
-			*(uintptr_t*)&Blackboard_changeAI = baseAddr + 0x2723f0;
-			*(uintptr_t*)&Blackboard_setSquadPackage = baseAddr + 0x2715e0;
-			*(uintptr_t*)&Blackboard_deleteAllPackage = baseAddr + 0x26bba0;
-			*(uintptr_t*)&Blackboard_setFallbackPackage = baseAddr + 0x271f90;
 			*(uintptr_t*)&AreasList_getAreaSector = baseAddr + 0x8f47e0;
 			*(uintptr_t*)&BuildingInteriorDatasManager_hasLayout = baseAddr + 0x55a2b0;
 			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x673000;
@@ -89,7 +82,6 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x955600;
 			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ea40;
 			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a5e0;
-			*(uintptr_t*)&Blackboard_getGUIData = baseAddr + 0x26a4e0;
 			*(uintptr_t*)&CharacterMemory_getGUIData = baseAddr + 0x674bf0;
 			*(uintptr_t*)&Research_init = baseAddr + 0x833ca0;
 			*(uintptr_t*)&setTotalCoverage = baseAddr + 0x82eeb0;
@@ -111,6 +103,8 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&_blocks = baseAddr + 0x2010f80;
 			*(uintptr_t*)&_harpoon = baseAddr + 0x212e1d0;
 			*(uintptr_t*)&_shapeBuffer = baseAddr + 0x212de98;
+			*(uintptr_t*)&_handleMgr = baseAddr + 0x2132f30;
+			*(uintptr_t*)&_TaskDatas = baseAddr + 0x1ce80f0;
 		}
 	}
 	else if (platform == 0)
@@ -126,10 +120,6 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&MessageRoller_clear = baseAddr + 0x723300;
 			*(uintptr_t*)&UniqueNPCManager_getSingleton = baseAddr + 0x3540b0;
 			*(uintptr_t*)&UniqueNPCManager_remove = baseAddr + 0x506060;
-			*(uintptr_t*)&Blackboard_changeAI = baseAddr + 0x271f80;
-			*(uintptr_t*)&Blackboard_setSquadPackage = baseAddr + 0x271170;
-			*(uintptr_t*)&Blackboard_deleteAllPackage = baseAddr + 0x26b730;
-			*(uintptr_t*)&Blackboard_setFallbackPackage = baseAddr + 0x271b20;
 			*(uintptr_t*)&AreasList_getAreaSector = baseAddr + 0x8f3f00;
 			*(uintptr_t*)&BuildingInteriorDatasManager_hasLayout = baseAddr + 0x55a5c0;
 			*(uintptr_t*)&CharacterMemory_getSubjectiveTags = baseAddr + 0x673310;
@@ -140,7 +130,6 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&InventoryManager_clearAllBuildingInventory = baseAddr + 0x954d20;
 			*(uintptr_t*)&BuildingInterior_destroyAllInternalBuildings = baseAddr + 0x54ed50;
 			*(uintptr_t*)&NodeList_destroyNodesByBuilding = baseAddr + 0x38a200;
-			*(uintptr_t*)&Blackboard_getGUIData = baseAddr + 0x26a070;
 			*(uintptr_t*)&CharacterMemory_getGUIData = baseAddr + 0x674f00;
 			*(uintptr_t*)&Research_init = baseAddr + 0x8335e0;
 			*(uintptr_t*)&setTotalCoverage = baseAddr + 0x82e7f0;
@@ -162,6 +151,8 @@ void KEP::FunctionPointers::init(unsigned int platform, const std::string& versi
 			*(uintptr_t*)&_blocks = baseAddr + 0x200ef90;
 			*(uintptr_t*)&_harpoon = baseAddr + 0x212c110;
 			*(uintptr_t*)&_shapeBuffer = baseAddr + 0x212bdd8;
+			*(uintptr_t*)&_handleMgr = baseAddr + 0x2130ea0;
+			*(uintptr_t*)&_TaskDatas = baseAddr + 0x1ce60f0;
 		}
 	}
 }
@@ -175,3 +166,5 @@ lektor<CombatTechniqueData*>& KEP::FunctionPointers::getAttacks() const { return
 lektor<CombatTechniqueData*>& KEP::FunctionPointers::getBlocks() const { return *_blocks; }
 HarpoonManager* KEP::FunctionPointers::getHarpoonManager() const { return _harpoon; }
 NxShape**& KEP::FunctionPointers::getShapeBuffer() const { return *_shapeBuffer; }
+HandleManager& KEP::FunctionPointers::getHandleManager() const { return *_handleMgr; }
+ogre_unordered_map<TaskType, TaskData*>::type& KEP::FunctionPointers::getTaskDatas() const { return *_TaskDatas; }

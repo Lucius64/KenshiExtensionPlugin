@@ -527,18 +527,18 @@ namespace
 
 void KEP::RaceLimiterExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress((bool (RaceLimiter::*)(GameData*, RootObject*)) & RaceLimiter::_NV_canEquip), &RaceLimiter_canEquip_hook, &RaceLimiter_canEquip_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress((bool (RaceLimiter::*)(GameData*, RootObject*)) & RaceLimiter::_NV_canEquip), &RaceLimiter_canEquip_hook, &RaceLimiter_canEquip_orig))
 			ErrorLog("[RaceLimiter::canEquip] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RobotLimbItem::_CONSTRUCTOR), &RobotLimbItem__CONSTRUCTOR_hook, &RobotLimbItem__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RobotLimbItem::_CONSTRUCTOR), &RobotLimbItem__CONSTRUCTOR_hook, &RobotLimbItem__CONSTRUCTOR_orig))
 			ErrorLog("[RobotLimbItem::RobotLimbItem] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Weapon::_CONSTRUCTOR), &Weapon__CONSTRUCTOR_hook, &Weapon__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Weapon::_CONSTRUCTOR), &Weapon__CONSTRUCTOR_hook, &Weapon__CONSTRUCTOR_orig))
 		ErrorLog("[Weapon::Weapon] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharacterHuman::_NV_setupInventorySections), &CharacterHuman_setupInventorySections_hook, &CharacterHuman_setupInventorySections_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharacterHuman::_NV_setupInventorySections), &CharacterHuman_setupInventorySections_hook, &CharacterHuman_setupInventorySections_orig))
 		ErrorLog("[CharacterHuman::setupInventorySections] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RaceLimiter::addLimit), &RaceLimiter_addLimit_hook, &RaceLimiter_addLimit_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RaceLimiter::addLimit), &RaceLimiter_addLimit_hook, &RaceLimiter_addLimit_orig))
 		ErrorLog("[RaceLimiter::addLimit] could not install hook!");
 }

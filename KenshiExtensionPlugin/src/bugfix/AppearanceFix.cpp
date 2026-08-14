@@ -264,18 +264,18 @@ namespace
 
 void KEP::AppearanceFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceManager::getMorphedBodyMesh), &AppearanceManager_getMorphedBodyMesh_hook, &AppearanceManager_getMorphedBodyMesh_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceManager::getMorphedBodyMesh), &AppearanceManager_getMorphedBodyMesh_hook, &AppearanceManager_getMorphedBodyMesh_orig))
 		ErrorLog("[AppearanceManager::getMorphedBodyMes] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceHuman::_NV_setAttachmentsVisible), &AppearanceHuman_setAttachmentsVisible_hook, &AppearanceHuman_setAttachmentsVisible_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceHuman::_NV_setAttachmentsVisible), &AppearanceHuman_setAttachmentsVisible_hook, &AppearanceHuman_setAttachmentsVisible_orig))
 		ErrorLog("[AppearanceHuman::setAttachmentsVisible] could not install hook!");
 
 	if (settings._sortedIdleStances)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceManager::_CONSTRUCTOR), &AppearanceManager__CONSTRUCTOR_hook, &AppearanceManager__CONSTRUCTOR_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceManager::_CONSTRUCTOR), &AppearanceManager__CONSTRUCTOR_hook, &AppearanceManager__CONSTRUCTOR_orig))
 			ErrorLog("[AppearanceManager::AppearanceManager] could not install hook!");
 	}
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceManager::updateModifiers), &AppearanceManager_updateModifiers_hook, &AppearanceManager_updateModifiers_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceManager::updateModifiers), &AppearanceManager_updateModifiers_hook, &AppearanceManager_updateModifiers_orig))
 		ErrorLog("[AppearanceManager::updateModifiers] could not install hook!");
 }

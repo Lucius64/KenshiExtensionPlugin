@@ -215,13 +215,13 @@ void KEP::CraftingExtension::init()
 {
 	if (settings._craftingItemExtension)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CraftingBuilding::getCriticalSuccessWeapon), &CraftingBuilding_getCriticalSuccessWeapon_hook, &CraftingBuilding_getCriticalSuccessWeapon_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CraftingBuilding::getCriticalSuccessWeapon), &CraftingBuilding_getCriticalSuccessWeapon_hook, &CraftingBuilding_getCriticalSuccessWeapon_orig))
 			ErrorLog("[CraftingBuilding::getCriticalSuccessWeapon] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CraftingBuilding::getAvailableCrafts), &CraftingBuilding_getAvailableCrafts_hook, &CraftingBuilding_getAvailableCrafts_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CraftingBuilding::getAvailableCrafts), &CraftingBuilding_getAvailableCrafts_hook, &CraftingBuilding_getAvailableCrafts_orig))
 			ErrorLog("[CraftingBuilding::getAvailableCrafts] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002CA350, &FUN_002CA350_hook, &FUN_002CA350_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_002CA350, &FUN_002CA350_hook, &FUN_002CA350_orig))
 			ErrorLog("[FUN_002CA350] could not install hook!");
 	}
 }

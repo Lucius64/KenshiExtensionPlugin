@@ -37,10 +37,10 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/Item.h>
 #include <kenshi/gui/ProspectingWindow.h>
 #include <kenshi/SaveManager.h>
+#include <kenshi/AI/Blackboard.h>
 
 #include <extern/TownBase.h>
 #include <extern/BasePopulationManager.h>
-#include <extern/Blackboard.h>
 
 #include <kep/functions.h>
 #include <ExternalFunctions.h>
@@ -257,7 +257,7 @@ namespace
 			if (inNpcBuilding && building != nullptr)
 			{
 				auto residentSquad = building->residentSquad.getPlatoon();
-				if (residentSquad != nullptr && residentSquad->blackboard->homelok)
+				if (residentSquad != nullptr && residentSquad->blackboard->homeIsLockedUp)
 					return false;
 			}
 			auto platoon = item->getProperOwner().getPlatoon();
@@ -297,7 +297,7 @@ namespace
 
 void KEP::MiscFix::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&WorldEventStateQuery::getFromData), &WorldEventStateQuery_getFromData_hook, &WorldEventStateQuery_getFromData_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&WorldEventStateQuery::getFromData), &WorldEventStateQuery_getFromData_hook, &WorldEventStateQuery_getFromData_orig))
 		ErrorLog("[WorldEventStateQuery::getFromData] could not install hook!");
 
 	if (GetModuleHandleA("_kenshi_fix1.asi") != nullptr)
@@ -306,52 +306,52 @@ void KEP::MiscFix::init()
 	}
 	else
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&UtilityT::moveFile), &UtilityT_moveFile_hook, &UtilityT_moveFile_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&UtilityT::moveFile), &UtilityT_moveFile_hook, &UtilityT_moveFile_orig))
 			ErrorLog("[UtilityT::moveFile] could not install hook!");
 	}
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Town::_NV_loadState), &Town_loadState_hook, &Town_loadState_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Town::_NV_loadState), &Town_loadState_hook, &Town_loadState_orig))
 		ErrorLog("[Town::loadState] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Town::notifyRepopulation), &Town_notifyRepopulation_hook, &Town_notifyRepopulation_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Town::notifyRepopulation), &Town_notifyRepopulation_hook, &Town_notifyRepopulation_orig))
 		ErrorLog("[Town::notifyRepopulation] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000D5FD0, &DistantTown__CONSTRUCTOR_hook, &DistantTown__CONSTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_000D5FD0, &DistantTown__CONSTRUCTOR_hook, &DistantTown__CONSTRUCTOR_orig))
 		ErrorLog("[DistantTown::DistantTown] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_000D8620, &DistantTown_FUN_000D8620_hook, &DistantTown_FUN_000D8620_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_000D8620, &DistantTown_FUN_000D8620_hook, &DistantTown_FUN_000D8620_orig))
 		ErrorLog("[FUN_000D8620] could not install hook!");
 
 	if (settings._fixTechAndCraftingQueue)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_004B0B60, &FUN_004B0B60_hook, &FUN_004B0B60_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_004B0B60, &FUN_004B0B60_hook, &FUN_004B0B60_orig))
 			ErrorLog("[FUN_004B0B60] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_002C9840, &FUN_002C9840_hook, &FUN_002C9840_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_002C9840, &FUN_002C9840_hook, &FUN_002C9840_orig))
 			ErrorLog("[FUN_002C9840] could not install hook!");
 	}
 
 	if (settings._sortedNewGameStarts)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&NewGameWindow::loadData), &NewGameWindow_loadData_hook, &NewGameWindow_loadData_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&NewGameWindow::loadData), &NewGameWindow_loadData_hook, &NewGameWindow_loadData_orig))
 			ErrorLog("[NewGameWindow::loadData] could not install hook!");
 	}
 
 	if (settings._fixTortureBuilding)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&TortureBuilding::_NV_update), &TortureBuilding_update_hook, &TortureBuilding_update_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&TortureBuilding::_NV_update), &TortureBuilding_update_hook, &TortureBuilding_update_orig))
 			ErrorLog("[TortureBuilding::_NV_update] could not install hook!");
 	}
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&UtilityT::getResourceFilePath), &UtilityT_getResourceFilePath_hook, &UtilityT_getResourceFilePath_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&UtilityT::getResourceFilePath), &UtilityT_getResourceFilePath_hook, &UtilityT_getResourceFilePath_orig))
 		ErrorLog("[UtilityT::getResourceFilePath] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AI::itemOnGroundStealingCheckIsSafe), &AI_itemOnGroundStealingCheckIsSafe_hook, &AI_itemOnGroundStealingCheckIsSafe_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AI::itemOnGroundStealingCheckIsSafe), &AI_itemOnGroundStealingCheckIsSafe_hook, &AI_itemOnGroundStealingCheckIsSafe_orig))
 		ErrorLog("[AI::itemOnGroundStealingCheckIsSafe] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ProspectingWindow::showT), &ProspectiongWindow_showT_hook, &ProspectiongWindow_showT_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ProspectingWindow::showT), &ProspectiongWindow_showT_hook, &ProspectiongWindow_showT_orig))
 		ErrorLog("[ProspectingWindow::showT] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&SaveManager::importGame), &SaveManager_importGame_hook, &SaveManager_importGame_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SaveManager::importGame), &SaveManager_importGame_hook, &SaveManager_importGame_orig))
 		ErrorLog("[SaveManager::importGame] could not install hook!");
 }

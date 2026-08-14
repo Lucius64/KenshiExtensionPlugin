@@ -506,15 +506,15 @@ void KEP::AnimationFix::init()
 	*(uintptr_t*)&Ogre_Skeleton__refreshAnimationState = reinterpret_cast<uintptr_t>(GetProcAddress(hOgreMain, "?_refreshAnimationState@Skeleton@Ogre@@UEAAXPEAVAnimationStateSet@2@@Z"));
 	auto pfuncTarget = &DetourSkeleton::_refreshAnimationState_hook;
 	auto pfuncOrig = &Ogre_Skeleton__refreshAnimationState_orig;
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(Ogre_Skeleton__refreshAnimationState, *(void**)&pfuncTarget, *(void***)&pfuncOrig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(Ogre_Skeleton__refreshAnimationState, *(void**)&pfuncTarget, *(void***)&pfuncOrig))
 		ErrorLog("[Ogre::Skeleton::_refreshAnimationState] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AppearanceBase::buildBody), AppearanceBase_buildBody_hook, &AppearanceBase_buildBody_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AppearanceBase::buildBody), AppearanceBase_buildBody_hook, &AppearanceBase_buildBody_orig))
 		ErrorLog("[AppearanceBase::buildBody] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RenderToTextureotron::renderCharacter), &RenderToTextureotron_renderCharacter_hook, &RenderToTextureotron_renderCharacter_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RenderToTextureotron::renderCharacter), &RenderToTextureotron_renderCharacter_hook, &RenderToTextureotron_renderCharacter_orig))
 		ErrorLog("[RenderToTextureotron::renderCharacter] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AnimationClass::processIdleAnims), AnimationClass_processIdleAnims_hook, &AnimationClass_processIdleAnims_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AnimationClass::processIdleAnims), AnimationClass_processIdleAnims_hook, &AnimationClass_processIdleAnims_orig))
 		ErrorLog("[AnimationClass::processIdleAnims] Could not add hook!");
 }

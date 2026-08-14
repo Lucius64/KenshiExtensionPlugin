@@ -105,10 +105,10 @@ void KEP::TranslationUtility::init(unsigned int platform, const std::string& ver
 
 void KEP::TranslationUtility::initHook()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&LocaleManager::trySetCurrentLocaleFromMod), &LocaleManager_trySetCurrentLocaleFromMod_hook, &LocaleManager_trySetCurrentLocaleFromMod_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&LocaleManager::trySetCurrentLocaleFromMod), &LocaleManager_trySetCurrentLocaleFromMod_hook, &LocaleManager_trySetCurrentLocaleFromMod_orig))
 		ErrorLog("[LocaleManager::trySetCurrentLocaleFromMod] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GlobalConstants::setup), &GlobalConstants_setup_hook, &GlobalConstants_setup_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GlobalConstants::setup), &GlobalConstants_setup_hook, &GlobalConstants_setup_orig))
 		ErrorLog("[GlobalConstants::setup] could not install hook!");
 }
 

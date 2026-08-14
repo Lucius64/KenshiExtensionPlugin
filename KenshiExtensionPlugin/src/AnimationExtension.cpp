@@ -621,27 +621,27 @@ namespace
 
 void KEP::AnimationExtension::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AnimationData::_CONSTRUCTOR), AnimationData__CONTRUCTOR_hook, &AnimationData__CONTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AnimationData::_CONSTRUCTOR), AnimationData__CONTRUCTOR_hook, &AnimationData__CONTRUCTOR_orig))
 		ErrorLog("[AnimationData::AnimationData] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CombatTechniqueData::_CONSTRUCTOR), CombatTechniqueData__CONTRUCTOR_hook, &CombatTechniqueData__CONTRUCTOR_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CombatTechniqueData::_CONSTRUCTOR), CombatTechniqueData__CONTRUCTOR_hook, &CombatTechniqueData__CONTRUCTOR_orig))
 		ErrorLog("[CombatTechniqueData::CombatTechniqueData] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&RangedCombatClass::animationUpdate), RangedCombatClass_animationUpdate_hook, &RangedCombatClass_animationUpdate_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RangedCombatClass::animationUpdate), RangedCombatClass_animationUpdate_hook, &RangedCombatClass_animationUpdate_orig))
 		ErrorLog("[RangedCombatClass::animationUpdate] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::setupCombatTechniques), CharStats_setupCombatTechniques_hook, &CharStats_setupCombatTechniques_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::setupCombatTechniques), CharStats_setupCombatTechniques_hook, &CharStats_setupCombatTechniques_orig))
 		ErrorLog("[CharStats::setupCombatTechniques] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::_chooseAttacks), CharStats__chooseAttacks_hook, &CharStats__chooseAttacks_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::_chooseAttacks), CharStats__chooseAttacks_hook, &CharStats__chooseAttacks_orig))
 		ErrorLog("[CharStats::_chooseAttacks] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CharStats::chooseBlock), CharStats_chooseBlock_hook, &CharStats_chooseBlock_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::chooseBlock), CharStats_chooseBlock_hook, &CharStats_chooseBlock_orig))
 		ErrorLog("[CharStats::chooseBlock] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&CombatClass::_iHitYouAreYouHit), CombatClass__iHitYouAreYouHit_hook, &CombatClass__iHitYouAreYouHit_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CombatClass::_iHitYouAreYouHit), CombatClass__iHitYouAreYouHit_hook, &CombatClass__iHitYouAreYouHit_orig))
 		ErrorLog("[CombatClass::_iHitYouAreYouHit] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Character::iShotYou), Character_iShotYou_hook, &Character_iShotYou_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::iShotYou), Character_iShotYou_hook, &Character_iShotYou_orig))
 		ErrorLog("[Character::iShotYou] Could not add hook!");
 }

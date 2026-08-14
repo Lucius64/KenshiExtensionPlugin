@@ -20,7 +20,6 @@ class MessageRoller;
 class UniqueNPCManager;
 class hand;
 class EscMenu;
-class Blackboard;
 class AreaSector;
 class AreasList;
 class BuildingInteriorDatasManager;
@@ -45,6 +44,12 @@ enum CharacterPerceptionTags_ShortTerm;
 class NxShape;
 template<typename T>
 class FitnessSelector;
+class RootObjectBase;
+class Faction;
+class TownBase;
+class HandleManager;
+enum TaskType;
+class TaskData;
 
 namespace KEP
 {
@@ -62,6 +67,8 @@ namespace KEP
 		DECLSPEC lektor<CombatTechniqueData*>& getBlocks() const;
 		DECLSPEC HarpoonManager* getHarpoonManager() const;
 		DECLSPEC NxShape**& getShapeBuffer() const;
+		DECLSPEC HandleManager& getHandleManager() const;
+		DECLSPEC ogre_unordered_map<TaskType, TaskData*>::type& getTaskDatas() const;
 
 		bool (*EscMenu_openedOtherWindows)(EscMenu*);
 		bool (*Research_completed)(Research*, GameData*);
@@ -72,10 +79,6 @@ namespace KEP
 		void (*MessageRoller_clear)(MessageRoller*);
 		UniqueNPCManager* (*UniqueNPCManager_getSingleton)();
 		void (*UniqueNPCManager_remove)(UniqueNPCManager*, GameData*, const hand&);
-		void (*Blackboard_changeAI)(Blackboard*, GameData*);
-		void (*Blackboard_setSquadPackage)(Blackboard*, GameData*);
-		void (*Blackboard_deleteAllPackage)(Blackboard*);
-		void (*Blackboard_setFallbackPackage)(Blackboard*, GameData*);
 		AreaSector* (*AreasList_getAreaSector)(AreasList*, const Ogre::Vector3&);
 		bool (*BuildingInteriorDatasManager_hasLayout)(BuildingInteriorDatasManager*, GameData*, const std::string&, bool);
 		SubjectiveTags* (*CharacterMemory_getSubjectiveTags)(CharacterMemory*, Character*);
@@ -86,7 +89,6 @@ namespace KEP
 		void (*InventoryManager_clearAllBuildingInventory)(InventoryManager*, Building*);
 		void (*BuildingInterior_destroyAllInternalBuildings)(BuildingInterior*, bool);
 		void (*NodeList_destroyNodesByBuilding)(NodeList*, const hand&, bool);
-		void (*Blackboard_getGUIData)(Blackboard*, DatapanelGUI*, int);
 		void (*CharacterMemory_getGUIData)(CharacterMemory*, DatapanelGUI*, int);
 		void (*Research_init)(Research*);
 		void (*setTotalCoverage)(GameData*);
@@ -110,6 +112,8 @@ namespace KEP
 		lektor<CombatTechniqueData*>* _blocks;
 		HarpoonManager* _harpoon;
 		NxShape*** _shapeBuffer;
+		HandleManager* _handleMgr;
+		ogre_unordered_map<TaskType, TaskData*>::type* _TaskDatas;
 	};
 
 	extern DECLSPEC boost::scoped_ptr<FunctionPointers> functions;

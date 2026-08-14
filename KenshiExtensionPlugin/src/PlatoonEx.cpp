@@ -262,21 +262,21 @@ namespace
 
 void KEP::PlatoonEx::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GameWorld::loadAllPlatoons), &GameWorld_loadAllPlatoons_hook, &GameWorld_loadAllPlatoons_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GameWorld::loadAllPlatoons), &GameWorld_loadAllPlatoons_hook, &GameWorld_loadAllPlatoons_orig))
 		ErrorLog("[GameWorld::loadAllPlatoons] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Platoon::_NV_serialiseEverything), &Platoon_serialiseEverything_hook, &Platoon_serialiseEverything_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Platoon::_NV_serialiseEverything), &Platoon_serialiseEverything_hook, &Platoon_serialiseEverything_orig))
 		ErrorLog("[Platoon::serialiseEverything] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Platoon::_NV_loadStateData), &Platoon_loadStateData_hook, &Platoon_loadStateData_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Platoon::_NV_loadStateData), &Platoon_loadStateData_hook, &Platoon_loadStateData_orig))
 		ErrorLog("[Platoon::loadStateData] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&ActivePlatoon::_NV_update), &ActivePlatoon_update_hook, &ActivePlatoon_update_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&ActivePlatoon::_NV_update), &ActivePlatoon_update_hook, &ActivePlatoon_update_orig))
 		ErrorLog("[ActivePlatoon::update] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AI::buySomething), &AI_buySomething_hook, &AI_buySomething_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AI::buySomething), &AI_buySomething_hook, &AI_buySomething_orig))
 		ErrorLog("[AI::buySomething] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->InventoryManager_refreshSquadInventory, &InventoryManager_refreshSquadInventory_hook, &InventoryManager_refreshSquadInventory_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->InventoryManager_refreshSquadInventory, &InventoryManager_refreshSquadInventory_hook, &InventoryManager_refreshSquadInventory_orig))
 		ErrorLog("[InventoryManager::refreshSquadInventory] could not install hook!");
 }

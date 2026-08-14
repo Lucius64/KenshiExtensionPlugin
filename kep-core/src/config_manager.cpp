@@ -55,13 +55,13 @@ KEP::IPluginOption::~IPluginOption()
 
 void KEP::ConfigManager::initHook()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&OptionsWindow::create), OptionsWindow_create_hook, &OptionsWindow_create_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&OptionsWindow::create), OptionsWindow_create_hook, &OptionsWindow_create_orig))
 		ErrorLog("[OptionsWindow::create] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&OptionsWindow::saveOptions), OptionsWindow_saveOptions_hook, &OptionsWindow_saveOptions_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&OptionsWindow::saveOptions), OptionsWindow_saveOptions_hook, &OptionsWindow_saveOptions_orig))
 		ErrorLog("[OptionsWindow::saveOptions] Could not add hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&InputHandler::loadConfig), &InputHandler_loadConfig_hook, &InputHandler_loadConfig_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&InputHandler::loadConfig), &InputHandler_loadConfig_hook, &InputHandler_loadConfig_orig))
 		ErrorLog("[InputHandler::loadConfig] could not install hook!");
 }
 

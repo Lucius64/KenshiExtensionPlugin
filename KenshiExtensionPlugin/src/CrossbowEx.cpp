@@ -492,15 +492,15 @@ void KEP::CrossbowEx::init()
 {
 	*(uintptr_t*)&AK::SoundEngine::PostEvent = reinterpret_cast<uintptr_t>(GetProcAddress(nullptr, "?PostEvent@SoundEngine@AK@@YAKPEBD_KKP6AXW4AkCallbackType@@PEAUAkCallbackInfo@@@ZPEAXKPEAUAkExternalSourceInfo@@K@Z"));
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Crossbow::_NV_getTooltipData2), &Crossbow_getTooltipData2_hook, &Crossbow_getTooltipData2_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Crossbow::_NV_getTooltipData2), &Crossbow_getTooltipData2_hook, &Crossbow_getTooltipData2_orig))
 		ErrorLog("[Crossbow::getTooltipData2] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&GunClass::shoot), &GunClass_shoot_hook, &GunClass_shoot_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&GunClass::shoot), &GunClass_shoot_hook, &GunClass_shoot_orig))
 		ErrorLog("[GunClass::shoot] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KEP::functions->Harpoon_destroy, &Harpoon_destroy_hook, &Harpoon_destroy_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->Harpoon_destroy, &Harpoon_destroy_hook, &Harpoon_destroy_orig))
 		ErrorLog("[Harpoon::destroy] could not install hook!");
 
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&MedicalSystem::addWound), &MedicalSystem_addWound_hook, &MedicalSystem_addWound_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::addWound), &MedicalSystem_addWound_hook, &MedicalSystem_addWound_orig))
 		ErrorLog("[MedicalSystem::addWound] could not install hook!");
 }

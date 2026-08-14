@@ -93,6 +93,6 @@ namespace
 
 void KEP::InventoryEx::init()
 {
-	if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&Inventory::getEquippedArmour), &Inventory_getEquippedArmour_hook, &Inventory_getEquippedArmour_orig))
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Inventory::getEquippedArmour), &Inventory_getEquippedArmour_hook, &Inventory_getEquippedArmour_orig))
 		ErrorLog("[Inventory::getEquippedArmour] could not install hook!");
 }

@@ -276,22 +276,22 @@ void KEP::ItemFurnaceExtension::init()
 {
 	if (settings._furnaceExtension)
 	{
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_setupFromData), &FurnaceBuilding_setupFromData_hook, &FurnaceBuilding_setupFromData_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_setupFromData), &FurnaceBuilding_setupFromData_hook, &FurnaceBuilding_setupFromData_orig))
 			ErrorLog("[FurnaceBuilding::setupFromData] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getInputValue), &FurnaceBuilding_getInputValue_hook, &FurnaceBuilding_getInputValue_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getInputValue), &FurnaceBuilding_getInputValue_hook, &FurnaceBuilding_getInputValue_orig))
 			ErrorLog("[FurnaceBuilding::getInputValue] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getResourcesNeededBecauseEmpty), &FurnaceBuilding_getResourcesNeededBecauseEmpty_hook, &FurnaceBuilding_getResourcesNeededBecauseEmpty_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&FurnaceBuilding::_NV_getResourcesNeededBecauseEmpty), &FurnaceBuilding_getResourcesNeededBecauseEmpty_hook, &FurnaceBuilding_getResourcesNeededBecauseEmpty_orig))
 			ErrorLog("[FurnaceBuilding::getResourcesNeededBecauseEmpty] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(KenshiLib::GetRealAddress(&AI::haveSomeResourcesFor), &AI_haveSomeResourcesFor_hook, &AI_haveSomeResourcesFor_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AI::haveSomeResourcesFor), &AI_haveSomeResourcesFor_hook, &AI_haveSomeResourcesFor_orig))
 			ErrorLog("[AI::haveSomeResourcesFor] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00340EB0, &Task_FillMachine_FUN_00340EB0_hook, &Task_FillMachine_FUN_00340EB0_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_00340EB0, &Task_FillMachine_FUN_00340EB0_hook, &Task_FillMachine_FUN_00340EB0_orig))
 			ErrorLog("[FUN_00340EB0] could not install hook!");
 
-		if (KenshiLib::SUCCESS != KenshiLib::AddHook(externalFunctions->FUN_00343720, &Task_FillMachine_FUN_00343720_hook, &Task_FillMachine_FUN_00343720_orig))
+		if (KenshiLib::SUCCESS != KenshiLib::QueueHook(externalFunctions->FUN_00343720, &Task_FillMachine_FUN_00343720_hook, &Task_FillMachine_FUN_00343720_orig))
 			ErrorLog("[FUN_00343720] could not install hook!");
 	}
 }
