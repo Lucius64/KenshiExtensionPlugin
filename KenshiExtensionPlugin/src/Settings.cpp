@@ -85,7 +85,6 @@ namespace
 		settingsDocument.AddMember("show_crafter", settings._showCrafter, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("sort_armor_coverage", settings._sortArmorCoverage, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("armor_ex", settings._armorEx, settingsDocument.GetAllocator());
-		settingsDocument.AddMember("dialogue_extension", settings._dialogueExtension, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("animal_dialogue_package", settings._animalDialoguePackage, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("sorted_new_game_starts", settings._sortedNewGameStarts, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("extend_init_inventory", settings._extendInitInventory, settingsDocument.GetAllocator());
@@ -103,6 +102,18 @@ namespace
 		settingsDocument.AddMember("importing_negative_money", settings._importingNegativeMoney, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("combat_ex", settings._combatEx, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_unarmed_block_chance", settings._fixUnarmedBlockChance, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("skill_requirements_for_block_combat_techniques", settings._skillRequirementsForBlockCombatTechniques, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("combat_skill_category_anim_override", settings._combatSkillCatAnimOverride, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_combat_animation", settings._fixCombatAnimation, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("specific_target_campaign", settings._specificTargetCampaign, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("word_swap_ex", settings._wordSwapEx, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("dialogue_condition_ex", settings._dialogueConditionEx, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("dialogue_action_ex", settings._dialogueActionEx, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("dialogue_event_ex", settings._dialogueEventEx, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_first_aid_dialogue_event", settings._fixFirstAidDialogueEvent, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_robotics_serialise", settings._fixRobotLimbItemSerialise, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_toughness_xp_bonus", settings._fixToughnessXpBonus, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_dexterity_xp", settings._fixDexterityXP, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_damage_calculation", settings._fixDamageCalculation, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_getEquippedArmour", settings._getEquippedArmour, settingsDocument.GetAllocator());
 
@@ -164,7 +175,6 @@ KEP::Settings::Settings()
 	, _showCrafter(true)
 	, _sortArmorCoverage(true)
 	, _armorEx(true)
-	, _dialogueExtension(false)
 	, _animalDialoguePackage(true)
 	, _sortedNewGameStarts(false)
 	, _xpMod(false)
@@ -183,6 +193,18 @@ KEP::Settings::Settings()
 	, _importingNegativeMoney(false)
 	, _combatEx(false)
 	, _fixUnarmedBlockChance(false)
+	, _skillRequirementsForBlockCombatTechniques(false)
+	, _combatSkillCatAnimOverride(false)
+	, _fixCombatAnimation(true)
+	, _specificTargetCampaign(false)
+	, _wordSwapEx(false)
+	, _dialogueConditionEx(false)
+	, _dialogueActionEx(false)
+	, _dialogueEventEx(false)
+	, _fixFirstAidDialogueEvent(false)
+	, _fixRobotLimbItemSerialise(false)
+	, _fixToughnessXpBonus(false)
+	, _fixDexterityXP(false)
 	, _fixDamageCalculation(0)
 	, _getEquippedArmour(0)
 {
@@ -324,8 +346,6 @@ void KEP::Settings::loadSettings()
 		this->_sortArmorCoverage = settingsDocument["sort_armor_coverage"].GetBool();
 	if (settingsDocument.HasMember("armor_ex"))
 		this->_armorEx = settingsDocument["armor_ex"].GetBool();
-	if (settingsDocument.HasMember("dialogue_extension"))
-		this->_dialogueExtension = settingsDocument["dialogue_extension"].GetBool();
 	if (settingsDocument.HasMember("animal_dialogue_package"))
 		this->_animalDialoguePackage = settingsDocument["animal_dialogue_package"].GetBool();
 	if (settingsDocument.HasMember("sorted_new_game_starts"))
@@ -360,6 +380,30 @@ void KEP::Settings::loadSettings()
 		this->_combatEx = settingsDocument["combat_ex"].GetBool();
 	if (settingsDocument.HasMember("fix_unarmed_block_chance"))
 		this->_fixUnarmedBlockChance = settingsDocument["fix_unarmed_block_chance"].GetBool();
+	if (settingsDocument.HasMember("skill_requirements_for_block_combat_techniques"))
+		this->_skillRequirementsForBlockCombatTechniques = settingsDocument["skill_requirements_for_block_combat_techniques"].GetBool();
+	if (settingsDocument.HasMember("combat_skill_category_anim_override"))
+		this->_combatSkillCatAnimOverride = settingsDocument["combat_skill_category_anim_override"].GetBool();
+	if (settingsDocument.HasMember("fix_combat_animation"))
+		this->_fixCombatAnimation = settingsDocument["fix_combat_animation"].GetBool();
+	if (settingsDocument.HasMember("specific_target_campaign"))
+		this->_specificTargetCampaign = settingsDocument["specific_target_campaign"].GetBool();
+	if (settingsDocument.HasMember("word_swap_ex"))
+		this->_wordSwapEx = settingsDocument["word_swap_ex"].GetBool();
+	if (settingsDocument.HasMember("dialogue_condition_ex"))
+		this->_dialogueConditionEx = settingsDocument["dialogue_condition_ex"].GetBool();
+	if (settingsDocument.HasMember("dialogue_action_ex"))
+		this->_dialogueActionEx = settingsDocument["dialogue_action_ex"].GetBool();
+	if (settingsDocument.HasMember("dialogue_event_ex"))
+		this->_dialogueEventEx = settingsDocument["dialogue_event_ex"].GetBool();
+	if (settingsDocument.HasMember("fix_first_aid_dialogue_event"))
+		this->_fixFirstAidDialogueEvent = settingsDocument["fix_first_aid_dialogue_event"].GetBool();
+	if (settingsDocument.HasMember("fix_robotics_serialise"))
+		this->_fixRobotLimbItemSerialise = settingsDocument["fix_robotics_serialise"].GetBool();
+	if (settingsDocument.HasMember("fix_toughness_xp_bonus"))
+		this->_fixToughnessXpBonus = settingsDocument["fix_toughness_xp_bonus"].GetBool();
+	if (settingsDocument.HasMember("fix_dexterity_xp"))
+		this->_fixDexterityXP = settingsDocument["fix_dexterity_xp"].GetBool();
 	if (settingsDocument.HasMember("fix_damage_calculation"))
 		this->_fixDamageCalculation = settingsDocument["fix_damage_calculation"].GetInt();
 	if (settingsDocument.HasMember("fix_getEquippedArmour"))
@@ -394,6 +438,9 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix idle animation"), &this->_fixIdleAnimation, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Reduces the twitching in the idle animation while carrying a character."), tooltip);
 
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix combat animation"), &this->_fixCombatAnimation, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Allows weapon position animations during attacks, dodges, and stumbles."), tooltip);
+
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix spawning of unique characters"), &this->_fixspawningOfUniqueCharacters, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Prevents the loss of unique characters due to town overrides or squad regeneration."), tooltip);
 
@@ -411,6 +458,9 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix lockpicking XP"), &this->_fixLockpickingXP, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The \"exp gain multiplier\" is applied to lockpicking XP."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix Toughness XP rate"), &this->_fixToughnessXpBonus, category)
+		->setToolTip(KEP::TranslationUtility::gettext("This option requires \"Fix the injury calculation\". The critical wounds bonus for \"Toughness XP\" will now function correctly. \nNote: The efficiency of the exploit involving removing a prosthetic leg to train Toughness will be reduced."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix unarmed damage bonus"), &this->_fixUnarmedDamageBonus, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The \"Unarmed Damage Bonus\" affects martial arts damage."), tooltip);
@@ -451,8 +501,14 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix blueprint texture"), &this->_fixBlueprintTextures, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Materials can be applied to blueprints."), tooltip);
 
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix loading save data for prosthetics"), &this->_fixRobotLimbItemSerialise, category)
+		->setToolTip(KEP::TranslationUtility::gettext("When loading a save file, damage information for prosthetics, color data, and others will be restored correctly."), tooltip);
+
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable player involvement"), &this->_enablePlayerInvolvement, category)
 		->setToolTip(KEP::TranslationUtility::gettext("World State player involvement functions correctly."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix first aid dialogue"), &this->_fixFirstAidDialogueEvent, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The dialogue event will trigger after applying first aid even if you don't have a repair kit. Additionally, a dialogue event will trigger when a character runs out of medical kits."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable Navigation Mesh cache"), &this->_enableTheNavigationMeshCache, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Accelerates zone loading and prevents falling through walls. Kenshi CTD fix patch takes precedence, so option changes will be disabled while it is in use."), tooltip);
@@ -484,12 +540,22 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix item stealing checks in tasks"), &this->_fixStealingCheck, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Prevents characters assigned tasks such as crafting armor in town from stealing items that have been dropped."), tooltip);
 
+	auto dropbox = panel->setLineDropBox(KEP::TranslationUtility::gettext("Fix Inventory::getEquippedArmour"), category, &this->_getEquippedArmour, false, 0.4f);
+	dropbox->setToolTip(KEP::TranslationUtility::gettext("Belt slot armor will now be included in actions such as \"removing uniform tags upon hiring\", \"confiscating equipment\" and \"destroying armor with a peeler machine\"."), tooltip);
+	dropbox->addAValue(KEP::TranslationUtility::gettext("Disable"), 0);
+	dropbox->addAValue(KEP::TranslationUtility::gettext("Belt only"), 1);
+	dropbox->addAValue(KEP::TranslationUtility::gettext("Compatible with Extra Inventory Sections"), 2);
+	dropbox->refresh();
+
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable crash prevention"), &this->_enableCrashPrevention, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Fixes some causes of random crashes. See the documentation for details.\nNote: This doesn't prevent all crashes."), tooltip);
 
 	panel->addSpace(category, 1.0f);
 
 	panel->setLine(KEP::GUIColor::getMain() + KEP::TranslationUtility::gettext("[KEP Features]"), "", category, false, true);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Change Dexterity XP rate"), &this->_fixDexterityXP, category)
+		->setToolTip(KEP::TranslationUtility::gettext("This option requires \"Fix melee combat XP\". Dexterity XP affects the Strength XP rate rather than the percentage of blunt damage. Additionally, SOL affects Dexterity rather than Melee Attack or Martial Arts."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Sort New Game Starts"), &this->_sortedNewGameStarts, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Sort New Game Starts by Mod load order and dictionary order of stringID. (REQURIES RESTART)"), tooltip);
@@ -506,7 +572,7 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the Scythe path"), &this->_scythePathExtension, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Get .phs files from the OGRE resource manager."), tooltip);
 
-	auto dropbox = panel->setLineDropBox(KEP::TranslationUtility::gettext("Player portrait capacity cap"), category, &this->_portraitExtension, false, 0.4f);
+	dropbox = panel->setLineDropBox(KEP::TranslationUtility::gettext("Player portrait capacity cap"), category, &this->_portraitExtension, false, 0.4f);
 	dropbox->setToolTip(KEP::TranslationUtility::gettext("Select player portrait capacity caps. Default is 256 people. (REQURIES RESTART)"), tooltip);
 	dropbox->addAValue("256", 0);
 	dropbox->addAValue("1024", 1);
@@ -586,7 +652,7 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->addSpace(category, 0.25f);
 
-	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Word Swap Expansion"), &this->_dialogueExtension, category)
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Word Swap Expansion"), &this->_wordSwapEx, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Provides features to add color codes used by the UI to Word Swap. It also fixes a bug where, in certain dialog structures, the conditions assigned to Word Swap could not correctly reference the intended targets."), tooltip);
 
 	panel->addSpace(category, 0.25f);
@@ -610,6 +676,9 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Change the block chance"), &this->_fixUnarmedBlockChance, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Changing the formula for the block chance modifier for martial arts attacks.\nNote: If your martial arts skill is low, it will be difficult to block martial arts attacks."), tooltip);
 
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Skill Requirements for Block Combat Techniques"), &this->_skillRequirementsForBlockCombatTechniques, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Allows specifying conditions such as \"max skill\" for block combat techniques."), tooltip);
+
 	dropbox = panel->setLineDropBox(KEP::TranslationUtility::gettext("Fix Damage Calculation"), category, &this->_fixDamageCalculation, false, 0.4f);
 	dropbox->setToolTip(KEP::TranslationUtility::gettext("Adjusts the effect of armor penetration on damage calculations. Additionally, fixes the game's UI."), tooltip);
 	dropbox->addAValue(KEP::TranslationUtility::gettext("Disable"), 0);
@@ -617,10 +686,12 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	dropbox->addAValue(KEP::TranslationUtility::gettext("Enable"), 2);
 	dropbox->refresh();
 
-	dropbox = panel->setLineDropBox(KEP::TranslationUtility::gettext("Fix Inventory::getEquippedArmour"), category, &this->_getEquippedArmour, false, 0.4f);
-	dropbox->setToolTip(KEP::TranslationUtility::gettext("Belt slot armor will now be included in actions such as \"removing uniform tags upon hiring\", \"confiscating equipment\" and \"destroying armor with a peeler machine\"."), tooltip);
-	dropbox->addAValue(KEP::TranslationUtility::gettext("Disable"), 0);
-	dropbox->addAValue(KEP::TranslationUtility::gettext("Belt only"), 1);
-	dropbox->addAValue(KEP::TranslationUtility::gettext("Compatible with Extra Inventory Sections"), 2);
-	dropbox->refresh();
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Additional Dialogue Conditions"), &this->_dialogueConditionEx, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Add items that can be set as dialogue conditions. Additionally, fix bugs such as \"target has item type\". (REQURIES RESTART)"), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Additional Dialogue Actions"), &this->_dialogueActionEx, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Add items that can be set as dialogue actions."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Additional Dialogue Events"), &this->_dialogueEventEx, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Unimplemented dialogue events (e.g., EV_WINDY) will become available."), tooltip);
 }

@@ -1,0 +1,110 @@
+﻿enum WeaponCategory { }
+enum WeaponCategory { ATTACK_23=23 }
+enum DialogConditionEnum { }
+enum DialogConditionEnum {
+    DC_IS_SAME_SUBRACE_AS_ME=21000,
+    DC_IS_ANIMAL_RACE,
+    DC_IS_ROBOT_RACE
+}
+enum DialogActionEnum { }
+enum DialogActionEnum {
+    DA_DECREASE_FACTION_RANK=21000
+}
+
+[ANIMAL_CHARACTER]
+clothing:             ARMOUR (1, 100) "val1 is quantity, val2 is percentage chance of having it (normalised with other items of same type).  You can add duplicate gear (eg 4 helmets) and it will only choose one.  If val1 is < 0 then that will count as a possible [no item] for that clothing type (eg if you want a chance of having no hat at all)"
+dialogue package:     DIALOGUE_PACKAGE "What the character says, in different situations"
+dialogue package player: DIALOGUE_PACKAGE "Dialog package for when the NPCs is a player character"
+levels:
+armour grade:         ArmourRarity.GEAR_CHEAP "Sets the quality level of this characters armour"
+armour upgrade chance: 5 "0-100% chance that armour will be 1 level higher than usual"
+[ANIMAL_CHARACTER,CHARACTER]
+weapon models: MATERIAL_SPECS_WEAPON (100) ""
+[ANIMAL_CHARACTER,CHARACTER,FACTION,RACE,WEAPON]
+combat techniques:      COMBAT_TECHNIQUE ""
+[ANIMATION,COMBAT_TECHNIQUE]
+type:
+turrets:              False "valid weapon types for this animation"
+[ARMOUR]
+craft time mult:        1.0 ""
+inventory:
+weight override:        False ""
+[ARMOUR,CONTAINER,CROSSBOW,LIMB_REPLACEMENT,WEAPON]
+race groups include:    RACE_GROUP "Only the listed races can equip this item"
+race groups exclude:    RACE_GROUP "none of the listed races can equip this item"
+[ARMOUR,CONTAINER,CROSSBOW]
+blueprint item:         ITEM "Means that this is a physical blueprint item that needs to be found or bought."
+requirements:           RESEARCH (0) "Research required to unlock this item\nValue is research repetition number needed"
+[ARMOUR,CONTAINER,CROSSBOW,RESEARCH]
+armour requirements:    ARMOUR "Research required to unlock this item"
+backpack requirements:  CONTAINER "Research required to unlock this item"
+crossbow requirements:  CROSSBOW "Research required to unlock this item"
+[BUILDING_FUNCTIONALITY]
+furnace ingredients : ITEM(0) ""
+weapon types : WEAPON ""
+weapon:
+limit weapon models : False ""
+[CHARACTER]
+armour blueprints:    ARMOUR (1) "Armour blueprints in inventory"
+backpack blueprints:  CONTAINER (1) "Backpack blueprints in inventory"
+crossbow blueprints:  CROSSBOW (1) "Crossbow blueprints in inventory"
+backpack inventory:   VENDOR_LIST "the characters inventory contents if he has a backpack"
+[COMBAT_TECHNIQUE]
+is special:        False "True if used only with the specified character, race, faction, and weapon"
+[CONSTANTS]
+ex player faction:    FACTION "Faction of characters dismissed from player faction"
+[CROSSBOW]
+aim anim:           ANIMATION ""
+[DIALOGUE,DIALOGUE_LINE,WORD_SWAPS]
+actual target character:          CHARACTER "adds a condition: target is a specific character."
+actual target race:               RACE "adds a condition: target is any of the given races. Multiple races is treated as an OR condition"
+actual target subrace:            RACE "adds a condition: target is any of the given specific sub-race. Multiple races is treated as an OR condition"
+in area of:                       BIOME_GROUP "adds a condition: that we must be currently in an area"
+in specific town of:              TOWN "adds a condition: that we must be currently in an town"
+target character:                 CHARACTER "adds a condition: target squad has a member who is a specific character."
+target subrace:                   RACE "adds a condition: target squad has a member who is any of the given specific sub-race. Multiple races is treated as an OR condition"
+[FACTION]
+idle stances:           ANIMATION (100) ""
+[GUN_DATA]
+race damage:          RACE (125) "bonus damage multiplier, in %, when attacking this race"
+damage:
+bleed mult:           1.0 "(at worst quality) multiplier for the amount of bleeding the weapon type causes"
+race damage:
+animal damage mult:   1.0 "damage bonus to animals"
+human damage mult:    1.0 "damage bonus to non-animals"
+robot damage mult:    1.0 "damage bonus to robotic creatures"
+[LOCATIONAL_DAMAGE]
+is chest:             False ""
+[RACE]
+idle stances:           ANIMATION (100) ""
+bulk:
+bulk override:          False ""
+bulk max female:        500.0 ""
+bulk min female:       -500.0 ""
+bulk max male:          500.0 ""
+bulk min male:         -500.0 ""
+[MATERIAL_SPECS_WEAPON]
+race damage mod:        RACE (125) "bonus damage multiplier, in %, when attacking this race"
+stats mod:
+animal damage mod:      1.0 "multiplier"
+armour penetration mod: 0.0 ""
+bleed mod:              1.0 "multiplier"
+blunt damage mod:       1.0 "multiplier"
+cut damage mod:         1.0 "multiplier"
+human damage mod:       1.0 "multiplier"
+pierce damage mod:      1.0 "multiplier"
+robot damage mod:       1.0 "multiplier"
+mod:
+combat weight mod:      1.0 "multiplier"
+indoors mod:            0 "modifier to attk + def if we are indoors"
+length mod:             1.0 "multiplier"
+[NEW_GAME_STARTOFF]
+armour research:        ARMOUR "starting research techs"
+backpack research:      CONTAINER "starting research techs"
+crossbow research:      CROSSBOW "starting research techs"
+[TOWN]
+town name override:   False ""
+[WEAPON]
+race group damage:      RACE_GROUP (125) "bonus damage multiplier, in %, when attacking this race"
+craft:
+custom model:         False ""

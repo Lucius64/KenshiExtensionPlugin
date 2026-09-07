@@ -38,6 +38,8 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/StateBroadcastData.h>
 #include <kenshi/Town.h>
 #include <kenshi/CharStats.h>
+#include <kenshi/gui/DialogueWindow.h>
+#include <kenshi/Dialogue.h>
 
 #include <extern/InventoryManager.h>
 #include <extern/UniqueNPCManager.h>
@@ -56,6 +58,7 @@ namespace
 	const int cat_character = 2;
 	const int cat_combat = 9;
 	const int cat_vips = 10;
+	const int cat_dialogue = 11;
 
 	std::string getWorldStateEnumName(WorldStateEnum what)
 	{
@@ -143,14 +146,21 @@ namespace
 		case REACTION_BLOCK:
 			return "reaction block";
 		case STARTUP_STATE:
+			return "Startup";
 		case DECISION:
 			return "Decision";
 		case CIRCLE_MENACINGLY:
 			return "circle";
 		case WAIT_MENACINGLY:
 			return "Wait";
+		case HESITATE:
+			return "Hesitate";
 		case STUMBLE:
 			return "stumble";
+		case COMBAT_FINISHED:
+			return "finished";
+		case TARGET_PATHFINDING_STARTUP:
+			return "pathfinding_startup to target";
 		case TARGET_PATHFINDING:
 			return "pathfinding to target";
 		default:
@@ -212,6 +222,163 @@ namespace
 			return "none";
 		}
 	}
+
+	std::string getConversationTypeName(EventTriggerEnum what)
+	{
+		switch (what)
+		{
+		case EV_PLAYER_TALK_TO_ME:
+			return "EV_PLAYER_TALK_TO_ME";
+		case EV_ANNOUNCEMENT:
+			return "EV_ANNOUNCEMENT";
+		case EV_I_SEE_NEUTRAL_SQUAD:
+			return "EV_I_SEE_NEUTRAL_SQUAD";
+		case EV_I_SEE_RAGDOLL:
+			return "EV_I_SEE_RAGDOLL";
+		case EV_______:
+			return "EV_______";
+		case EV_SOUND_THE_ALARM:
+			return "EV_SOUND_THE_ALARM";
+		case EV_I_________:
+			return "EV_I_________";
+		case EV_THIEF_CAUGHT_STEALING_FROM_ME:
+			return "EV_THIEF_CAUGHT_STEALING_FROM_ME";
+		case EV_SHOO_FROM_MY_BUILDING:
+			return "EV_SHOO_FROM_MY_BUILDING";
+		case EV_MARKED_FOR_DEATH:
+			return "EV_MARKED_FOR_DEATH";
+		case EV_SCREAMING_TORTURE:
+			return "EV_SCREAMING_TORTURE";
+		case EV_BAR_TALK:
+			return "EV_BAR_TALK";
+		case EV_UNLOCK_MY_CAGE_OR_SHACKLES:
+			return "EV_UNLOCK_MY_CAGE_OR_SHACKLES";
+		case EV_UNLOCK_MY_CAGE_ATTEMPT:
+			return "EV_UNLOCK_MY_CAGE_ATTEMPT";
+		case EV_I_DEFEATED_SQUAD:
+			return "EV_I_DEFEATED_SQUAD";
+		case EV_LAUNCH_ATTACK:
+			return "EV_LAUNCH_ATTACK";
+		case EV_INTRUDER_FOUND:
+			return "EV_INTRUDER_FOUND";
+		case EV_HEALING_OTHER_START:
+			return "EV_HEALING_OTHER_START";
+		case EV_BEING_HEALED_START:
+			return "EV_BEING_HEALED_START";
+		case EV_HEALING_OTHER_FINISHED:
+			return "EV_HEALING_OTHER_FINISHED";
+		case EV_BEING_HEALED_FINISHED:
+			return "EV_BEING_HEALED_FINISHED";
+		case EV_FIRSTAID_KIT_EMPTY:
+			return "EV_FIRSTAID_KIT_EMPTY";
+		case EV_GET_UP_PEACE:
+			return "EV_GET_UP_PEACE";
+		case EV_GET_UP_FIGHT:
+			return "EV_GET_UP_FIGHT";
+		case EV_GET_UP_UNNECCESSARY_FIGHT:
+			return "EV_GET_UP_UNNECCESSARY_FIGHT";
+		case EV_HARRASSMENT_SHOUTS:
+			return "EV_HARRASSMENT_SHOUTS";
+		case EV_I_SEE_ANIMAL_SQUAD:
+			return "EV_I_SEE_ANIMAL_SQUAD";
+		case EV_SPEECH_INTERRUPTED_ATTACKED_BY_TARGET:
+			return "EV_SPEECH_INTERRUPTED_ATTACKED_BY_TARGET";
+		case EV_SPEECH_INTERRUPTED_ATTACKED_BY_STRANGERS:
+			return "EV_SPEECH_INTERRUPTED_ATTACKED_BY_STRANGERS";
+		case EV_CONTRACT_JOB_ENDED:
+			return "EV_CONTRACT_JOB_ENDED";
+		case EV_BETRAYAL:
+			return "EV_BETRAYAL";
+		case EV_LOOTING_WEAPON_ONLY:
+			return "EV_LOOTING_WEAPON_ONLY";
+		case EV_LOOTING_EVERYTHING:
+			return "EV_LOOTING_EVERYTHING";
+		case EV_I_SEE_UNIFORM_IMPOSTER:
+			return "EV_I_SEE_UNIFORM_IMPOSTER";
+		case EV_INTRODUCING_NEW_SLAVE:
+			return "EV_INTRODUCING_NEW_SLAVE";
+		case EV_ESCAPING_SLAVE_SPOTTED:
+			return "EV_ESCAPING_SLAVE_SPOTTED";
+		case EV_RECAPTURED_A_SLAVE:
+			return "EV_RECAPTURED_A_SLAVE";
+		case EV_SHOUT_AT_SLAVE_WORKER:
+			return "EV_SHOUT_AT_SLAVE_WORKER";
+		case EV_SLAVE_DELIVERY:
+			return "EV_SLAVE_DELIVERY";
+		case EV_ESCAPED_EX_SLAVE_SPOTTED:
+			return "EV_ESCAPED_EX_SLAVE_SPOTTED";
+		case EV_WITNESS_GENERIC_ASSAULT:
+			return "EV_WITNESS_GENERIC_ASSAULT";
+		case EV_WITNESS_LOOTING_ALLY:
+			return "EV_WITNESS_LOOTING_ALLY";
+		case EV_WITNESS_THIEF_OR_LOCKPICK:
+			return "EV_WITNESS_THIEF_OR_LOCKPICK";
+		case EV_BOUNTY_SPOTTED:
+			return "EV_BOUNTY_SPOTTED";
+		case EV_ESCAPED_PRISONER_SPOTTED:
+			return "EV_ESCAPED_PRISONER_SPOTTED";
+		case EV_PRISONER_FREE_TO_GO:
+			return "EV_PRISONER_FREE_TO_GO";
+		case EV_ALMOST_WOKE_UP:
+			return "EV_ALMOST_WOKE_UP";
+		case EV_ENTER_BIOME:
+			return "EV_ENTER_BIOME";
+		case EV_ENTER_TOWN:
+			return "EV_ENTER_TOWN";
+		case EV_SQUAD_BROKEN:
+			return "EV_SQUAD_BROKEN";
+		case EV_BOUGHT_ME_FROM_SLAVERY:
+			return "EV_BOUGHT_ME_FROM_SLAVERY";
+		case EV_EATING_SOMETHING_SOUNDS:
+			return "EV_EATING_SOMETHING_SOUNDS";
+		case EV_WORSHIPING_SOMETHING:
+			return "EV_WORSHIPING_SOMETHING";
+		case EV_SLAVE_ESCAPE_OPPORTUNITY_SAVIOR:
+			return "EV_SLAVE_ESCAPE_OPPORTUNITY_SAVIOR";
+		case EV_SLAVE_ESCAPE_OPPORTUNITY_ALONE:
+			return "EV_SLAVE_ESCAPE_OPPORTUNITY_ALONE";
+		case EV_ASSASSINATION_FAILED:
+			return "EV_ASSASSINATION_FAILED";
+		case EV_EATING_MY_CROPS:
+			return "EV_EATING_MY_CROPS";
+		case EV_KIDNAPPING_MY_ALLY:
+			return "EV_KIDNAPPING_MY_ALLY";
+		case EV_USING_MY_TRAINING_EQUIPMENT:
+			return "EV_USING_MY_TRAINING_EQUIPMENT";
+		case EV_GIVE_UP_CHASE:
+			return "EV_GIVE_UP_CHASE";
+		case EV_ACID_FEET:
+			return "EV_ACID_FEET";
+		case EV_ACID_RAIN:
+			return "EV_ACID_RAIN";
+		case EV_ACID_WATER:
+			return "EV_ACID_WATER";
+		case EV_WINDY:
+			return "EV_WINDY";
+		case EV_POISON_GAS:
+			return "EV_POISON_GAS";
+		case EV_I_SEE_ENEMY_PLAYER:
+			return "EV_I_SEE_ENEMY_PLAYER";
+		case EV_I_SEE_ALLY_PLAYER:
+			return "EV_I_SEE_ALLY_PLAYER";
+		case EV_I_SEE_ILLEGAL_PLAYER_BUILDING:
+			return "EV_I_SEE_ILLEGAL_PLAYER_BUILDING";
+		case EV_BURNING:
+			return "EV_BURNING";
+		case EV_LOST_LEG:
+			return "EV_LOST_LEG";
+		case EV_LOST_ARM:
+			return "EV_LOST_ARM";
+		case EV_I_SEE_PLAYER_NICE_BUILDING:
+			return "EV_I_SEE_PLAYER_NICE_BUILDING";
+		case EV_TAKEN_OVER_PLAYER_TOWN:
+			return "EV_TAKEN_OVER_PLAYER_TOWN";
+		case EV_CROWD_TRIGGERED:
+			return "EV_CROWD_TRIGGERED";
+		default:
+			return "none";
+		}
+	}
 }
 
 KEP::tools::InformationPanel* KEP::tools::InformationPanel::getSingletonPtr()
@@ -252,6 +419,7 @@ void KEP::tools::InformationPanel::create()
 	this->_panel->addTab(cat_character, KEP::TranslationUtility::gettext_main("Characters"), "");
 	this->_panel->addTab(cat_combat, KEP::TranslationUtility::gettext("Combat"), "");
 	this->_panel->addTab(cat_vips, KEP::TranslationUtility::gettext("VIPs"), "");
+	this->_panel->addTab(cat_dialogue, KEP::TranslationUtility::gettext_main("Dialogue"), "");
 	this->_panel->show(false);
 }
 
@@ -269,6 +437,7 @@ void KEP::tools::InformationPanel::refresh()
 				this->_panel->clearPage(cat_character);
 				this->_panel->clearPage(cat_combat);
 				this->_panel->clearPage(cat_vips);
+				this->_panel->clearPage(cat_dialogue);
 
 				_lastSelected = gui->selectedObject;
 			}
@@ -276,6 +445,7 @@ void KEP::tools::InformationPanel::refresh()
 			_displayCharacterInformation();
 			_displayCombatInformation();
 			_displayUniqueNpcInformation();
+			_displayDialogueInformation();
 		}
 	}
 }
@@ -609,4 +779,55 @@ void KEP::tools::InformationPanel::_displayUniqueNpcInformation()
 	}
 
 	this->_panel->addSpace(cat_vips, 0.5f);
+}
+
+void KEP::tools::InformationPanel::_displayDialogueInformation()
+{
+	this->_panel->clearPage(cat_dialogue);
+	if (this->_panel->getCurrentCategory() != cat_dialogue)
+		return;
+
+	Dialogue* dialogue = nullptr;
+
+	if (gui->inDialogue())
+		dialogue = gui->dialogue->dialogue;
+	else
+	{
+		auto obj = this->_lastSelected.getCharacter();
+		if (obj != nullptr)
+			dialogue = obj->dialogue;
+	}
+
+	if (dialogue == nullptr)
+	{
+		this->_panel->setLine(KEP::GUIColor::getMain() + "The selected object is invalid.", "", cat_dialogue, false, true);
+		return;
+	}
+
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Target: " + (dialogue->me != nullptr ? dialogue->me->getName() : "none"), "", cat_dialogue, false, true);
+
+	this->_panel->setLine(KEP::GUIColor::getMain() + "dialog:", KEP::GUIColor::getMain() + getConversationTypeName(dialogue->currentConversationType), cat_dialogue, false, true);
+	this->_panel->setLine(KEP::GUIColor::getMain() + "_needsDynamicAssessments:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(dialogue->_needsDynamicAssessments), cat_dialogue, false, true);
+	this->_panel->setLine(KEP::GUIColor::getMain() + "_hasEnded:", KEP::GUIColor::getMain() + Ogre::StringConverter::toString(dialogue->_hasEnded), cat_dialogue, false, true);
+
+	this->_panel->setLine(KEP::GUIColor::getMain() + "current Conversation", KEP::GUIColor::getMain() + (dialogue->currentConversation != nullptr ? dialogue->currentConversation->getName() : "-"), cat_dialogue, false, true);
+
+	auto me = dialogue->conversationMaster.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation master", KEP::GUIColor::getMain() + (me != nullptr ? me->getName() : "none"), cat_dialogue, false, true);
+
+	auto target = dialogue->conversationTarget.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation target (" + dialogue->conversationTarget.toString() + ")", KEP::GUIColor::getMain() + (target != nullptr ? target->getName() : "none"), cat_dialogue, false, true);
+
+	auto interjector1 = dialogue->interjector1.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation interjector1", KEP::GUIColor::getMain() + (interjector1 != nullptr ? interjector1->getName() : "none"), cat_dialogue, false, true);
+
+	auto interjector2 = dialogue->interjector2.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation interjector2", KEP::GUIColor::getMain() + (interjector2 != nullptr ? interjector2->getName() : "none"), cat_dialogue, false, true);
+
+	auto interjector3 = dialogue->interjector3.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation interjector3", KEP::GUIColor::getMain() + (interjector3 != nullptr ? interjector3->getName() : "none"), cat_dialogue, false, true);
+
+	auto waitingForReplyFrom = dialogue->waitingForReplyFrom.getCharacter();
+	this->_panel->setLine(KEP::GUIColor::getMain() + "Conversation waitingForReplyFrom", KEP::GUIColor::getMain() + (waitingForReplyFrom != nullptr ? waitingForReplyFrom->getName() : "none"), cat_dialogue, false, true);
+
 }

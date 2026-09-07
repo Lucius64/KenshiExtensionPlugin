@@ -83,7 +83,6 @@ namespace KEP
 		bool _showCrafter;
 		bool _sortArmorCoverage;
 		bool _armorEx;
-		bool _dialogueExtension;
 		bool _animalDialoguePackage;
 		bool _sortedNewGameStarts;
 		bool _xpMod;
@@ -102,6 +101,18 @@ namespace KEP
 		bool _importingNegativeMoney;
 		bool _combatEx;
 		bool _fixUnarmedBlockChance;
+		bool _skillRequirementsForBlockCombatTechniques;
+		bool _combatSkillCatAnimOverride;
+		bool _fixCombatAnimation;
+		bool _specificTargetCampaign;
+		bool _wordSwapEx;
+		bool _dialogueConditionEx;
+		bool _dialogueActionEx;
+		bool _dialogueEventEx;
+		bool _fixFirstAidDialogueEvent;
+		bool _fixRobotLimbItemSerialise;
+		bool _fixToughnessXpBonus;
+		bool _fixDexterityXP;
 		int _fixDamageCalculation;
 		int _getEquippedArmour;
 	};

@@ -26,6 +26,11 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/Faction.h>
 #include <kenshi/RaceData.h>
 #include <kenshi/combat/CombatClass.h>
+#include <kenshi/CharBody.h>
+#include <kenshi/AI/AI.h>
+#include <kenshi/AI/AITaskSystem.h>
+#include <kenshi/Building/TurretBuilding.h>
+#include <extern/Task.h>
 
 #include <kep/functions.h>
 #include <Settings.h>
@@ -138,9 +143,10 @@ namespace
 		return dir == CUT_REAR_DOWNWARD || dir == CUT_REAR_LEFT || dir == CUT_REAR_RIGHT;
 	}
 
-	void _addBlock(CombatTechniqueData* combatTechnique, CharStats* stats, FitnessSelector<CombatTechniqueData*>& possibleBlocks, CutDirection dir, bool failed, bool isDodge)
+	void _addBlock(CombatTechniqueData* combatTechnique, CharStats* stats, FitnessSelector<CombatTechniqueData*>& possibleBlocks, CutDirection dir, bool failed, bool isDodge, float _weaponSkill, float encumbranceMult)
 	{
-		if ((stats->me->getProneState() == PS_NORMAL) != combatTechnique->isProne)
+		if ((stats->me->getProneState() == PS_NORMAL) != combatTechnique->isProne
+			&& (!KEP::settings._skillRequirementsForBlockCombatTechniques || _weaponSkill <= combatTechnique->maxSkill && combatTechnique->minSkill <= _weaponSkill && encumbranceMult <= combatTechnique->maxEncumbrance))
 		{
 			if (!combatTechnique->isDodge)
 			{
@@ -167,7 +173,10 @@ namespace
 			}
 			else if (isDodge && combatTechnique->stumbleDodge == stats->me->stumbleState() && 0.0f < combatTechnique->chanceMult)
 			{
-				possibleBlocks.addItem(combatTechnique, combatTechnique->chanceMult);
+				float score = 1.0f;
+				if (KEP::settings._skillRequirementsForBlockCombatTechniques)
+					score = combatTechnique->impactPoints[0].direction == dir ? 100.0f : 0.1f;
+				possibleBlocks.addItem(combatTechnique, score * combatTechnique->chanceMult);
 			}
 		}
 	}
@@ -189,6 +198,8 @@ namespace
 		auto direction = self->me->convertCutDirection(dir, from);
 		float blockChance = 1.0f;
 		bool blockFailed = false;
+		float weaponSkill = self->getEquippedWeaponSkill();
+		float encumbranceMult = (1.0f - self->encumbranceMult) * 100.0f;
 
 		if (opponent->isAnimal() == nullptr && opponent->stats->currentWeaponType == SKILL_UNARMED)
 		{
@@ -220,7 +231,7 @@ namespace
 				auto& blocks = specialWeaponBlocks[weapon->data];
 				for (auto iter = blocks.begin(); iter != blocks.end(); ++iter)
 				{
-					_addBlock(*iter, self, possibleBlocks, direction, blockFailed, isDodge);
+					_addBlock(*iter, self, possibleBlocks, direction, blockFailed, isDodge, weaponSkill, encumbranceMult);
 				}
 
 				if (possibleBlocks.size() != 0)
@@ -231,7 +242,7 @@ namespace
 			{
 				if (iter->second.count(self->me->getGameData()) || iter->second.count(self->me->getFaction()->data) || iter->second.count(self->me->getRace()->data))
 					if (iter->first->skillTypes[weaponType])
-						_addBlock(iter->first, self, possibleBlocks, direction, blockFailed, isDodge);
+						_addBlock(iter->first, self, possibleBlocks, direction, blockFailed, isDodge, weaponSkill, encumbranceMult);
 			}
 		}
 		
@@ -239,7 +250,7 @@ namespace
 		for (auto iter = blocks.begin(); iter != blocks.end(); ++iter)
 		{
 			if ((*iter)->skillTypes[weaponType])
-				_addBlock(*iter, self, possibleBlocks, direction, blockFailed, isDodge);
+				_addBlock(*iter, self, possibleBlocks, direction, blockFailed, isDodge, weaponSkill, encumbranceMult);
 		}
 
 		return possibleBlocks.chooseAnItem();
@@ -427,6 +438,8 @@ namespace
 			return nullptr;
 
 		auto weaponType = self->medical->rightArmOk ? self->currentWeaponType : SKILL_UNARMED;
+		float weaponSkill = self->getEquippedWeaponSkill();
+		float encumbranceMult = (1.0f - self->encumbranceMult) * 100.0f;
 
 		FitnessSelector<CombatTechniqueData*> possibleBlocks;
 		if (KEP::settings._combatTechniquesEx)
@@ -437,7 +450,7 @@ namespace
 				auto& blocks = specialWeaponBlocks[weapon->data];
 				for (auto iter = blocks.begin(); iter != blocks.end(); ++iter)
 				{
-					_addBlock(*iter, self, possibleBlocks, CUT_DOWNWARD, true, true);
+					_addBlock(*iter, self, possibleBlocks, direction, true, true, weaponSkill, encumbranceMult);
 				}
 
 				if (possibleBlocks.size() != 0)
@@ -448,7 +461,7 @@ namespace
 			{
 				if (iter->second.count(self->me->getGameData()) || iter->second.count(self->me->getFaction()->data) || iter->second.count(self->me->getRace()->data))
 					if (iter->first->skillTypes[weaponType])
-						_addBlock(iter->first, self, possibleBlocks, CUT_DOWNWARD, true, true);
+						_addBlock(iter->first, self, possibleBlocks, direction, true, true, weaponSkill, encumbranceMult);
 			}
 		}
 		
@@ -456,7 +469,7 @@ namespace
 		for (auto iter = blocks.begin(); iter != blocks.end(); ++iter)
 		{
 			if ((*iter)->skillTypes[weaponType])
-				_addBlock(*iter, self, possibleBlocks, CUT_DOWNWARD, true, true);
+				_addBlock(*iter, self, possibleBlocks, direction, true, true, weaponSkill, encumbranceMult);
 		}
 
 		return possibleBlocks.chooseAnItem();

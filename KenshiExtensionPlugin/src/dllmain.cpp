@@ -27,6 +27,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <bugfix/StatsFix.h>
 #include <bugfix/ItemFix.h>
 #include <bugfix/MedicalFix.h>
+#include <bugfix/DialogueFix.h>
 #include <bugfix/MiscFix.h>
 #include <WarCampaignExtension.h>
 #include <CharacterExtension.h>
@@ -36,6 +37,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include <AppearanceExtension.h>
 #include <AnimationExtension.h>
 #include <DialogueExtension.h>
+#include <DialogueEventEx.h>
+#include <DialogueConditionEx.h>
+#include <DialogueActionEx.h>
 #include <AnimalExtension.h>
 #include <CraftingExtension.h>
 #include <ItemExtension.h>
@@ -56,7 +60,7 @@ boost::scoped_ptr<FunctionPointers> KEP::functions(new FunctionPointers());
 
 __declspec(dllexport) void startPlugin()
 {
-	DebugLog("kep 0.17.3");
+	DebugLog("kep 0.18.0");
 
 	auto versionInfo = KenshiLib::GetKenshiVersion();
 	auto platform = versionInfo.GetPlatform();
@@ -93,6 +97,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::StatsFix::init();
 	KEP::MedicalFix::init();
 	KEP::ItemFix::init();
+	KEP::DialogueFix::init();
 	KEP::MiscFix::init();
 	KEP::WarCampaignExtension::init();
 	KEP::CharacterExtension::init();
@@ -102,6 +107,9 @@ __declspec(dllexport) void startPlugin()
 	KEP::AppearanceExtension::init();
 	KEP::AnimationExtension::init();
 	KEP::DialogueExtension::init();
+	KEP::DialogueEventEx::init();
+	KEP::DialogueConditionEx::init();
+	KEP::DialogueActionEx::init();
 	KEP::AnimalExtension::init();
 	KEP::CraftingExtension::init();
 	KEP::ItemExtension::init();

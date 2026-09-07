@@ -7,43 +7,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 #pragma once
-#include <string>
-#include <ogre/OgrePrerequisites.h>
-#include <ogre/OgreFastArray.h>
-#include <kenshi/util/hand.h>
-
-class GameData;
-class DatapanelGUI;
-class DataPanelLine;
-class DataPanelLine_TextEditable;
-class DataPanelLine_DropBox;
 
 namespace KEP
 {
-	namespace tools
+	namespace DialogueEventEx
 	{
-		class InformationPanel
-		{
-		public:
-			static InformationPanel* getSingletonPtr();
-			static bool initialized();
-			InformationPanel();
-
-			void create();
-			void refresh();
-			void show();
-			void hide();
-			bool isVisible();
-
-		private:
-			void _displayBuildingInformation();
-			void _displayCharacterInformation();
-			void _displayCombatInformation();
-			void _displayUniqueNpcInformation();
-			void _displayDialogueInformation();
-
-			DatapanelGUI* _panel;
-			hand _lastSelected;
-		};
+		void init();
 	}
 }

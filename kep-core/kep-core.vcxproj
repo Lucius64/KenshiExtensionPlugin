@@ -153,7 +153,7 @@
     <ClInclude Include="include\extern\NodeList.h" />
     <ClInclude Include="include\extern\ProductionBuilding.h" />
     <ClInclude Include="include\extern\Renderer.h" />
-    <ClInclude Include="include\extern\Research.h" />
+    <ClInclude Include="include\extern\Task.h" />
     <ClInclude Include="include\extern\TemporaryLimbInterface.h" />
     <ClInclude Include="include\extern\TownBase.h" />
     <ClInclude Include="include\extern\TradingInfo.h" />

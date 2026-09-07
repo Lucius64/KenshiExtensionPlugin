@@ -75,9 +75,6 @@
     <ClInclude Include="include\extern\Renderer.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>
-    <ClInclude Include="include\extern\Research.h">
-      <Filter>Header Files\extern</Filter>
-    </ClInclude>
     <ClInclude Include="include\extern\TemporaryLimbInterface.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>
@@ -103,6 +100,9 @@
       <Filter>Header Files\extern</Filter>
     </ClInclude>
     <ClInclude Include="include\extern\TradingInfo.h">
+      <Filter>Header Files\extern</Filter>
+    </ClInclude>
+    <ClInclude Include="include\extern\Task.h">
       <Filter>Header Files\extern</Filter>
     </ClInclude>
   </ItemGroup>

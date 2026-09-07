@@ -138,6 +138,7 @@
     <ClInclude Include="include\AppearanceExtension.h" />
     <ClInclude Include="include\bugfix\AnimationFix.h" />
     <ClInclude Include="include\bugfix\AppearanceFix.h" />
+    <ClInclude Include="include\bugfix\DialogueFix.h" />
     <ClInclude Include="include\bugfix\StatsFix.h" />
     <ClInclude Include="include\bugfix\ItemFix.h" />
     <ClInclude Include="include\bugfix\MedicalFix.h" />
@@ -146,6 +147,9 @@
     <ClInclude Include="include\AnimationExtension.h" />
     <ClInclude Include="include\CraftingExtension.h" />
     <ClInclude Include="include\CrossbowEx.h" />
+    <ClInclude Include="include\DialogueActionEx.h" />
+    <ClInclude Include="include\DialogueConditionEx.h" />
+    <ClInclude Include="include\DialogueEventEx.h" />
     <ClInclude Include="include\DialogueExtension.h" />
     <ClInclude Include="include\CharacterExtension.h" />
     <ClInclude Include="include\ExternalFunctions.h" />
@@ -162,7 +166,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bugfix\AnimationFix.cpp" />
+    <ClCompile Include="src\bugfix\DialogueFix.cpp" />
     <ClCompile Include="src\CrossbowEx.cpp" />
+    <ClCompile Include="src\DialogueActionEx.cpp" />
+    <ClCompile Include="src\DialogueConditionEx.cpp" />
+    <ClCompile Include="src\DialogueEventEx.cpp" />
     <ClCompile Include="src\AnimalExtension.cpp" />
     <ClCompile Include="src\AnimationExtension.cpp" />
     <ClCompile Include="src\AppearanceExtension.cpp" />

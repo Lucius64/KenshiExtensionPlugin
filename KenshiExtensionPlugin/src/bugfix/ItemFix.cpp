@@ -31,6 +31,8 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/ZoneManager.h>
 #include <kenshi/ZoneMapContent.h>
 #include <kenshi/GunClass.h>
+#include <kenshi/RootObjectFactory.h>
+#include <kenshi/Character.h>
 
 #include <extern/BuildingInterior.h>
 #include <extern/AreaBiomeGroup.h>
@@ -266,6 +268,67 @@ namespace
 			}
 		}
 	}
+
+	void (*RobotLimbItem___loadFromSerialise_orig)(RobotLimbItem*, GameDataContainer*, GameData*);
+	void RobotLimbItem___loadFromSerialise_hook(RobotLimbItem* self, GameDataContainer* container, GameData* state)
+	{
+		if (!KEP::settings._fixRobotLimbItemSerialise)
+		{
+			RobotLimbItem___loadFromSerialise_orig(self, container, state);
+			return;
+		}
+		
+		self->Gear::_loadFromSerialise(container, state);
+
+		self->currentDamage = state->fdata["dam"];
+		self->stunDamage = state->fdata["stun"];
+		self->wearDamage = state->fdata["wear"];
+	}
+
+	void (*RobotLimbs_load_orig)(RobotLimbs*, GameData*);
+	void RobotLimbs_load_hook(RobotLimbs* self, GameData* state)
+	{
+		if (!KEP::settings._fixRobotLimbItemSerialise)
+		{
+			RobotLimbs_load_orig(self, state);
+			return;
+		}
+
+		uint32_t flags = state->idata["limbs"];
+		self->states[0] = static_cast<LimbState>(flags & 3);
+		self->states[1] = static_cast<LimbState>(flags >> 2 & 3);
+		self->states[2] = static_cast<LimbState>(flags >> 4 & 3);
+		self->states[3] = static_cast<LimbState>(flags >> 6 & 3);
+
+		std::array<GameData*, 4> limbStates = { nullptr, nullptr, nullptr, nullptr };
+
+		auto list = state->getReferenceListIfExists("limbs");
+		if (list != nullptr)
+		{
+			for (auto iter = list->begin(); iter != list->end(); ++iter)
+			{
+				limbStates[iter->values.value[0]] = iter->getPtr(state->sourceContainer);
+			}
+		}
+
+		for (size_t i = 0; i < 4; ++i)
+		{
+			auto limb = self->states[i];
+			if (limb == LIMB_STUMP)
+				self->setLimb(static_cast<RobotLimbs::Limb>(i), LIMB_STUMP, nullptr);
+			else if (limb == LIMB_REPLACED)
+			{
+				if (limbStates[i] == nullptr)
+				{
+					self->setLimb(static_cast<RobotLimbs::Limb>(i), LIMB_STUMP, nullptr);
+					continue;
+				}
+				auto item = ou->theFactory->createItem(limbStates[i]);
+				item->_loadFromSerialise(state->sourceContainer, limbStates[i]);
+				self->character->medical.setRobotLimbItem(static_cast<RobotLimbs::Limb>(i), item, true);
+			}
+		}
+	}
 }
 
 void KEP::ItemFix::init()
@@ -290,4 +353,10 @@ void KEP::ItemFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SeveredLimbItem::_NV_destroyPhysical), &SeveredLimbItem_destroyPhysical_hook, &SeveredLimbItem_destroyPhysical_orig))
 		ErrorLog("[SeveredLimbItem::destroyPhysical] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RobotLimbItem::_NV__loadFromSerialise), &RobotLimbItem___loadFromSerialise_hook, &RobotLimbItem___loadFromSerialise_orig))
+		ErrorLog("[RobotLimbItem::_loadFromSerialise] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&RobotLimbs::load), &RobotLimbs_load_hook, &RobotLimbs_load_orig))
+		ErrorLog("[RobotLimbs::load] could not install hook!");
 }

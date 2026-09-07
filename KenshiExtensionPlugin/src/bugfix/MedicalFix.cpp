@@ -324,6 +324,7 @@ namespace
 
 		auto race = self->me->getRace();
 		float worstFleshFatalDamage = 100.0f;
+		float worstFleshDamage = 100.0f;
 		float worstRobotFatalDamage = 100.0f;
 		float worstRobotDamage = 100.0f;
 
@@ -335,8 +336,8 @@ namespace
 				if (healedHpPercentage < worstFleshFatalDamage && (*iter)->fatal)
 					worstFleshFatalDamage = healedHpPercentage;
 
-				if (healedHpPercentage < self->worstDamage)
-					self->worstDamage = healedHpPercentage;
+				if (healedHpPercentage < worstFleshDamage)
+					worstFleshDamage = healedHpPercentage;
 
 				auto remainingHpPercentage = calcRemainingHpPercentage(*iter);
 				if (remainingHpPercentage < self->restedState)
@@ -351,14 +352,18 @@ namespace
 					worstRobotDamage = healedHpPercentage;
 			}
 
-			if ((*iter)->whatAmI == MedicalSystem::HealthPartStatus::PART_ARM && self->partBestArm < (*iter)->derivedFleshHealthPercent)
-				self->partBestArm = (*iter)->derivedFleshHealthPercent;
+			float derivedFleshHealthPercent = (*iter)->derivedFleshHealthPercent;
+			if ((*iter)->whatAmI == MedicalSystem::HealthPartStatus::PART_ARM && self->partBestArm < derivedFleshHealthPercent)
+				self->partBestArm = derivedFleshHealthPercent;
 
 			if ((*iter)->whatAmI == MedicalSystem::HealthPartStatus::PART_HEAD)
-				self->partHead = (*iter)->derivedFleshHealthPercent;
+				self->partHead = derivedFleshHealthPercent;
 
-			if ((*iter)->whatAmI == MedicalSystem::HealthPartStatus::PART_TORSO && (*iter)->derivedFleshHealthPercent < self->partWorstTorso)
-				self->partWorstTorso = (*iter)->derivedFleshHealthPercent;
+			if ((*iter)->whatAmI == MedicalSystem::HealthPartStatus::PART_TORSO && derivedFleshHealthPercent < self->partWorstTorso)
+				self->partWorstTorso = derivedFleshHealthPercent;
+
+			if (derivedFleshHealthPercent < self->worstDamage)
+				self->worstDamage = derivedFleshHealthPercent;
 		}
 
 		if (self->me->isAnimal() != nullptr)
@@ -366,7 +371,7 @@ namespace
 
 		self->restedState *= 0.01f;
 		worstFleshFatalDamage *= 0.01f;
-		self->worstDamage *= 0.01f;
+		worstFleshDamage *= 0.01f;
 		worstRobotFatalDamage *= 0.01f;
 		worstRobotDamage *= 0.01f;
 
@@ -375,6 +380,12 @@ namespace
 
 		if (0.999f < worstFleshFatalDamage)
 			worstFleshFatalDamage = 1.0f;
+
+		if (0.999f < worstFleshDamage)
+			worstFleshDamage = 1.0f;
+
+		if (!KEP::settings._fixToughnessXpBonus)
+			self->worstDamage = worstFleshDamage;
 
 		if (0.999f < self->worstDamage)
 			self->worstDamage = 1.0f;
@@ -389,7 +400,7 @@ namespace
 		self->needsFirstAidScoreTotal_robot = -0.1f;
 
 		float needsFirstAidScore_fleshFatal = 2.0f - (worstFleshFatalDamage + 1.0f);
-		float needsFirstAidScore_flesh = (2.0f - (self->worstDamage + 1.0f)) * 0.5f;
+		float needsFirstAidScore_flesh = (2.0f - (worstFleshDamage + 1.0f)) * 0.5f;
 		if (needsFirstAidScore_flesh < needsFirstAidScore_fleshFatal)
 			needsFirstAidScore_flesh = needsFirstAidScore_fleshFatal;
 

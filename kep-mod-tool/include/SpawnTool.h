@@ -37,6 +37,9 @@ namespace KEP
 			void _refreshInventory(DataPanelLine* line);
 			void _overwriteRelation(DataPanelLine* line);
 			void _changeUniqueNpcState(DataPanelLine* line);
+			void _clearTerritorialCampaignTimers(DataPanelLine* line);
+			void _clearPossibleCampaignTimers(DataPanelLine* line);
+			void _clearCampaignRequestTimers(DataPanelLine* line);
 
 			void _changeFactionSearchText(DataPanelLine* line);
 			void _changeSquadSearchText(DataPanelLine* line);

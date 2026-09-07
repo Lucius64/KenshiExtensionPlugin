@@ -46,6 +46,15 @@ public:
 		, crossbowLevelSelector(nullptr)
 		, calculateStatsMult(nullptr)
 		, InventoryManager_refreshSquadInventory(nullptr)
+		, AreasList_getBiome(nullptr)
+		, Task_FirstAid_updateItem(nullptr)
+		, Task_FirstAid_removeItemAutoDestroy(nullptr)
+		, Task_FirstAid_applyFirstAid(nullptr)
+		, Task_FirstAid_runAction(nullptr)
+		, Task_FirstAidRig_runAction(nullptr)
+		, Task_MeleeAttack_startAction(nullptr)
+		, Task_FocusedMeleeAttack_startAction(nullptr)
+		, Task_RangedAttack_startAction(nullptr)
 		, timer(nullptr)
 		, NULL_HAND(nullptr)
 		, _interior(nullptr)
@@ -92,6 +101,15 @@ public:
 				*(uintptr_t*)&crossbowLevelSelector = baseAddr + 0x954340;
 				*(uintptr_t*)&calculateStatsMult = baseAddr + 0xcd4c0;
 				*(uintptr_t*)&InventoryManager_refreshSquadInventory = baseAddr + 0x959c40;
+				*(uintptr_t*)&AreasList_getBiome = baseAddr + 0x8f48a0;
+				*(uintptr_t*)&Task_FirstAid_updateItem = baseAddr + 0x33c780;
+				*(uintptr_t*)&Task_FirstAid_removeItemAutoDestroy = baseAddr + 0x32dfb0;
+				*(uintptr_t*)&Task_FirstAid_applyFirstAid = baseAddr + 0x33c540;
+				*(uintptr_t*)&Task_FirstAid_runAction = baseAddr + 0x356340;
+				*(uintptr_t*)&Task_FirstAidRig_runAction = baseAddr + 0x34eec0;
+				*(uintptr_t*)&Task_MeleeAttack_startAction = baseAddr + 0x3341b0;
+				*(uintptr_t*)&Task_FocusedMeleeAttack_startAction = baseAddr + 0x33c180;
+				*(uintptr_t*)&Task_RangedAttack_startAction = baseAddr + 0x33bf30;
 				*(uintptr_t*)&timer = baseAddr + 0x2132730;
 				*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e395f8;
 				*(uintptr_t*)&_interior = baseAddr + 0x212ec50;
@@ -135,6 +153,15 @@ public:
 				*(uintptr_t*)&convertRarityToLevel = baseAddr + 0x620970;
 				*(uintptr_t*)&calculateStatsMult = baseAddr + 0xcd4c0;
 				*(uintptr_t*)&InventoryManager_refreshSquadInventory = baseAddr + 0x959360;
+				*(uintptr_t*)&AreasList_getBiome = baseAddr + 0x8f3fc0;
+				*(uintptr_t*)&Task_FirstAid_updateItem = baseAddr + 0x33c330;
+				*(uintptr_t*)&Task_FirstAid_removeItemAutoDestroy = baseAddr + 0x32db40;
+				*(uintptr_t*)&Task_FirstAid_applyFirstAid = baseAddr + 0x33c0f0;
+				*(uintptr_t*)&Task_FirstAid_runAction = baseAddr + 0x355ef0;
+				*(uintptr_t*)&Task_FirstAidRig_runAction = baseAddr + 0x34ea70;
+				*(uintptr_t*)&Task_MeleeAttack_startAction = baseAddr + 0x333d40;
+				*(uintptr_t*)&Task_FocusedMeleeAttack_startAction = baseAddr + 0x33bd30;
+				*(uintptr_t*)&Task_RangedAttack_startAction = baseAddr + 0x33bac0;
 				*(uintptr_t*)&timer = baseAddr + 0x21306a0;
 				*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e375f8;
 				*(uintptr_t*)&_interior = baseAddr + 0x212cb90;
@@ -188,6 +215,15 @@ public:
 	void (*crossbowLevelSelector)(class FitnessSelector<uint32_t>&, class GameData*);
 	float (*calculateStatsMult)(int, float, float);
 	void (*InventoryManager_refreshSquadInventory)(class InventoryManager*, class ActivePlatoon*);
+	class AreaBiomeGroup* (*AreasList_getBiome)(class AreasList*, const Ogre::Vector3&);
+	void (*Task_FirstAid_updateItem)(class Task_FirstAid*, enum ItemFunction, class Character*, class Character*);
+	bool (*Task_FirstAid_removeItemAutoDestroy)(class Item*, class CharBody*);
+	bool (*Task_FirstAid_applyFirstAid)(class Task_FirstAid*, class Task_FirstAid*, class Character*, float, class Character*, bool);
+	void (*Task_FirstAid_runAction)(class Task_FirstAid*, class CharBody*);
+	void (*Task_FirstAidRig_runAction)(class Task_FirstAidRig*, class CharBody*);
+	void (*Task_MeleeAttack_startAction)(class Task_MeleeAttack*, class CharBody*);
+	void (*Task_FocusedMeleeAttack_startAction)(class Task_FocusedMeleeAttack*, class CharBody*);
+	void (*Task_RangedAttack_startAction)(class Task_RangedAttack*, class CharBody*);
 
 private:
 	float* timer;

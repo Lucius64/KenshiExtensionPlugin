@@ -17,3 +17,19 @@ Source [https://github.com/Tencent/rapidjson/](https://github.com/Tencent/rapidj
 ### License
 
 https://github.com/Tencent/rapidjson/blob/master/license.txt
+
+### FCS_extended
+
+Source [https://github.com/BFrizzleFoShizzle/FCS_extended/](https://github.com/BFrizzleFoShizzle/FCS_extended/)
+
+### License
+
+https://github.com/BFrizzleFoShizzle/FCS_extended/blob/master/LICENSE
+
+### Harmony
+
+Source [https://github.com/pardeike/Harmony/](https://github.com/pardeike/Harmony/)
+
+### License
+
+https://github.com/pardeike/Harmony/blob/master/LICENSE

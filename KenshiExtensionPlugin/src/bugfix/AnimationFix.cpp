@@ -497,6 +497,15 @@ namespace
 		self->runAnimation(idleState, idleState->playSpeed, idleState->layername, 1.0f);
 		self->isIdle = true;
 	}
+
+	void (*Ogre_OldNodeAnimationTrack_applyToNode_orig)(Ogre::OldNodeAnimationTrack*, Ogre::OldNode*, const Ogre::TimeIndex&, Ogre::Real, Ogre::Real, bool, bool);
+	void Ogre_OldNodeAnimationTrack_applyToNode_hook(Ogre::OldNodeAnimationTrack* self, Ogre::OldNode* node, const Ogre::TimeIndex& timeIndex, Ogre::Real weight, Ogre::Real scale, bool skipLocation, bool skipRotation)
+	{
+		auto& name = node->getName();
+		if (KEP::settings._fixCombatAnimation && (name == "Bip01 Prop1" || name == "Bip01 Prop2"))
+			skipLocation = false;
+		Ogre_OldNodeAnimationTrack_applyToNode_orig(self, node, timeIndex, weight, scale, skipLocation, skipRotation);
+	}
 }
 
 void KEP::AnimationFix::init()
@@ -516,5 +525,9 @@ void KEP::AnimationFix::init()
 		ErrorLog("[RenderToTextureotron::renderCharacter] could not install hook!");
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AnimationClass::processIdleAnims), AnimationClass_processIdleAnims_hook, &AnimationClass_processIdleAnims_orig))
+		ErrorLog("[AnimationClass::processIdleAnims] Could not add hook!");
+
+	auto Ogre_OldNodeAnimationTrack_applyToNode = &Ogre::OldNodeAnimationTrack::applyToNode;
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(*(void**)&Ogre_OldNodeAnimationTrack_applyToNode, Ogre_OldNodeAnimationTrack_applyToNode_hook, &Ogre_OldNodeAnimationTrack_applyToNode_orig))
 		ErrorLog("[AnimationClass::processIdleAnims] Could not add hook!");
 }

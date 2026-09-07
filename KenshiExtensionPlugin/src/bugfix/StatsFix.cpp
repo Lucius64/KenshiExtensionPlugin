@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/Damages.h>
 #include <kenshi/GameplayOptions.h>
 #include <kenshi/Gear.h>
+#include <kenshi/SensoryData.h>
 
 #include <kep/translation.h>
 #include <UtilityFunction.h>
@@ -86,11 +87,11 @@ namespace
 			}
 
 			float expMult;
-			if (What == 0)
+			if (What == CharStats::ATTACK_HIT)
 				expMult = 1.0f;
-			else if (What == 1)
+			else if (What == CharStats::ATTACK_WAS_BLOCKED)
 				expMult = 0.5f;
-			else if (What == 6)
+			else if (What == CharStats::ATTACK_MISSED)
 				expMult = 0.25f;
 
 			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * expMult * xpBonusSkillDiff * skillBonusRace[combatStatsEnum] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
@@ -101,24 +102,56 @@ namespace
 			if (!IsUnarmed)
 			{
 				if (What == CharStats::ATTACK_HIT || What == CharStats::ATTACK_WAS_BLOCKED)
-					if (self->bluntDamageMult + self->cutDamageMult + self->pierceDamageMult > 0.0f)
-						dexExpRate = (1.0f / (self->bluntDamageMult + self->cutDamageMult + self->pierceDamageMult)) * (self->pierceDamageMult + self->cutDamageMult);
+				{
+					if (KEP::settings._fixDexterityXP)
+					{
+						float weightStrDiff = self->weaponWeight - self->strengthActual();
+						if (0.0f < con->WEIGHT_STR_DIFF_1X && 0.0f < weightStrDiff)
+						{
+							dexExpRate = 1.0f - (1.0f / con->WEIGHT_STR_DIFF_1X) * weightStrDiff;
+							if (1.0f < dexExpRate)
+								dexExpRate = 1.0f;
+							else if (dexExpRate < 0.0f)
+								dexExpRate = 0.0f;
+						}
+					}
+					else
+					{
+						if (self->bluntDamageMult + self->cutDamageMult + self->pierceDamageMult > 0.0f)
+							dexExpRate = (1.0f / (self->bluntDamageMult + self->cutDamageMult + self->pierceDamageMult)) * (self->pierceDamageMult + self->cutDamageMult);
+					}
+				}
 
 				float xpBonusSkillDiffForWeapon = self->getSkillDifferenceRatio(self->getEquippedWeaponSkill(), target->stats->getMeleeDefence(false));
 
 				float weaponExpMult = 1.0f;
-				if (What == 1)
+				if (What == CharStats::ATTACK_WAS_BLOCKED)
 					weaponExpMult = 0.4f;
-				else if (What == 6)
+				else if (What == CharStats::ATTACK_MISSED)
 					weaponExpMult = 0.1f;
 
 				exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * weaponExpMult * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 				increaseStat(*self->pCurrentWeaponSkill, exp, 101.0f);
 			}
+			else
+			{
+				if (KEP::settings._fixDexterityXP)
+				{
+					dexExpRate = self->encumbranceMult;
+					if (1.0f < dexExpRate)
+						dexExpRate = 1.0f;
+					else if (dexExpRate < 0.0f)
+						dexExpRate = 0.0f;
+				}
+			}
 
 			if (What == CharStats::ATTACK_HIT || What == CharStats::ATTACK_WAS_BLOCKED)
 			{
-				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiff * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+				float xpBonusSkillDiffForDexterity = xpBonusSkillDiff;
+				if (KEP::settings._fixDexterityXP)
+					xpBonusSkillDiffForDexterity = self->getSkillDifferenceRatio(self->dexterityActual(), target->stats->getMeleeDefence(false));
+
+				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiffForDexterity * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
 				increaseStat(self->_dexterity, exp, 101.0f);
 			}
 		}
@@ -442,6 +475,54 @@ namespace
 
 		return KEP::TranslationUtility::gettext_main("Elder");
 	}
+
+	float (*MedicalSystem_getToughnessXpBonus_orig)(MedicalSystem*);
+	float MedicalSystem_getToughnessXpBonus_hook(MedicalSystem* self)
+	{
+		if (!KEP::settings._fixToughnessXpBonus || !KEP::settings._fixTheInjuryCalculation)
+			return MedicalSystem_getToughnessXpBonus_orig(self);
+
+		float bonus = 1.0f;
+		if (!self->leftArmOk)
+			bonus = 2.0f;
+		if (!self->rightArmOk)
+			bonus += 2.0f;
+		if (self->bloodlossTrauma)
+			bonus += 2.0f;
+		if (self->worstDamage < 0.15f)
+			bonus += 2.0f;
+		return bonus;
+	}
+
+	void (*CharStats_xpToughness_GetUpEvent_orig)(CharStats*);
+	void CharStats_xpToughness_GetUpEvent_hook(CharStats* self)
+	{
+		if (KEP::settings._fixToughnessXpBonus && KEP::settings._fixTheInjuryCalculation)
+		{
+			CharStats_xpToughness_GetUpEvent_orig(self);
+			return;
+		}
+
+		auto me = self->me;
+		auto sensory = me->getSensoryData();
+		if (sensory->numEnemies + sensory->numNeutrals < 1)
+		{
+			me->sendDialogEvent(nullptr, EV_GET_UP_PEACE);
+			return;
+		}
+
+		if (sensory->numConsciousAllies != 0)
+		{
+			me->sendDialogEvent(nullptr, EV_GET_UP_FIGHT);
+			return;
+		}
+
+		float baseXp = self->medical->getToughnessXpBonus() * (sensory->numEnemies + 10.0f);
+		float exp = baseXp * KEP::externalGlobals->_gBaseXpCombat->_skillXp * me->myRace->statMods[STAT_TOUGHNESS];
+		increaseStat(self->_toughness, exp, 101.0f);
+
+		me->sendDialogEvent(nullptr, EV_GET_UP_UNNECCESSARY_FIGHT);
+	}
 }
 
 void KEP::StatsFix::init()
@@ -467,4 +548,10 @@ void KEP::StatsFix::init()
 	auto pCharacter_getAgeString_orig = &Character_getAgeString_orig;
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Character::_NV_getAgeString), *(void**)&pCharacter_getAgeString_hook, *(void***)&pCharacter_getAgeString_orig))
 		ErrorLog("[Character::getAgeString] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::getToughnessXpBonus), &MedicalSystem_getToughnessXpBonus_hook, &MedicalSystem_getToughnessXpBonus_orig))
+		ErrorLog("[MedicalSystem::getToughnessXpBonus] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::xpToughness_GetUpEvent), &CharStats_xpToughness_GetUpEvent_hook, &CharStats_xpToughness_GetUpEvent_orig))
+		ErrorLog("[CharStats::xpToughness_GetUpEvent] could not install hook!");
 }

@@ -30,7 +30,6 @@ class Town;
 class UtilityT;
 class TerrainDecalsManager;
 class DistantTown;
-class Research;
 template<typename T>
 class lektor;
 class Task_FillMachine;
@@ -112,7 +111,6 @@ namespace KEP
 		float(*FUN_008DBF80)(TerrainDecalsManager*, uint8_t, Ogre::Vector3&, Ogre::Vector3&, float, Ogre::ColourValue&, float); // 
 		float(*FUN_008DC0D0)(TerrainDecalsManager*, Character*, Ogre::Vector3&, float, Ogre::ColourValue&);
 		DistantTown* (*FUN_000D5FD0)(DistantTown*, Town*); // DistantTown(Town*)
-		void (*FUN_00830B90)(Research*, GameData*); // Set BuildingUpgrades
 		int (*FUN_00340EB0)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_00343720)(Task_FillMachine*, StorageBuilding*, Inventory*);
 		int (*FUN_001A4FB0)(scythe::data::PhysicsEntity*, const char*); // Load scythe file
@@ -124,7 +122,6 @@ namespace KEP
 		void (*FUN_000D8310)(DistantTown*); // Create DistantMesh
 		void (*FUN_004B0B60)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool); // ResearchItemList
 		void (*FUN_002C9840)(void*, MyGUI::ItemBox*, MyGUI::types::TCoord<int>&, bool); // CraftItemList
-		void (*FUN_0082E2E0)(Research*, lektor<GameDataGroup>&, itemType, itemType); // Get EnableItems
 		void (*FUN_002CA350)(const Ogre::vector<GameDataReference>::type*, itemType, lektor<GameDataGroup>&); // Get EnableItems
 		void (*FUN_0079EAB0)(Ogre::vector<StringPair>::type&, const std::string&, float, bool); // tooltip +-
 

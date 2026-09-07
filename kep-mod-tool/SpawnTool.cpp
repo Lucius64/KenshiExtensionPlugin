@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/PlayerInterface.h>
 #include <kenshi/Faction.h>
 #include <kenshi/FactionWarMgr.h>
+#include <kenshi/Campaign.h>
 #include <kenshi/FactionRelations.h>
 #include <kenshi/Building/DoorStuff.h>
 #include <kenshi/Building/UseableStuff.h>
@@ -311,6 +312,15 @@ void KEP::tools::SpawnTool::refresh()
 
 	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Trigger"), this->_category, 0.7f, "Kenshi_Button2");
 	button->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_triggerCampaign);
+
+	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Update territorial campaign trigger"), this->_category, 0.7f, "Kenshi_Button2");
+	button->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_clearTerritorialCampaignTimers);
+
+	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Clear all campaign repeat limits"), this->_category, 0.7f, "Kenshi_Button2");
+	button->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_clearPossibleCampaignTimers);
+
+	button = this->_panel->setLineTextButton("", KEP::TranslationUtility::gettext("Clear all campaign waiting times"), this->_category, 0.7f, "Kenshi_Button2");
+	button->callback = new MyGUI::delegates::CMethodDelegate1<SpawnTool, DataPanelLine*>(MyGUI::delegates::GetDelegateUnlink(this), this, &SpawnTool::_clearCampaignRequestTimers);
 
 	this->_panel->addSpace(this->_category, 0.5f);
 
@@ -1029,6 +1039,39 @@ void KEP::tools::SpawnTool::_changeUniqueNpcState(DataPanelLine* line)
 			stateData.handle = KEP::functions->getNULL_HAND();
 			stateData.state = DEAD;
 			stateData.playerInvolvement = true;
+		}
+	}
+}
+
+void KEP::tools::SpawnTool::_clearTerritorialCampaignTimers(DataPanelLine* line)
+{
+	for (auto factionIter = ou->factionMgr->participants.begin(); factionIter != ou->factionMgr->participants.end(); ++factionIter)
+	{
+		(*factionIter)->warMgr->nextUpdateTime.time = 0.0f;
+	}
+}
+
+void KEP::tools::SpawnTool::_clearPossibleCampaignTimers(DataPanelLine* line)
+{
+	for (auto factionIter = ou->factionMgr->participants.begin(); factionIter != ou->factionMgr->participants.end(); ++factionIter)
+	{
+		auto& poss = (*factionIter)->warMgr->possibleCampaigns;
+		for (auto campaignIter = poss.begin(); campaignIter != poss.end(); ++campaignIter)
+		{
+			(*campaignIter)->lastTerritorialTrigger.time = 0.0f;
+		}
+	}
+}
+
+void KEP::tools::SpawnTool::_clearCampaignRequestTimers(DataPanelLine* line)
+{
+	auto timeStamp = ou->getTimeStamp_inGameHours();
+	for (auto factionIter = ou->factionMgr->participants.begin(); factionIter != ou->factionMgr->participants.end(); ++factionIter)
+	{
+		auto& requests = (*factionIter)->warMgr->campaignRequests;
+		for (auto campaignIter = requests.begin(); campaignIter != requests.end(); ++campaignIter)
+		{
+			(*campaignIter)->timeToStart.time = timeStamp.time;
 		}
 	}
 }

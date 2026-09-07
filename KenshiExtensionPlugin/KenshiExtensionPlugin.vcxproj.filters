@@ -96,6 +96,18 @@
     <ClInclude Include="include\ResearchEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\bugfix\DialogueFix.h">
+      <Filter>Header Files\bugfix</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DialogueEventEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DialogueConditionEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DialogueActionEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ExternalFunctions.cpp">
@@ -174,6 +186,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ResearchEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bugfix\DialogueFix.cpp">
+      <Filter>Source Files\bugfix</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DialogueEventEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DialogueConditionEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DialogueActionEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
