@@ -56,13 +56,12 @@ ex player faction:    FACTION "Faction of characters dismissed from player facti
 [CROSSBOW]
 aim anim:           ANIMATION ""
 [DIALOGUE,DIALOGUE_LINE,WORD_SWAPS]
-actual target character:          CHARACTER "adds a condition: target is a specific character."
-actual target race:               RACE "adds a condition: target is any of the given races. Multiple races is treated as an OR condition"
-actual target subrace:            RACE "adds a condition: target is any of the given specific sub-race. Multiple races is treated as an OR condition"
 in area of:                       BIOME_GROUP "adds a condition: that we must be currently in an area"
 in specific town of:              TOWN "adds a condition: that we must be currently in an town"
 target character:                 CHARACTER "adds a condition: target squad has a member who is a specific character."
 target subrace:                   RACE "adds a condition: target squad has a member who is any of the given specific sub-race. Multiple races is treated as an OR condition"
+main:
+ignore target members:            False "If true then conditions such as target race are checked only for the conversation target."
 [FACTION]
 idle stances:           ANIMATION (100) ""
 [GUN_DATA]
