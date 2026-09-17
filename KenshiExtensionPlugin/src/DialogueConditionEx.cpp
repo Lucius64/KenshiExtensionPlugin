@@ -47,7 +47,7 @@ namespace
 		void _initialiseAList(const std::string& listname, lektor<GameData*>& list) const;
 		bool checkActualTargetRace(Character* target);
 		bool checkActualTargetSubRace(Character* target);
-		bool checkTargetCharacter(Dialogue* dialog, Character* target, bool isWordswap);
+		bool checkTargetCharacter(Dialogue* dialog, Character* target, bool isWordswap, bool ignoreTargetMembers);
 		bool checkActualTargetCharacter(Character* target);
 		bool isInArea(Dialogue* dialog);
 		bool isInSpecificTown(Dialogue* dialog);
@@ -140,7 +140,7 @@ namespace
 		return false;
 	}
 
-	bool DialogLineDataExtend::checkTargetCharacter(Dialogue* dialog, Character* target, bool isWordswap)
+	bool DialogLineDataExtend::checkTargetCharacter(Dialogue* dialog, Character* target, bool isWordswap, bool ignoreTargetMembers)
 	{
 		if (isTargetCharacter.size() == 0)
 			return true;
@@ -154,6 +154,9 @@ namespace
 			if (data == *iter)
 				return true;
 		}
+
+		if (ignoreTargetMembers)
+			return false;
 
 		for (auto iter = isTargetCharacter.begin(); iter != isTargetCharacter.end(); ++iter)
 		{
@@ -391,7 +394,7 @@ namespace
 		return false;
 	}
 
-	bool _checkTargetRace(DialogLineData* self, Dialogue* dialog, Character* target, bool isWordswap)
+	bool _checkTargetRace(DialogLineData* self, Dialogue* dialog, Character* target, bool isWordswap, bool ignoreTargetMembers)
 	{
 		if (target == nullptr)
 			return false;
@@ -424,7 +427,7 @@ namespace
 		return false;
 	}
 
-	bool _checkTargetSubRace(DialogLineData* self, Dialogue* dialog, Character* target, bool isWordswap)
+	bool _checkTargetSubRace(DialogLineData* self, Dialogue* dialog, Character* target, bool isWordswap, bool ignoreTargetMembers)
 	{
 		if (target == nullptr)
 			return false;
@@ -494,6 +497,8 @@ namespace
 				return false;
 		}
 
+		bool ignoreTargetMembers = self->data->bdata["ignore target members"];
+
 		auto lineDataExtend = lineDataExtends[self];
 		if (lineDataExtend != nullptr && !lineDataExtend->isInArea(dialog))
 			return false;
@@ -537,7 +542,7 @@ namespace
 				return false;
 		}
 
-		if (lineDataExtend != nullptr && !lineDataExtend->checkTargetCharacter(dialog, target, isWordswap))
+		if (lineDataExtend != nullptr && !lineDataExtend->checkTargetCharacter(dialog, target, isWordswap, ignoreTargetMembers))
 			return false;
 
 		if (lineDataExtend != nullptr && !lineDataExtend->checkActualTargetCharacter(target))
@@ -563,13 +568,13 @@ namespace
 
 		if (self->isTargetRace.size() != 0)
 		{
-			if (!_checkTargetRace(self, dialog, target, isWordswap))
+			if (!_checkTargetRace(self, dialog, target, isWordswap, ignoreTargetMembers))
 				return false;
 		}
 
 		if (self->isTargetSubRace_specificallyTheTarget.size() != 0)
 		{
-			if (!_checkTargetSubRace(self, dialog, target, isWordswap))
+			if (!_checkTargetSubRace(self, dialog, target, isWordswap, ignoreTargetMembers))
 				return false;
 		}
 
