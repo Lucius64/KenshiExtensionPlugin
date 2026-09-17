@@ -720,22 +720,31 @@ namespace
 			if (line == nullptr)
 				return nullptr;
 
-			auto target = self->conversationTarget.getCharacter();
-			if (target != nullptr)
-			{
-				auto race = target->getRace();
-				for (auto iter = line->isTargetSubRace_specificallyTheTarget.begin(); iter != line->isTargetSubRace_specificallyTheTarget.end(); ++iter)
-				{
-					if (race->data == *iter)
-						return target;
-				}
+			auto platoon = self->conversationTarget.getPlatoon();
+			auto activePlatoon = platoon != nullptr ? platoon->activePlatoon : nullptr;
+			if (activePlatoon == nullptr)
+				return nullptr;
 
-				for (auto iter = line->isTargetRace.begin(); iter != line->isTargetRace.end(); ++iter)
+			for (auto iter = line->isTargetSubRace_specificallyTheTarget.begin(); iter != line->isTargetSubRace_specificallyTheTarget.end(); ++iter)
+			{
+				for (auto squadMemberIter = activePlatoon->things.begin(); squadMemberIter != activePlatoon->things.end(); ++squadMemberIter)
 				{
-					if (race->isRelatedRace(*iter))
-						return target;
+					auto squadMember = static_cast<Character*>(*squadMemberIter);
+					if (squadMember->getRace()->isRelatedRace(*iter))
+						return squadMember;
 				}
 			}
+
+			for (auto iter = line->isTargetRace.begin(); iter != line->isTargetRace.end(); ++iter)
+			{
+				for (auto squadMemberIter = activePlatoon->things.begin(); squadMemberIter != activePlatoon->things.end(); ++squadMemberIter)
+				{
+					auto squadMember = static_cast<Character*>(*squadMemberIter);
+					if (squadMember->getRace()->data == *iter)
+						return squadMember;
+				}
+			}
+
 			return nullptr;
 		}
 		return Dialogue_getSpeaker_orig(self, who, line, isForWordswaps);
