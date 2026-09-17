@@ -26,6 +26,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kep/utility.h>
 #include <kep/translation.h>
 #include <Settings.h>
+#include <EnumExtended.h>
 
 #include <DialogueActionEx.h>
 
@@ -147,11 +148,6 @@ namespace
 				it->second.load(self, s);
 		}
 	}
-
-	enum DialogActionEnumExtend
-	{
-		DA_DECREASE_FACTION_RANK = 21000
-	};
 
 	void (*Dialogue__doActons_orig)(Dialogue* self, DialogLineData* dialogLine);
 	void Dialogue__doActons_hook(Dialogue* self, DialogLineData* dialogLine)

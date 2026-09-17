@@ -30,6 +30,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 #include <kep/functions.h>
 #include <Settings.h>
+#include <EnumExtended.h>
 #include <bugfix/DialogueFix.h>
 
 namespace

@@ -35,17 +35,11 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kep/translation.h>
 #include <kep/functions.h>
 #include <Settings.h>
+#include <EnumExtended.h>
 #include <DialogueConditionEx.h>
 
 namespace
 {
-	enum DialogConditionEnumExtend
-	{
-		DC_IS_SAME_SUBRACE_AS_ME = 21000,
-		DC_IS_ANIMAL_RACE = 21001,
-		DC_IS_ROBOT_RACE = 21002
-	};
-
 	class DialogLineDataExtend
 	{
 	public:

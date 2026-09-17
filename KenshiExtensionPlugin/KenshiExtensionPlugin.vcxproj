@@ -152,6 +152,7 @@
     <ClInclude Include="include\DialogueEventEx.h" />
     <ClInclude Include="include\DialogueExtension.h" />
     <ClInclude Include="include\CharacterExtension.h" />
+    <ClInclude Include="include\EnumExtended.h" />
     <ClInclude Include="include\ExternalFunctions.h" />
     <ClInclude Include="include\InventoryEx.h" />
     <ClInclude Include="include\ItemExtension.h" />
