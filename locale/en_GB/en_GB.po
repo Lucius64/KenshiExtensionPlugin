@@ -1,0 +1,1435 @@
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:72
+msgid "Martial arts class"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:74
+msgid "Turret class"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:135
+#: kep-mod-tool/DevToolsPanel.cpp:207
+msgid "Harpoon damage"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:165
+#, c++-format
+msgid "Damage vs {1} race"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:202
+msgid "Required Strength"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/ItemExtension.cpp:217
+msgid "Length"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:426
+msgid "[KEP Bug fixes]"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:428
+msgid "Fix NPC faces"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:429
+msgid "NPC shape keys are applied correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:431
+msgid "Fix character editor"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:432
+msgid ""
+"Characters equipped with bandanas and similar items will now display "
+"correctly in the Character Editor window. Additionally, face textures will "
+"now be imported as well."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:434
+msgid "Fix portrait"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:435
+msgid ""
+"The idle animations added or overwritten by Mods will be reflected in the "
+"portrait. Additionally, the positions of the shoulders and neck will be "
+"displayed correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:437
+msgid "Fix animation override"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:438
+msgid "The animation will be overridden correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:440
+msgid "Fix idle animation"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:441
+msgid "Reduces the twitching in the idle animation while carrying a character."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:443
+msgid "Fix combat animation"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:444
+msgid "Allows weapon position animations during attacks, dodges, and stumbles."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:446
+msgid "Fix spawning of unique characters"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:447
+msgid ""
+"Prevents the loss of unique characters due to town overrides or squad "
+"regeneration."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:449
+msgid "Fix unloading of unique characters"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:450
+msgid ""
+"Prevents unique characters participating in town raid events from "
+"teleporting hometown."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:452
+msgid "Fix importing of unique prisoners"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:453
+msgid ""
+"Prevents unique prisoners that have already appeared from disappearing after "
+"import."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:455
+msgid "Fix the unique leader for the Town Raid event"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:456
+msgid ""
+"Prevents imprisoned unique characters from becoming leaders of town raid "
+"events."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:458
+msgid "Fix melee combat XP"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:459
+msgid ""
+"Race bonuses for martial arts and weapon skills apply to melee combat XP. "
+"Additionally, SOL for weapon skills etc. functions correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:461
+msgid "Fix lockpicking XP"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:462
+msgid "The \"exp gain multiplier\" is applied to lockpicking XP."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:464
+msgid "Fix Toughness XP rate"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:465
+msgid ""
+"This option requires \"Fix the injury calculation\". The critical wounds "
+"bonus for \"Toughness XP\" will now function correctly. \n"
+"Note: The efficiency of the exploit involving removing a prosthetic leg to "
+"train Toughness will be reduced."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:467
+msgid "Fix unarmed damage bonus"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:468
+msgid "The \"Unarmed Damage Bonus\" affects martial arts damage."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:470
+msgid "Fix calculation of athletics effect"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:471
+msgid ""
+"The bonus to movement ability from backpacks applies even when wearing armor."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:473
+msgid "Fix stat name display"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:474
+msgid "Prevents Polearm from failing to display in certain GUIs."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:476
+msgid "Fix the prosthetic leg movement animation"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:477
+msgid ""
+"Prevents limping when the maximum HP of the left and right legs differs "
+"significantly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:479
+msgid "Fix pet recovery speed"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:480
+msgid "Pet recovery speed prioritizes the bed's effect over the stun effect."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:482
+msgid "Fix order of HP bar"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:483
+msgid "Prevents the HP bars for the chest and stomach from being reversed."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:485
+msgid "Fix the injury calculation"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:486
+msgid ""
+"Prevents Hive from becoming bedridden at the base when it takes a very small "
+"cut damage."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:488
+msgid "Fix the blood when spawning"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:489
+msgid "Prevents characters from spawning with low blood."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:491
+msgid "Fix Animal age"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:492
+msgid ""
+"Prevents rare cases where an animal's age is not displayed as \"Elder\"."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:494
+msgid "Fix global damage multiplier for Crossbow"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:495
+msgid ""
+"The global damage multiplier will no longer significantly affect crossbows."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:497
+msgid "Fix item becoming stolen goods from player bug"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:498
+msgid ""
+"Prevents an issue where taking items out of a backpack placed on the ground "
+"halves their selling price."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:500
+msgid "Fix housemates inventory refresh"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:501
+msgid ""
+"Prevents an issue where Waystation bars, etc., do not refresh their "
+"inventory."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:503
+msgid "Fix blueprint texture"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:504
+msgid "Materials can be applied to blueprints."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:506
+msgid "Fix loading save data for prosthetics"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:507
+msgid ""
+"When loading a save file, damage information for prosthetics, color data, "
+"and others will be restored correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:509
+msgid "Enable player involvement"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:510
+msgid "World State player involvement functions correctly."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:512
+msgid "Fix first aid dialogue"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:513
+msgid ""
+"The dialogue event will trigger after applying first aid even if you don't "
+"have a repair kit. Additionally, a dialogue event will trigger when a "
+"character runs out of medical kits."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:515
+msgid "Enable Navigation Mesh cache"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:516
+msgid ""
+"Accelerates zone loading and prevents falling through walls. Kenshi CTD fix "
+"patch takes precedence, so option changes will be disabled while it is in "
+"use."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:518
+msgid "Fix town override"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:519
+msgid ""
+"Prevents overridden town settings from reverting to their original values."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:521
+msgid "Fix display for distant towns"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:522
+msgid ""
+"Prevents the town loaded during loading from occasionally failing to switch "
+"to the distant mesh."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:524
+msgid "Fix research and crafting queue sizes"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:525
+msgid ""
+"Revert queue height to version 1.0.59 or earlier. Additionally, it will now "
+"scale according to window size instead of font size. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:527
+msgid "Enable duplicate research on building improvements"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:528
+msgid ""
+"The effects of research to increase building output can be applied multiple "
+"times."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:530
+msgid "Change the order of armor damage reduction"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:531
+msgid ""
+"Damage is reduced in order of armor with the highest slash resistance "
+"efficiency. Changing settings during play requires saving and reloading."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:533
+msgid "Fix peeler machine"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:534
+msgid ""
+"Prevents an issue where characters become unable to be released from the "
+"peeler machine. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:536
+msgid "Fix crossbow locker"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:537
+msgid "Item type limits will be enforced."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:539
+msgid "Fix UtilityT::getResourceFilePath"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:540
+msgid ""
+"Change the search path priority for `UtilityT::getResourceFilePath` to match "
+"that of the OGRE resource manager."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:542
+msgid "Fix item stealing checks in tasks"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:543
+msgid ""
+"Prevents characters assigned tasks such as crafting armor in town from "
+"stealing items that have been dropped."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:545
+msgid "Fix Inventory::getEquippedArmour"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:546
+msgid ""
+"Belt slot armor will now be included in actions such as \"removing uniform "
+"tags upon hiring\", \"confiscating equipment\" and \"destroying armor with a "
+"peeler machine\"."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:547
+#: KenshiExtensionPlugin/src/Settings.cpp:686
+msgid "Disable"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:548
+msgid "Belt only"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:549
+msgid "Compatible with Extra Inventory Sections"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:552
+msgid "Enable crash prevention"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:553
+msgid ""
+"Fixes some causes of random crashes. See the documentation for details.\n"
+"Note: This doesn't prevent all crashes."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:557
+msgid "[KEP Features]"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:559
+msgid "Change Dexterity XP rate"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:560
+msgid ""
+"This option requires \"Fix melee combat XP\". Dexterity XP affects the "
+"Strength XP rate rather than the percentage of blunt damage. Additionally, "
+"SOL affects Dexterity rather than Melee Attack or Martial Arts."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:562
+msgid "Sort New Game Starts"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:563
+msgid ""
+"Sort New Game Starts by Mod load order and dictionary order of stringID. "
+"(REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:565
+msgid "Enable raid events from factions not displayed in the list"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:566
+msgid ""
+"Raid events will occur from factions such as Fogmen and Fishmen. Changing "
+"settings during play requires saving and reloading."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:568
+msgid "Save reputation points"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:569
+msgid "Saving reputation points."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:571
+msgid "Importing negative money"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:572
+msgid "Enables the import of negative money."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:574
+msgid "Fix the Scythe path"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:575
+msgid "Get .phs files from the OGRE resource manager."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:577
+msgid "Player portrait capacity cap"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:578
+msgid ""
+"Select player portrait capacity caps. Default is 256 people. (REQURIES "
+"RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:585
+msgid "Fix NPC money"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:586
+msgid ""
+"Prevents non-merchant units that include animals from spawning with 0 cats."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:588
+msgid "Inventory Item Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:589
+msgid "Provides features to add settings related to character inventory items."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:591
+msgid "Change the faction of a dismissed character"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:592
+msgid "Provides features to change the faction of dismissed characters."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:594
+msgid "Animal Dialogue Package"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:595
+msgid "Provides features to set individual dialog packages for each animal."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:597
+msgid "Limit bulk"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:598
+msgid ""
+"This feature allows you to set limits on character bulk. Additionally, mods "
+"can change these limits for each race."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:600
+msgid "Max Bulk Stat for Males"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:601
+#: KenshiExtensionPlugin/src/Settings.cpp:609
+msgid ""
+"Sets the max value for stats affecting bulk. Setting both to 20 will lock "
+"them at the standard size."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:604
+msgid "Min Bulk Stat for Males"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:605
+#: KenshiExtensionPlugin/src/Settings.cpp:613
+msgid ""
+"Sets the min value for stats affecting bulk. Setting both to 20 will lock "
+"them at the standard size."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:608
+msgid "Max Bulk Stat for Females"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:612
+msgid "Min Bulk Stat for Females"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:618
+msgid "Animal Armor Slots"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:619
+msgid "Adds armor slots to animals. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:621
+msgid "Show crossbow and prosthetics crafters"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:622
+msgid ""
+"Displays the crafter's information in the tooltips for crossbows and "
+"prosthetics."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:624
+msgid "Sort Armor Coverage"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:625
+msgid "Sort armor coverage by body part type. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:627
+msgid "Weapon Model Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:628
+msgid ""
+"Provides features to add settings related to stat modifiers to weapon models."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:630
+msgid "Armor Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:631
+msgid ""
+"Provides features to add settings such as crafting time multipliers to armor."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:633
+msgid "Race Limiter Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:634
+msgid ""
+"Race limits for weapons and prosthetics actually work. It also provides "
+"features to set limits for each race group. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:638
+msgid "Item Furnace Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:639
+msgid ""
+"Provides features to change the inventory size of the item furnace and to "
+"change the item used as the basis for determining the amount generated. "
+"(REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:641
+msgid "Item Crafting Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:642
+msgid ""
+"Provides features to limit the list of weapons that can be crafted. "
+"Additionally, the crafting list is sorted by name. (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:646
+msgid "Sort idle stances"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:647
+msgid ""
+"Sort idle stances by Mod load order and dictionary order of names. (REQURIES "
+"RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:649
+msgid "Idle stances of Races and Factions"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:650
+msgid ""
+"Provides features to set idle stance animations for each race and faction."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:652
+msgid "Animation Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:653
+msgid ""
+"Provides features to change the aiming animation. Additionally, turrets in "
+"the weapon category will now work."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:657
+msgid "Word Swap Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:658
+msgid ""
+"Provides features to add color codes used by the UI to Word Swap. It also "
+"fixes a bug where, in certain dialog structures, the conditions assigned to "
+"Word Swap could not correctly reference the intended targets."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:661
+msgid "[KEP Beta]"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:663
+msgid "Research Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:664
+msgid ""
+"Provides features to customize equipment blueprints. It also provides "
+"features to set equipment blueprints as research requirements and as "
+"research to be learned at the start."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:666
+msgid "Special Combat Techniques"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:667
+msgid ""
+"Provides features to set specific combat techniques for each weapon, "
+"character, race, and faction."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:669
+msgid "Ranged Weapon Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:670
+msgid "Skill requirements and racial damage will now actually work."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:672
+msgid "Shopping Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:673
+msgid ""
+"The daily wages for non-merchant units will now actually work. Additionally, "
+"allows you to set the money for merchants who do not have a residence."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:675
+msgid "Combat Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:676
+msgid ""
+"Characters (excluding animals) will try to dodge area-of-effect and ranged "
+"attacks."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:678
+msgid "Change the block chance"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:679
+msgid ""
+"Changing the formula for the block chance modifier for martial arts "
+"attacks.\n"
+"Note: If your martial arts skill is low, it will be difficult to block "
+"martial arts attacks."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:681
+msgid "Skill Requirements for Block Combat Techniques"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:682
+msgid ""
+"Allows specifying conditions such as \"max skill\" for block combat "
+"techniques."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:684
+msgid "Fix Damage Calculation"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:685
+msgid ""
+"Adjusts the effect of armor penetration on damage calculations. "
+"Additionally, fixes the game's UI."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:687
+msgid "UI fixes only"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:688
+msgid "Enable"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:691
+msgid "Additional Dialogue Conditions"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:692
+msgid ""
+"Add items that can be set as dialogue conditions. Additionally, fix bugs "
+"such as \"target has item type\". (REQURIES RESTART)"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:694
+msgid "Additional Dialogue Actions"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:695
+msgid "Add items that can be set as dialogue actions."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:697
+msgid "Additional Dialogue Events"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:698
+msgid "Unimplemented dialogue events (e.g., EV_WINDY) will become available."
+msgstr ""
+
+#: kep-core/src/config_manager.cpp:108
+msgid "KEP"
+msgstr ""
+
+#: kep-core/src/settings.cpp:102
+msgid "Enable patch function"
+msgstr ""
+
+#: kep-core/src/settings.cpp:103
+msgid ""
+"Load additional mod files from each mod's patch folder. Mod creators can "
+"provide features to localize their mods to match language settings and apply "
+"compatibility patches with other active mods. (REQURIES RESTART)"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:128 kep-mod-tool/GamePlayOptionsTab.cpp:65
+msgid "Developer tools"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:159
+msgid "Main"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:160 kep-mod-tool/SpawnTool.cpp:170
+msgid "Spawn"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:161 kep-mod-tool/StatsTool.cpp:46
+msgid "Stats"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:162
+msgid "Task"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:178
+msgid "Give money"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:179
+msgid "Take money"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:181
+msgid "Complete Reseach"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:182
+msgid "Complete All Reseach"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:184
+msgid "Complete Building"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:185
+msgid "Complete All Building"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:187
+msgid "Discover all towns"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:189
+msgid "Teleport"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:190
+msgid "Unlock cage"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:191
+msgid "Free selected"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:193
+msgid "Destroy"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:196
+msgid "[Health]"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:198
+msgid "Heal selected"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:201
+msgid "Damage"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:216
+msgid "Squish"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:220 kep-mod-tool/SpawnTool.cpp:1616
+msgid "Left Arm"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:221 kep-mod-tool/SpawnTool.cpp:1617
+msgid "Right Arm"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:222 kep-mod-tool/SpawnTool.cpp:1618
+msgid "Left Leg"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:223 kep-mod-tool/SpawnTool.cpp:1619
+msgid "Right Leg"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:227
+msgid "Amputate"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:228
+msgid "Join limb"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:231
+msgid "[Misc]"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:232 kep-mod-tool/DevToolsPanel.cpp:614
+msgid "Show character editor"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:236
+msgid "Show roads on map"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:243 kep-mod-tool/InformationPanel.cpp:412
+msgid "Information Panel"
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:354 kep-mod-tool/SpawnTool.cpp:602
+msgid "Error: Please select a building."
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:428 kep-mod-tool/DevToolsPanel.cpp:540
+#: kep-mod-tool/DevToolsPanel.cpp:596 kep-mod-tool/DevToolsPanel.cpp:608
+#: kep-mod-tool/PlatoonTool.cpp:231 kep-mod-tool/PlatoonTool.cpp:283
+#: kep-mod-tool/PlatoonTool.cpp:341 kep-mod-tool/PlatoonTool.cpp:363
+#: kep-mod-tool/PlatoonTool.cpp:385 kep-mod-tool/SpawnTool.cpp:768
+#: kep-mod-tool/SpawnTool.cpp:801 kep-mod-tool/StatsTool.cpp:236
+#: kep-mod-tool/StatsTool.cpp:293 kep-mod-tool/StatsTool.cpp:309
+msgid "Error: Please select a character."
+msgstr ""
+
+#: kep-mod-tool/DevToolsPanel.cpp:614
+msgid ""
+"Warning: Editing NPCs may cause the game to crash. Do you want to continue?"
+msgstr ""
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:67
+msgid "Use Level Editor camera"
+msgstr ""
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:69
+msgid "Fast travel mode"
+msgstr ""
+
+#: kep-mod-tool/GamePlayOptionsTab.cpp:71
+msgid "NPC Inventory"
+msgstr ""
+
+#: kep-mod-tool/InformationPanel.cpp:420
+msgid "Combat"
+msgstr ""
+
+#: kep-mod-tool/InformationPanel.cpp:421
+msgid "VIPs"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:48
+msgid "AI package"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:49
+msgid "Diagloue"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:71
+msgid "[Task]"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:74 kep-mod-tool/PlatoonTool.cpp:93
+#: kep-mod-tool/SpawnTool.cpp:144 kep-mod-tool/SpawnTool.cpp:155
+#: kep-mod-tool/SpawnTool.cpp:176 kep-mod-tool/SpawnTool.cpp:217
+#: kep-mod-tool/SpawnTool.cpp:251 kep-mod-tool/SpawnTool.cpp:267
+#: kep-mod-tool/SpawnTool.cpp:278 kep-mod-tool/SpawnTool.cpp:305
+#: kep-mod-tool/SpawnTool.cpp:330 kep-mod-tool/SpawnTool.cpp:342
+#: kep-mod-tool/SpawnTool.cpp:365
+msgid "Search"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:82
+msgid "Change AI"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:85
+msgid "Reset AI"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:90
+msgid "[Dialog]"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:101
+msgid "Trigger dialog"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:104
+msgid "Trigger player conversation"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:107
+msgid "Clear all dialog timers"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:110
+msgid "Lock dialog"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:113
+msgid "Unlock dialog"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:116
+msgid "Clear all dialog locks and unlocks"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:121
+msgid "Clear all tags"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:135 kep-mod-tool/PlatoonTool.cpp:164
+#: kep-mod-tool/PlatoonTool.cpp:199
+msgid "Error: Please select a NPC."
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:206
+msgid "Error: Platoon not found"
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:224 kep-mod-tool/PlatoonTool.cpp:276
+#: kep-mod-tool/PlatoonTool.cpp:334 kep-mod-tool/PlatoonTool.cpp:356
+msgid "Error: Dialogue not found."
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:237 kep-mod-tool/PlatoonTool.cpp:289
+msgid "Error: Please select a character who is conscious."
+msgstr ""
+
+#: kep-mod-tool/PlatoonTool.cpp:316
+msgid "Error: There are no player characters nearby."
+msgstr ""
+
+#: kep-mod-tool/Re_Dev.cpp:215
+msgid "KEP: Developer tools"
+msgstr ""
+
+#: kep-mod-tool/Re_Dev.cpp:216
+msgid "KEP: Information Panel"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:73
+msgid "Player Faction"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:78
+msgid "Weapons"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:79
+msgid "Models"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:80
+msgid "Gear Level"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:81
+msgid "Random"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:84
+msgid "Item category"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:85
+msgid "Item subcategory"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:86
+msgid "Campaigns"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:91
+msgid "Uniform"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:141
+msgid "[Characters]"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:163
+msgid "Spawn method"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:165
+msgid "Roaming"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:166
+msgid "Bar"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:167
+msgid "Resident"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:185
+msgid "Age"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:189
+msgid "Add character"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:194
+msgid "[Items]"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:199 kep-mod-tool/SpawnTool.cpp:238
+#: kep-mod-tool/SpawnTool.cpp:1586
+msgid "All"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:202
+msgid "Nest item"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:235
+msgid "Weapon category"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:287
+msgid "Quantity"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:292
+msgid "Give item"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:297
+msgid "Refresh Inventory"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:302
+msgid "[Campaigns]"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:313
+msgid "Trigger"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:316
+msgid "Update territorial campaign trigger"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:319
+msgid "Clear all campaign repeat limits"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:322
+msgid "Clear all campaign waiting times"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:327
+msgid "[Faction Relations]"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:352
+msgid "Relation"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:357
+msgid "Overwrite relation"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:362
+msgid "[Unique Character States]"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:370
+msgid "Unique characters"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:374
+msgid "State"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:376
+msgid "Not spawned"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:377
+msgid "Living"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:378
+msgid "Imprisoned"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:379
+msgid "Imprisoned (player involvement)"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:380
+msgid "Dead"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:381
+msgid "Dead (player involvement)"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:384
+msgid "Change unique character state"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:530 kep-mod-tool/SpawnTool.cpp:570
+#: kep-mod-tool/SpawnTool.cpp:593
+msgid "Warning: The spawned squad is empty"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:586
+msgid "Error: Please move the camera within the town range."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:611
+msgid "Error: Squads cannot spawn in this building."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:618
+msgid "Error: Please select a building in the town."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:646 kep-mod-tool/SpawnTool.cpp:726
+msgid "Error: The interior layout did not match."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:872
+msgid ""
+"Error: Faction not found. Please configure [campaigns] or [faction override]."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:879
+msgid "Error: Player base not found."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:925
+msgid "Error: Player or unoccupied building inventories cannot be updated."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:941
+msgid ""
+"Error: For the \"from\" field, please select a faction other than the player."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:947
+msgid "Error: Please select a different faction."
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1589
+msgid "General item"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1590
+msgid "Medical or repair"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1591
+msgid "Food"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1592
+msgid "Restricted food"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1593
+msgid "Alcohol or drug"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1594
+msgid "Tool"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1595
+msgid "Ammo"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1596
+msgid "Research"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1597
+msgid "Book"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1598
+msgid "Money"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1599
+msgid "Servered limb"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1610
+msgid "Eyes"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1611
+msgid "Gloves"
+msgstr ""
+
+#: kep-mod-tool/SpawnTool.cpp:1612
+msgid "Neck"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:47
+msgid "Stats data"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:48
+msgid "Slave state"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:49
+msgid "Personality"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:153
+msgid "[Stats]"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:164
+msgid "Give XP"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:173
+msgid "Overwrite stats"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:182
+msgid "Set slave state"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:191
+msgid "Change personality"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:196
+msgid "Portrait yaw"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:200
+msgid "Portrait pitch"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:204
+msgid "Change portrait serial number"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:447
+msgid "honorable"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:448
+msgid "traitorous"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:449
+msgid "smart"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:450
+msgid "dumb"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:451
+msgid "brave"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:452
+msgid "fearful"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:453
+msgid "maniac"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:454
+msgid "warm kind"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:455
+msgid "cold cruel"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:456
+msgid "normal"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:457
+msgid "unknown 3"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:458
+msgid "unknown 4"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:459
+msgid "unknown 7"
+msgstr ""
+
+#: kep-mod-tool/StatsTool.cpp:460
+msgid "unknown 8"
+msgstr ""

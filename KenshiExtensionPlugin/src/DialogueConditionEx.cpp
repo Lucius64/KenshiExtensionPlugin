@@ -706,6 +706,59 @@ namespace
 		}
 		return Dialogue__checkCondition_orig(self, conditionName, compareBy, val, target, actualConversationTarget);
 	}
+
+	Character* (*Dialogue_getSpeaker_orig)(Dialogue*, TalkerEnum, DialogLineData*, bool);
+	Character* Dialogue_getSpeaker_hook(Dialogue* self, TalkerEnum who, DialogLineData* line, bool isForWordswaps)
+	{
+		if (KEP::settings._dialogueConditionEx && who == T_TARGET_WITH_RACE)
+		{
+			if (line == nullptr)
+				return nullptr;
+
+			auto target = self->conversationTarget.getCharacter();
+			if (target != nullptr)
+			{
+				auto race = target->getRace();
+				for (auto iter = line->isTargetSubRace_specificallyTheTarget.begin(); iter != line->isTargetSubRace_specificallyTheTarget.end(); ++iter)
+				{
+					if (race->data == *iter)
+						return target;
+				}
+
+				for (auto iter = line->isTargetRace.begin(); iter != line->isTargetRace.end(); ++iter)
+				{
+					if (race->isRelatedRace(*iter))
+						return target;
+				}
+			}
+			return nullptr;
+		}
+		return Dialogue_getSpeaker_orig(self, who, line, isForWordswaps);
+	}
+
+	int (*DialogLineData_getScore_orig)(DialogLineData*, Character*);
+	int DialogLineData_getScore_hook(DialogLineData* self, Character* target)
+	{
+		if (!KEP::settings._dialogueConditionEx)
+			return DialogLineData_getScore_orig(self, target);
+
+		if (target != nullptr)
+		{
+			auto race = target->getRace();
+			for (auto iter = self->isTargetSubRace_specificallyTheTarget.begin(); iter != self->isTargetSubRace_specificallyTheTarget.end(); ++iter)
+			{
+				if (race->data == *iter)
+					return self->score + 2;
+			}
+			for (auto iter = self->isTargetRace.begin(); iter != self->isTargetRace.end(); ++iter)
+			{
+				if (race->isRelatedRace(*iter))
+					return self->score + 2;
+			}
+		}
+
+		return self->score;
+	}
 }
 
 void KEP::DialogueConditionEx::init()
@@ -721,4 +774,10 @@ void KEP::DialogueConditionEx::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&DialogLineData::checkConditions), &DialogLineData_checkConditions_hook, &DialogLineData_checkConditions_orig))
 		ErrorLog("[DialogLineData::checkConditions] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Dialogue::getSpeaker), &Dialogue_getSpeaker_hook, &Dialogue_getSpeaker_orig))
+		ErrorLog("[Dialogue::getSpeaker] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&DialogLineData::getScore), &DialogLineData_getScore_hook, &DialogLineData_getScore_orig))
+		ErrorLog("[DialogLineData::getScore] could not install hook!");
 }
