@@ -88,6 +88,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>kep.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,6 +103,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>kep.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,6 +117,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>KenshiLib.lib;OgreMain_x64.lib;libboost_thread-vc100-mt-1_60.lib;libboost_system-vc100-mt-1_60.lib;libboost_date_time-vc100-mt-1_60.lib;libboost_chrono-vc100-mt-1_60.lib;libboost_filesystem-vc100-mt-1_60.lib;libboost_locale-vc100-mt-1_60.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>kep.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,6 +134,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>KenshiLib.lib;OgreMain_x64.lib;MyGUIEngine_x64.lib;kep-core-preload-x64.lib;libboost_thread-vc100-mt-1_60.lib;libboost_system-vc100-mt-1_60.lib;libboost_date_time-vc100-mt-1_60.lib;libboost_chrono-vc100-mt-1_60.lib;libboost_filesystem-vc100-mt-1_60.lib;libboost_locale-vc100-mt-1_60.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>kep.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -163,6 +167,7 @@
     <ClInclude Include="include\ScytheFileExtension.h" />
     <ClInclude Include="include\Settings.h" />
     <ClInclude Include="include\UtilityFunction.h" />
+    <ClInclude Include="include\VendorListEx.h" />
     <ClInclude Include="include\WarCampaignExtension.h" />
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +200,11 @@
     <ClCompile Include="src\ScytheFileExtension.cpp" />
     <ClCompile Include="src\Settings.cpp" />
     <ClCompile Include="src\UtilityFunction.cpp" />
+    <ClCompile Include="src\VendorListEx.cpp" />
     <ClCompile Include="src\WarCampaignExtension.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="kep.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

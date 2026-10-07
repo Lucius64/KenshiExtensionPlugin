@@ -159,6 +159,7 @@
     <ClInclude Include="include\extern\TradingInfo.h" />
     <ClInclude Include="include\extern\UniqueNPCManager.h" />
     <ClInclude Include="include\extern\UseableStuff.h" />
+    <ClInclude Include="include\extern\VendorList.h" />
     <ClInclude Include="include\framework.h" />
     <ClInclude Include="include\kep.h" />
     <ClInclude Include="include\kep\common.h" />

@@ -4,11 +4,16 @@ enum DialogConditionEnum { }
 enum DialogConditionEnum {
     DC_IS_SAME_SUBRACE_AS_ME=21000,
     DC_IS_ANIMAL_RACE,
-    DC_IS_ROBOT_RACE
+    DC_IS_ROBOT_RACE,
+    DC_SQUAD_MONEY
 }
 enum DialogActionEnum { }
 enum DialogActionEnum {
     DA_DECREASE_FACTION_RANK=21000
+}
+enum TalkerEnum { }
+enum TalkerEnum {
+    T_TARGET_IF_ANIMAL=20
 }
 
 [ANIMAL_CHARACTER]
@@ -49,6 +54,10 @@ armour blueprints:    ARMOUR (1) "Armour blueprints in inventory"
 backpack blueprints:  CONTAINER (1) "Backpack blueprints in inventory"
 crossbow blueprints:  CROSSBOW (1) "Crossbow blueprints in inventory"
 backpack inventory:   VENDOR_LIST "the characters inventory contents if he has a backpack"
+levels:
+override crossbow grade: False "If true then crossbow quality can be set for each character."
+crossbow grade:          ArmourRarity.GEAR_CHEAP "Sets the quality level of this characters crossbow"
+crossbow upgrade chance: 5 "0-100% chance that crossbow will be 1 level higher than usual"
 [COMBAT_TECHNIQUE]
 is special:        False "True if used only with the specified character, race, faction, and weapon"
 [CONSTANTS]
@@ -101,6 +110,33 @@ length mod:             1.0 "multiplier"
 armour research:        ARMOUR "starting research techs"
 backpack research:      CONTAINER "starting research techs"
 crossbow research:      CROSSBOW "starting research techs"
+[SQUAD_TEMPLATE]
+special armours:              ARMOUR (1, 1) "Use this list to spawn any unique special armors. Every item in this list will be spawned in the squad's building somewhere. val0: number of masterwork items. val1: Number of specialist items"
+special containers:           CONTAINER (1) "Use this list to spawn any unique special containers. Every item in this list will be spawned in the squad's building somewhere."
+special crossbows:            CROSSBOW (1, 1) "Use this list to spawn any unique special crossbows. Every item in this list will be spawned in the squad's building somewhere. val0: number of masterwork items. val1: Number of specialist items"
+special robotics:             LIMB_REPLACEMENT (1, 1) "Use this list to spawn any unique special robot limbs. Every item in this list will be spawned in the squad's building somewhere. val0: number of masterwork items. val1: Number of specialist items"
+special weapons:              WEAPON (1) "Use this list to spawn any unique special weapons. Every item in this list will be spawned in the squad's building somewhere."
+special weapon manufacturers: WEAPON_MANUFACTURER (100) "val0 is relative chance"
+special weapon models:        MATERIAL_SPECS_WEAPON (100) "val0 is relative chance"
+vendor quality chance:
+armors 0:               0 "chances of vendors having this armour quality (prototype)"
+armors 1:               0 "chances of vendors having this armour quality (cheap)"
+armors 2:               0 "chances of vendors having this armour quality (standard)"
+armors 3:               0 "chances of vendors having this armour quality (good)"
+armors 4:               0 "chances of vendors having this armour quality (specialist)"
+armors 5:               0 "chances of vendors having this armour quality (masterwork)"
+crossbows 0:            0 "chances of vendors having this crossbow quality (prototype)"
+crossbows 1:            0 "chances of vendors having this crossbow quality (cheap)"
+crossbows 2:            0 "chances of vendors having this crossbow quality (standard)"
+crossbows 3:            0 "chances of vendors having this crossbow quality (good)"
+crossbows 4:            0 "chances of vendors having this crossbow quality (specialist)"
+crossbows 5:            0 "chances of vendors having this crossbow quality (masterwork)"
+robotics 0:             0 "chances of vendors having this robotics quality (prototype)"
+robotics 1:             0 "chances of vendors having this robotics quality (cheap)"
+robotics 2:             0 "chances of vendors having this robotics quality (standard)"
+robotics 3:             0 "chances of vendors having this robotics quality (good)"
+robotics 4:             0 "chances of vendors having this robotics quality (specialist)"
+robotics 5:             0 "chances of vendors having this robotics quality (masterwork)"
 [TOWN]
 town name override:   False ""
 [WEAPON]

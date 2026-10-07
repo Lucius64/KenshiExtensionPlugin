@@ -113,6 +113,9 @@ namespace KEP
 		bool _fixRobotLimbItemSerialise;
 		bool _fixToughnessXpBonus;
 		bool _fixDexterityXP;
+		bool _fixConversationTarget;
+		bool _vendorListEx;
+		bool _fixSmugglingCheck;
 		int _fixDamageCalculation;
 		int _getEquippedArmour;
 	};

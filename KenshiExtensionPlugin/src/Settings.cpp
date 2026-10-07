@@ -114,6 +114,9 @@ namespace
 		settingsDocument.AddMember("fix_robotics_serialise", settings._fixRobotLimbItemSerialise, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_toughness_xp_bonus", settings._fixToughnessXpBonus, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_dexterity_xp", settings._fixDexterityXP, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_conversation_target", settings._fixConversationTarget, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("vendor_list_ex", settings._vendorListEx, settingsDocument.GetAllocator());
+		settingsDocument.AddMember("fix_smuggling_check", settings._fixSmugglingCheck, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_damage_calculation", settings._fixDamageCalculation, settingsDocument.GetAllocator());
 		settingsDocument.AddMember("fix_getEquippedArmour", settings._getEquippedArmour, settingsDocument.GetAllocator());
 
@@ -201,10 +204,13 @@ KEP::Settings::Settings()
 	, _dialogueConditionEx(false)
 	, _dialogueActionEx(false)
 	, _dialogueEventEx(false)
-	, _fixFirstAidDialogueEvent(false)
-	, _fixRobotLimbItemSerialise(false)
+	, _fixFirstAidDialogueEvent(true)
+	, _fixRobotLimbItemSerialise(true)
 	, _fixToughnessXpBonus(false)
 	, _fixDexterityXP(false)
+	, _fixConversationTarget(false)
+	, _vendorListEx(false)
+	, _fixSmugglingCheck(false)
 	, _fixDamageCalculation(0)
 	, _getEquippedArmour(0)
 {
@@ -404,6 +410,12 @@ void KEP::Settings::loadSettings()
 		this->_fixToughnessXpBonus = settingsDocument["fix_toughness_xp_bonus"].GetBool();
 	if (settingsDocument.HasMember("fix_dexterity_xp"))
 		this->_fixDexterityXP = settingsDocument["fix_dexterity_xp"].GetBool();
+	if (settingsDocument.HasMember("fix_conversation_target"))
+		this->_fixConversationTarget = settingsDocument["fix_conversation_target"].GetBool();
+	if (settingsDocument.HasMember("vendor_list_ex"))
+		this->_vendorListEx = settingsDocument["vendor_list_ex"].GetBool();
+	if (settingsDocument.HasMember("fix_smuggling_check"))
+		this->_fixSmugglingCheck = settingsDocument["fix_smuggling_check"].GetBool();
 	if (settingsDocument.HasMember("fix_damage_calculation"))
 		this->_fixDamageCalculation = settingsDocument["fix_damage_calculation"].GetInt();
 	if (settingsDocument.HasMember("fix_getEquippedArmour"))
@@ -507,6 +519,12 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Enable player involvement"), &this->_enablePlayerInvolvement, category)
 		->setToolTip(KEP::TranslationUtility::gettext("World State player involvement functions correctly."), tooltip);
 
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the change conversation target feature"), &this->_fixConversationTarget, category)
+		->setToolTip(KEP::TranslationUtility::gettext("If the conversation target is changed based on conditions such as \"target race\" at the start of a conversation, the actual conversation target will also be changed."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix the smuggling check"), &this->_fixSmugglingCheck, category)
+		->setToolTip(KEP::TranslationUtility::gettext("This option requires \"Additional Dialogue Conditions\". Items in backpacks are also subject to smuggling checks."), tooltip);
+
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Fix first aid dialogue"), &this->_fixFirstAidDialogueEvent, category)
 		->setToolTip(KEP::TranslationUtility::gettext("The dialogue event will trigger after applying first aid even if you don't have a repair kit. Additionally, a dialogue event will trigger when a character runs out of medical kits."), tooltip);
 
@@ -591,6 +609,9 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Animal Dialogue Package"), &this->_animalDialoguePackage, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Provides features to set individual dialog packages for each animal."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Keep the character type"), &this->_keepCharacterType, category)
+		->setToolTip(KEP::TranslationUtility::gettext("The NPC will keep its character type even after being hired."), tooltip);
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Limit bulk"), &this->_bulkLimitsExtension, category)
 		->setToolTip(KEP::TranslationUtility::gettext("This feature allows you to set limits on character bulk. Additionally, mods can change these limits for each race."), tooltip);
@@ -694,4 +715,7 @@ void KEP::Settings::create(DatapanelGUI* panel, int category, ToolTip* tooltip)
 
 	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Additional Dialogue Events"), &this->_dialogueEventEx, category)
 		->setToolTip(KEP::TranslationUtility::gettext("Unimplemented dialogue events (e.g., EV_WINDY) will become available."), tooltip);
+
+	panel->setLineCheckbox(KEP::TranslationUtility::gettext("Vendor List Expansion"), &this->_vendorListEx, category)
+		->setToolTip(KEP::TranslationUtility::gettext("Equipment will be added to the special item spawn feature."), tooltip);
 }

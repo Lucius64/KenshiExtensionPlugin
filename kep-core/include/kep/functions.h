@@ -55,6 +55,11 @@ public:
 		, Task_MeleeAttack_startAction(nullptr)
 		, Task_FocusedMeleeAttack_startAction(nullptr)
 		, Task_RangedAttack_startAction(nullptr)
+		, Task_FirstAid_startAction(nullptr)
+		, roboticsLevelSelector(nullptr)
+		, VendorList_createItem(nullptr)
+		, VendorListManager_hasSpecialItemsList(nullptr)
+		, VendorListManager_createSpecialItem(nullptr)
 		, timer(nullptr)
 		, NULL_HAND(nullptr)
 		, _interior(nullptr)
@@ -110,6 +115,11 @@ public:
 				*(uintptr_t*)&Task_MeleeAttack_startAction = baseAddr + 0x3341b0;
 				*(uintptr_t*)&Task_FocusedMeleeAttack_startAction = baseAddr + 0x33c180;
 				*(uintptr_t*)&Task_RangedAttack_startAction = baseAddr + 0x33bf30;
+				*(uintptr_t*)&Task_FirstAid_startAction = baseAddr + 0x34ec90;
+				*(uintptr_t*)&roboticsLevelSelector = baseAddr + 0x9544a0;
+				*(uintptr_t*)&VendorList_createItem = baseAddr + 0x954700;
+				*(uintptr_t*)&VendorListManager_hasSpecialItemsList = baseAddr + 0x952570;
+				*(uintptr_t*)&VendorListManager_createSpecialItem = baseAddr + 0x957870;
 				*(uintptr_t*)&timer = baseAddr + 0x2132730;
 				*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e395f8;
 				*(uintptr_t*)&_interior = baseAddr + 0x212ec50;
@@ -162,6 +172,11 @@ public:
 				*(uintptr_t*)&Task_MeleeAttack_startAction = baseAddr + 0x333d40;
 				*(uintptr_t*)&Task_FocusedMeleeAttack_startAction = baseAddr + 0x33bd30;
 				*(uintptr_t*)&Task_RangedAttack_startAction = baseAddr + 0x33bac0;
+				*(uintptr_t*)&Task_FirstAid_startAction = baseAddr + 0x34e840;
+				*(uintptr_t*)&roboticsLevelSelector = baseAddr + 0x953bc0;
+				*(uintptr_t*)&VendorList_createItem = baseAddr + 0x953e20;
+				*(uintptr_t*)&VendorListManager_hasSpecialItemsList = baseAddr + 0x951c90;
+				*(uintptr_t*)&VendorListManager_createSpecialItem = baseAddr + 0x956f90;
 				*(uintptr_t*)&timer = baseAddr + 0x21306a0;
 				*(uintptr_t*)&NULL_HAND = baseAddr + 0x1e375f8;
 				*(uintptr_t*)&_interior = baseAddr + 0x212cb90;
@@ -224,6 +239,11 @@ public:
 	void (*Task_MeleeAttack_startAction)(class Task_MeleeAttack*, class CharBody*);
 	void (*Task_FocusedMeleeAttack_startAction)(class Task_FocusedMeleeAttack*, class CharBody*);
 	void (*Task_RangedAttack_startAction)(class Task_RangedAttack*, class CharBody*);
+	void (*Task_FirstAid_startAction)(class Task_FirstAid*, class CharBody*);
+	void (*roboticsLevelSelector)(class FitnessSelector<uint32_t>&, class GameData*);
+	void (*VendorList_createItem)(class VendorList*, lektor<class Item*>&, int, class GameData*);
+	bool (*VendorListManager_hasSpecialItemsList)(class GameData*);
+	void (*VendorListManager_createSpecialItem)(void*, class GameData*, lektor<class Item*>&);
 
 private:
 	float* timer;

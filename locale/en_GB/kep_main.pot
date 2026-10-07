@@ -24,127 +24,127 @@ msgstr ""
 msgid "Length"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:426
+#: KenshiExtensionPlugin/src/Settings.cpp:436
 msgid "[KEP Bug fixes]"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:428
+#: KenshiExtensionPlugin/src/Settings.cpp:438
 msgid "Fix NPC faces"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:429
+#: KenshiExtensionPlugin/src/Settings.cpp:439
 msgid "NPC shape keys are applied correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:431
+#: KenshiExtensionPlugin/src/Settings.cpp:441
 msgid "Fix character editor"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:432
+#: KenshiExtensionPlugin/src/Settings.cpp:442
 msgid ""
 "Characters equipped with bandanas and similar items will now display "
 "correctly in the Character Editor window. Additionally, face textures will "
 "now be imported as well."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:434
+#: KenshiExtensionPlugin/src/Settings.cpp:444
 msgid "Fix portrait"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:435
+#: KenshiExtensionPlugin/src/Settings.cpp:445
 msgid ""
 "The idle animations added or overwritten by Mods will be reflected in the "
 "portrait. Additionally, the positions of the shoulders and neck will be "
 "displayed correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:437
+#: KenshiExtensionPlugin/src/Settings.cpp:447
 msgid "Fix animation override"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:438
+#: KenshiExtensionPlugin/src/Settings.cpp:448
 msgid "The animation will be overridden correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:440
+#: KenshiExtensionPlugin/src/Settings.cpp:450
 msgid "Fix idle animation"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:441
+#: KenshiExtensionPlugin/src/Settings.cpp:451
 msgid "Reduces the twitching in the idle animation while carrying a character."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:443
+#: KenshiExtensionPlugin/src/Settings.cpp:453
 msgid "Fix combat animation"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:444
+#: KenshiExtensionPlugin/src/Settings.cpp:454
 msgid "Allows weapon position animations during attacks, dodges, and stumbles."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:446
+#: KenshiExtensionPlugin/src/Settings.cpp:456
 msgid "Fix spawning of unique characters"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:447
+#: KenshiExtensionPlugin/src/Settings.cpp:457
 msgid ""
 "Prevents the loss of unique characters due to town overrides or squad "
 "regeneration."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:449
+#: KenshiExtensionPlugin/src/Settings.cpp:459
 msgid "Fix unloading of unique characters"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:450
+#: KenshiExtensionPlugin/src/Settings.cpp:460
 msgid ""
 "Prevents unique characters participating in town raid events from "
 "teleporting hometown."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:452
+#: KenshiExtensionPlugin/src/Settings.cpp:462
 msgid "Fix importing of unique prisoners"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:453
+#: KenshiExtensionPlugin/src/Settings.cpp:463
 msgid ""
 "Prevents unique prisoners that have already appeared from disappearing after "
 "import."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:455
+#: KenshiExtensionPlugin/src/Settings.cpp:465
 msgid "Fix the unique leader for the Town Raid event"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:456
+#: KenshiExtensionPlugin/src/Settings.cpp:466
 msgid ""
 "Prevents imprisoned unique characters from becoming leaders of town raid "
 "events."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:458
+#: KenshiExtensionPlugin/src/Settings.cpp:468
 msgid "Fix melee combat XP"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:459
+#: KenshiExtensionPlugin/src/Settings.cpp:469
 msgid ""
 "Race bonuses for martial arts and weapon skills apply to melee combat XP. "
 "Additionally, SOL for weapon skills etc. functions correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:461
+#: KenshiExtensionPlugin/src/Settings.cpp:471
 msgid "Fix lockpicking XP"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:462
+#: KenshiExtensionPlugin/src/Settings.cpp:472
 msgid "The \"exp gain multiplier\" is applied to lockpicking XP."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:464
+#: KenshiExtensionPlugin/src/Settings.cpp:474
 msgid "Fix Toughness XP rate"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:465
+#: KenshiExtensionPlugin/src/Settings.cpp:475
 msgid ""
 "This option requires \"Fix the injury calculation\". The critical wounds "
 "bonus for \"Toughness XP\" will now function correctly. \n"
@@ -152,597 +152,626 @@ msgid ""
 "train Toughness will be reduced."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:467
+#: KenshiExtensionPlugin/src/Settings.cpp:477
 msgid "Fix unarmed damage bonus"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:468
+#: KenshiExtensionPlugin/src/Settings.cpp:478
 msgid "The \"Unarmed Damage Bonus\" affects martial arts damage."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:470
+#: KenshiExtensionPlugin/src/Settings.cpp:480
 msgid "Fix calculation of athletics effect"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:471
+#: KenshiExtensionPlugin/src/Settings.cpp:481
 msgid ""
 "The bonus to movement ability from backpacks applies even when wearing armor."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:473
+#: KenshiExtensionPlugin/src/Settings.cpp:483
 msgid "Fix stat name display"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:474
+#: KenshiExtensionPlugin/src/Settings.cpp:484
 msgid "Prevents Polearm from failing to display in certain GUIs."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:476
+#: KenshiExtensionPlugin/src/Settings.cpp:486
 msgid "Fix the prosthetic leg movement animation"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:477
+#: KenshiExtensionPlugin/src/Settings.cpp:487
 msgid ""
 "Prevents limping when the maximum HP of the left and right legs differs "
 "significantly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:479
+#: KenshiExtensionPlugin/src/Settings.cpp:489
 msgid "Fix pet recovery speed"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:480
+#: KenshiExtensionPlugin/src/Settings.cpp:490
 msgid "Pet recovery speed prioritizes the bed's effect over the stun effect."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:482
+#: KenshiExtensionPlugin/src/Settings.cpp:492
 msgid "Fix order of HP bar"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:483
+#: KenshiExtensionPlugin/src/Settings.cpp:493
 msgid "Prevents the HP bars for the chest and stomach from being reversed."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:485
+#: KenshiExtensionPlugin/src/Settings.cpp:495
 msgid "Fix the injury calculation"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:486
+#: KenshiExtensionPlugin/src/Settings.cpp:496
 msgid ""
 "Prevents Hive from becoming bedridden at the base when it takes a very small "
 "cut damage."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:488
+#: KenshiExtensionPlugin/src/Settings.cpp:498
 msgid "Fix the blood when spawning"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:489
+#: KenshiExtensionPlugin/src/Settings.cpp:499
 msgid "Prevents characters from spawning with low blood."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:491
+#: KenshiExtensionPlugin/src/Settings.cpp:501
 msgid "Fix Animal age"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:492
+#: KenshiExtensionPlugin/src/Settings.cpp:502
 msgid ""
 "Prevents rare cases where an animal's age is not displayed as \"Elder\"."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:494
+#: KenshiExtensionPlugin/src/Settings.cpp:504
 msgid "Fix global damage multiplier for Crossbow"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:495
+#: KenshiExtensionPlugin/src/Settings.cpp:505
 msgid ""
 "The global damage multiplier will no longer significantly affect crossbows."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:497
+#: KenshiExtensionPlugin/src/Settings.cpp:507
 msgid "Fix item becoming stolen goods from player bug"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:498
+#: KenshiExtensionPlugin/src/Settings.cpp:508
 msgid ""
 "Prevents an issue where taking items out of a backpack placed on the ground "
 "halves their selling price."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:500
+#: KenshiExtensionPlugin/src/Settings.cpp:510
 msgid "Fix housemates inventory refresh"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:501
+#: KenshiExtensionPlugin/src/Settings.cpp:511
 msgid ""
 "Prevents an issue where Waystation bars, etc., do not refresh their "
 "inventory."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:503
+#: KenshiExtensionPlugin/src/Settings.cpp:513
 msgid "Fix blueprint texture"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:504
+#: KenshiExtensionPlugin/src/Settings.cpp:514
 msgid "Materials can be applied to blueprints."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:506
+#: KenshiExtensionPlugin/src/Settings.cpp:516
 msgid "Fix loading save data for prosthetics"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:507
+#: KenshiExtensionPlugin/src/Settings.cpp:517
 msgid ""
 "When loading a save file, damage information for prosthetics, color data, "
 "and others will be restored correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:509
+#: KenshiExtensionPlugin/src/Settings.cpp:519
 msgid "Enable player involvement"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:510
+#: KenshiExtensionPlugin/src/Settings.cpp:520
 msgid "World State player involvement functions correctly."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:512
+#: KenshiExtensionPlugin/src/Settings.cpp:522
+msgid "Fix the change conversation target feature"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:523
+msgid ""
+"If the conversation target is changed based on conditions such as \"target "
+"race\" at the start of a conversation, the actual conversation target will "
+"also be changed."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:525
+msgid "Fix the smuggling check"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:526
+msgid ""
+"This option requires \"Additional Dialogue Conditions\". Items in backpacks "
+"are also subject to smuggling checks."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:528
 msgid "Fix first aid dialogue"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:513
+#: KenshiExtensionPlugin/src/Settings.cpp:529
 msgid ""
 "The dialogue event will trigger after applying first aid even if you don't "
 "have a repair kit. Additionally, a dialogue event will trigger when a "
 "character runs out of medical kits."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:515
+#: KenshiExtensionPlugin/src/Settings.cpp:531
 msgid "Enable Navigation Mesh cache"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:516
+#: KenshiExtensionPlugin/src/Settings.cpp:532
 msgid ""
 "Accelerates zone loading and prevents falling through walls. Kenshi CTD fix "
 "patch takes precedence, so option changes will be disabled while it is in "
 "use."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:518
+#: KenshiExtensionPlugin/src/Settings.cpp:534
 msgid "Fix town override"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:519
+#: KenshiExtensionPlugin/src/Settings.cpp:535
 msgid ""
 "Prevents overridden town settings from reverting to their original values."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:521
+#: KenshiExtensionPlugin/src/Settings.cpp:537
 msgid "Fix display for distant towns"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:522
+#: KenshiExtensionPlugin/src/Settings.cpp:538
 msgid ""
 "Prevents the town loaded during loading from occasionally failing to switch "
 "to the distant mesh."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:524
+#: KenshiExtensionPlugin/src/Settings.cpp:540
 msgid "Fix research and crafting queue sizes"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:525
+#: KenshiExtensionPlugin/src/Settings.cpp:541
 msgid ""
 "Revert queue height to version 1.0.59 or earlier. Additionally, it will now "
 "scale according to window size instead of font size. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:527
+#: KenshiExtensionPlugin/src/Settings.cpp:543
 msgid "Enable duplicate research on building improvements"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:528
+#: KenshiExtensionPlugin/src/Settings.cpp:544
 msgid ""
 "The effects of research to increase building output can be applied multiple "
 "times."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:530
+#: KenshiExtensionPlugin/src/Settings.cpp:546
 msgid "Change the order of armor damage reduction"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:531
+#: KenshiExtensionPlugin/src/Settings.cpp:547
 msgid ""
 "Damage is reduced in order of armor with the highest slash resistance "
 "efficiency. Changing settings during play requires saving and reloading."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:533
+#: KenshiExtensionPlugin/src/Settings.cpp:549
 msgid "Fix peeler machine"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:534
+#: KenshiExtensionPlugin/src/Settings.cpp:550
 msgid ""
 "Prevents an issue where characters become unable to be released from the "
 "peeler machine. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:536
+#: KenshiExtensionPlugin/src/Settings.cpp:552
 msgid "Fix crossbow locker"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:537
+#: KenshiExtensionPlugin/src/Settings.cpp:553
 msgid "Item type limits will be enforced."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:539
+#: KenshiExtensionPlugin/src/Settings.cpp:555
 msgid "Fix UtilityT::getResourceFilePath"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:540
+#: KenshiExtensionPlugin/src/Settings.cpp:556
 msgid ""
 "Change the search path priority for `UtilityT::getResourceFilePath` to match "
 "that of the OGRE resource manager."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:542
+#: KenshiExtensionPlugin/src/Settings.cpp:558
 msgid "Fix item stealing checks in tasks"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:543
+#: KenshiExtensionPlugin/src/Settings.cpp:559
 msgid ""
 "Prevents characters assigned tasks such as crafting armor in town from "
 "stealing items that have been dropped."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:545
+#: KenshiExtensionPlugin/src/Settings.cpp:561
 msgid "Fix Inventory::getEquippedArmour"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:546
+#: KenshiExtensionPlugin/src/Settings.cpp:562
 msgid ""
 "Belt slot armor will now be included in actions such as \"removing uniform "
 "tags upon hiring\", \"confiscating equipment\" and \"destroying armor with a "
 "peeler machine\"."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:547
-#: KenshiExtensionPlugin/src/Settings.cpp:686
+#: KenshiExtensionPlugin/src/Settings.cpp:563
+#: KenshiExtensionPlugin/src/Settings.cpp:705
 msgid "Disable"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:548
+#: KenshiExtensionPlugin/src/Settings.cpp:564
 msgid "Belt only"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:549
+#: KenshiExtensionPlugin/src/Settings.cpp:565
 msgid "Compatible with Extra Inventory Sections"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:552
+#: KenshiExtensionPlugin/src/Settings.cpp:568
 msgid "Enable crash prevention"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:553
+#: KenshiExtensionPlugin/src/Settings.cpp:569
 msgid ""
 "Fixes some causes of random crashes. See the documentation for details.\n"
 "Note: This doesn't prevent all crashes."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:557
+#: KenshiExtensionPlugin/src/Settings.cpp:573
 msgid "[KEP Features]"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:559
+#: KenshiExtensionPlugin/src/Settings.cpp:575
 msgid "Change Dexterity XP rate"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:560
+#: KenshiExtensionPlugin/src/Settings.cpp:576
 msgid ""
 "This option requires \"Fix melee combat XP\". Dexterity XP affects the "
 "Strength XP rate rather than the percentage of blunt damage. Additionally, "
 "SOL affects Dexterity rather than Melee Attack or Martial Arts."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:562
+#: KenshiExtensionPlugin/src/Settings.cpp:578
 msgid "Sort New Game Starts"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:563
+#: KenshiExtensionPlugin/src/Settings.cpp:579
 msgid ""
 "Sort New Game Starts by Mod load order and dictionary order of stringID. "
 "(REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:565
+#: KenshiExtensionPlugin/src/Settings.cpp:581
 msgid "Enable raid events from factions not displayed in the list"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:566
+#: KenshiExtensionPlugin/src/Settings.cpp:582
 msgid ""
 "Raid events will occur from factions such as Fogmen and Fishmen. Changing "
 "settings during play requires saving and reloading."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:568
+#: KenshiExtensionPlugin/src/Settings.cpp:584
 msgid "Save reputation points"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:569
+#: KenshiExtensionPlugin/src/Settings.cpp:585
 msgid "Saving reputation points."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:571
+#: KenshiExtensionPlugin/src/Settings.cpp:587
 msgid "Importing negative money"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:572
+#: KenshiExtensionPlugin/src/Settings.cpp:588
 msgid "Enables the import of negative money."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:574
+#: KenshiExtensionPlugin/src/Settings.cpp:590
 msgid "Fix the Scythe path"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:575
+#: KenshiExtensionPlugin/src/Settings.cpp:591
 msgid "Get .phs files from the OGRE resource manager."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:577
+#: KenshiExtensionPlugin/src/Settings.cpp:593
 msgid "Player portrait capacity cap"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:578
+#: KenshiExtensionPlugin/src/Settings.cpp:594
 msgid ""
 "Select player portrait capacity caps. Default is 256 people. (REQURIES "
 "RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:585
+#: KenshiExtensionPlugin/src/Settings.cpp:601
 msgid "Fix NPC money"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:586
+#: KenshiExtensionPlugin/src/Settings.cpp:602
 msgid ""
 "Prevents non-merchant units that include animals from spawning with 0 cats."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:588
+#: KenshiExtensionPlugin/src/Settings.cpp:604
 msgid "Inventory Item Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:589
+#: KenshiExtensionPlugin/src/Settings.cpp:605
 msgid "Provides features to add settings related to character inventory items."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:591
+#: KenshiExtensionPlugin/src/Settings.cpp:607
 msgid "Change the faction of a dismissed character"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:592
+#: KenshiExtensionPlugin/src/Settings.cpp:608
 msgid "Provides features to change the faction of dismissed characters."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:594
+#: KenshiExtensionPlugin/src/Settings.cpp:610
 msgid "Animal Dialogue Package"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:595
+#: KenshiExtensionPlugin/src/Settings.cpp:611
 msgid "Provides features to set individual dialog packages for each animal."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:597
+#: KenshiExtensionPlugin/src/Settings.cpp:613
+msgid "Keep the character type"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:614
+msgid "The NPC will keep its character type even after being hired."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:616
 msgid "Limit bulk"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:598
+#: KenshiExtensionPlugin/src/Settings.cpp:617
 msgid ""
 "This feature allows you to set limits on character bulk. Additionally, mods "
 "can change these limits for each race."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:600
+#: KenshiExtensionPlugin/src/Settings.cpp:619
 msgid "Max Bulk Stat for Males"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:601
-#: KenshiExtensionPlugin/src/Settings.cpp:609
+#: KenshiExtensionPlugin/src/Settings.cpp:620
+#: KenshiExtensionPlugin/src/Settings.cpp:628
 msgid ""
 "Sets the max value for stats affecting bulk. Setting both to 20 will lock "
 "them at the standard size."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:604
+#: KenshiExtensionPlugin/src/Settings.cpp:623
 msgid "Min Bulk Stat for Males"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:605
-#: KenshiExtensionPlugin/src/Settings.cpp:613
+#: KenshiExtensionPlugin/src/Settings.cpp:624
+#: KenshiExtensionPlugin/src/Settings.cpp:632
 msgid ""
 "Sets the min value for stats affecting bulk. Setting both to 20 will lock "
 "them at the standard size."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:608
+#: KenshiExtensionPlugin/src/Settings.cpp:627
 msgid "Max Bulk Stat for Females"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:612
+#: KenshiExtensionPlugin/src/Settings.cpp:631
 msgid "Min Bulk Stat for Females"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:618
+#: KenshiExtensionPlugin/src/Settings.cpp:637
 msgid "Animal Armor Slots"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:619
+#: KenshiExtensionPlugin/src/Settings.cpp:638
 msgid "Adds armor slots to animals. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:621
+#: KenshiExtensionPlugin/src/Settings.cpp:640
 msgid "Show crossbow and prosthetics crafters"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:622
+#: KenshiExtensionPlugin/src/Settings.cpp:641
 msgid ""
 "Displays the crafter's information in the tooltips for crossbows and "
 "prosthetics."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:624
+#: KenshiExtensionPlugin/src/Settings.cpp:643
 msgid "Sort Armor Coverage"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:625
+#: KenshiExtensionPlugin/src/Settings.cpp:644
 msgid "Sort armor coverage by body part type. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:627
+#: KenshiExtensionPlugin/src/Settings.cpp:646
 msgid "Weapon Model Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:628
+#: KenshiExtensionPlugin/src/Settings.cpp:647
 msgid ""
 "Provides features to add settings related to stat modifiers to weapon models."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:630
+#: KenshiExtensionPlugin/src/Settings.cpp:649
 msgid "Armor Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:631
+#: KenshiExtensionPlugin/src/Settings.cpp:650
 msgid ""
 "Provides features to add settings such as crafting time multipliers to armor."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:633
+#: KenshiExtensionPlugin/src/Settings.cpp:652
 msgid "Race Limiter Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:634
+#: KenshiExtensionPlugin/src/Settings.cpp:653
 msgid ""
 "Race limits for weapons and prosthetics actually work. It also provides "
 "features to set limits for each race group. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:638
+#: KenshiExtensionPlugin/src/Settings.cpp:657
 msgid "Item Furnace Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:639
+#: KenshiExtensionPlugin/src/Settings.cpp:658
 msgid ""
 "Provides features to change the inventory size of the item furnace and to "
 "change the item used as the basis for determining the amount generated. "
 "(REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:641
+#: KenshiExtensionPlugin/src/Settings.cpp:660
 msgid "Item Crafting Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:642
+#: KenshiExtensionPlugin/src/Settings.cpp:661
 msgid ""
 "Provides features to limit the list of weapons that can be crafted. "
 "Additionally, the crafting list is sorted by name. (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:646
+#: KenshiExtensionPlugin/src/Settings.cpp:665
 msgid "Sort idle stances"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:647
+#: KenshiExtensionPlugin/src/Settings.cpp:666
 msgid ""
 "Sort idle stances by Mod load order and dictionary order of names. (REQURIES "
 "RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:649
+#: KenshiExtensionPlugin/src/Settings.cpp:668
 msgid "Idle stances of Races and Factions"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:650
+#: KenshiExtensionPlugin/src/Settings.cpp:669
 msgid ""
 "Provides features to set idle stance animations for each race and faction."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:652
+#: KenshiExtensionPlugin/src/Settings.cpp:671
 msgid "Animation Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:653
+#: KenshiExtensionPlugin/src/Settings.cpp:672
 msgid ""
 "Provides features to change the aiming animation. Additionally, turrets in "
 "the weapon category will now work."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:657
+#: KenshiExtensionPlugin/src/Settings.cpp:676
 msgid "Word Swap Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:658
+#: KenshiExtensionPlugin/src/Settings.cpp:677
 msgid ""
 "Provides features to add color codes used by the UI to Word Swap. It also "
 "fixes a bug where, in certain dialog structures, the conditions assigned to "
 "Word Swap could not correctly reference the intended targets."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:661
+#: KenshiExtensionPlugin/src/Settings.cpp:680
 msgid "[KEP Beta]"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:663
+#: KenshiExtensionPlugin/src/Settings.cpp:682
 msgid "Research Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:664
+#: KenshiExtensionPlugin/src/Settings.cpp:683
 msgid ""
 "Provides features to customize equipment blueprints. It also provides "
 "features to set equipment blueprints as research requirements and as "
 "research to be learned at the start."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:666
+#: KenshiExtensionPlugin/src/Settings.cpp:685
 msgid "Special Combat Techniques"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:667
+#: KenshiExtensionPlugin/src/Settings.cpp:686
 msgid ""
 "Provides features to set specific combat techniques for each weapon, "
 "character, race, and faction."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:669
+#: KenshiExtensionPlugin/src/Settings.cpp:688
 msgid "Ranged Weapon Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:670
+#: KenshiExtensionPlugin/src/Settings.cpp:689
 msgid "Skill requirements and racial damage will now actually work."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:672
+#: KenshiExtensionPlugin/src/Settings.cpp:691
 msgid "Shopping Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:673
+#: KenshiExtensionPlugin/src/Settings.cpp:692
 msgid ""
 "The daily wages for non-merchant units will now actually work. Additionally, "
 "allows you to set the money for merchants who do not have a residence."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:675
+#: KenshiExtensionPlugin/src/Settings.cpp:694
 msgid "Combat Expansion"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:676
+#: KenshiExtensionPlugin/src/Settings.cpp:695
 msgid ""
 "Characters (excluding animals) will try to dodge area-of-effect and ranged "
 "attacks."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:678
+#: KenshiExtensionPlugin/src/Settings.cpp:697
 msgid "Change the block chance"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:679
+#: KenshiExtensionPlugin/src/Settings.cpp:698
 msgid ""
 "Changing the formula for the block chance modifier for martial arts "
 "attacks.\n"
@@ -750,58 +779,66 @@ msgid ""
 "martial arts attacks."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:681
+#: KenshiExtensionPlugin/src/Settings.cpp:700
 msgid "Skill Requirements for Block Combat Techniques"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:682
+#: KenshiExtensionPlugin/src/Settings.cpp:701
 msgid ""
 "Allows specifying conditions such as \"max skill\" for block combat "
 "techniques."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:684
+#: KenshiExtensionPlugin/src/Settings.cpp:703
 msgid "Fix Damage Calculation"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:685
+#: KenshiExtensionPlugin/src/Settings.cpp:704
 msgid ""
 "Adjusts the effect of armor penetration on damage calculations. "
 "Additionally, fixes the game's UI."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:687
+#: KenshiExtensionPlugin/src/Settings.cpp:706
 msgid "UI fixes only"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:688
+#: KenshiExtensionPlugin/src/Settings.cpp:707
 msgid "Enable"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:691
+#: KenshiExtensionPlugin/src/Settings.cpp:710
 msgid "Additional Dialogue Conditions"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:692
+#: KenshiExtensionPlugin/src/Settings.cpp:711
 msgid ""
 "Add items that can be set as dialogue conditions. Additionally, fix bugs "
 "such as \"target has item type\". (REQURIES RESTART)"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:694
+#: KenshiExtensionPlugin/src/Settings.cpp:713
 msgid "Additional Dialogue Actions"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:695
+#: KenshiExtensionPlugin/src/Settings.cpp:714
 msgid "Add items that can be set as dialogue actions."
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:697
+#: KenshiExtensionPlugin/src/Settings.cpp:716
 msgid "Additional Dialogue Events"
 msgstr ""
 
-#: KenshiExtensionPlugin/src/Settings.cpp:698
+#: KenshiExtensionPlugin/src/Settings.cpp:717
 msgid "Unimplemented dialogue events (e.g., EV_WINDY) will become available."
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:719
+msgid "Vendor List Expansion"
+msgstr ""
+
+#: KenshiExtensionPlugin/src/Settings.cpp:720
+msgid "Equipment will be added to the special item spawn feature."
 msgstr ""
 
 #: kep-core/src/config_manager.cpp:108
@@ -945,9 +982,9 @@ msgstr ""
 
 #: kep-mod-tool/DevToolsPanel.cpp:428 kep-mod-tool/DevToolsPanel.cpp:540
 #: kep-mod-tool/DevToolsPanel.cpp:596 kep-mod-tool/DevToolsPanel.cpp:608
-#: kep-mod-tool/PlatoonTool.cpp:231 kep-mod-tool/PlatoonTool.cpp:283
-#: kep-mod-tool/PlatoonTool.cpp:341 kep-mod-tool/PlatoonTool.cpp:363
-#: kep-mod-tool/PlatoonTool.cpp:385 kep-mod-tool/SpawnTool.cpp:768
+#: kep-mod-tool/PlatoonTool.cpp:231 kep-mod-tool/PlatoonTool.cpp:284
+#: kep-mod-tool/PlatoonTool.cpp:343 kep-mod-tool/PlatoonTool.cpp:365
+#: kep-mod-tool/PlatoonTool.cpp:387 kep-mod-tool/SpawnTool.cpp:768
 #: kep-mod-tool/SpawnTool.cpp:801 kep-mod-tool/StatsTool.cpp:236
 #: kep-mod-tool/StatsTool.cpp:293 kep-mod-tool/StatsTool.cpp:309
 msgid "Error: Please select a character."
@@ -1049,16 +1086,16 @@ msgstr ""
 msgid "Error: Platoon not found"
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:224 kep-mod-tool/PlatoonTool.cpp:276
-#: kep-mod-tool/PlatoonTool.cpp:334 kep-mod-tool/PlatoonTool.cpp:356
+#: kep-mod-tool/PlatoonTool.cpp:224 kep-mod-tool/PlatoonTool.cpp:277
+#: kep-mod-tool/PlatoonTool.cpp:336 kep-mod-tool/PlatoonTool.cpp:358
 msgid "Error: Dialogue not found."
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:237 kep-mod-tool/PlatoonTool.cpp:289
+#: kep-mod-tool/PlatoonTool.cpp:237 kep-mod-tool/PlatoonTool.cpp:290
 msgid "Error: Please select a character who is conscious."
 msgstr ""
 
-#: kep-mod-tool/PlatoonTool.cpp:316
+#: kep-mod-tool/PlatoonTool.cpp:317
 msgid "Error: There are no player characters nearby."
 msgstr ""
 

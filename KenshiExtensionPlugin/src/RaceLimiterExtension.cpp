@@ -252,10 +252,22 @@ namespace
 			auto baseData = selector.chooseAnItem_absoluteScore();
 			if (baseData != nullptr)
 			{
-				FitnessSelector<uint32_t> rairitySelector;
-				KEP::functions->crossbowLevelSelector(rairitySelector, self->platoon->me->squadTemplate);
+				uint32_t crossbowGrade = 0U;
+				if (KEP::settings._extendInitInventory && self->data->bdata["override crossbow grade"])
+				{
+					crossbowGrade = self->data->idata["crossbow grade"];
+					auto crossbowUpgradeChance = self->data->idata["crossbow upgrade chance"];
+					if (crossbowGrade < 5)
+						crossbowGrade += UtilityT::randomInt(0, 100) < crossbowUpgradeChance;
+				}
+				else
+				{
+					FitnessSelector<uint32_t> rairitySelector;
+					KEP::functions->crossbowLevelSelector(rairitySelector, self->platoon->me->squadTemplate);
+					crossbowGrade = rairitySelector.chooseAnItem();
+				}
 
-				auto item = ou->theFactory->createItem(baseData, hand(0, 0, NULL_ITEM, 0, 0), nullptr, nullptr, KEP::functions->convertRarityToLevel(rairitySelector.chooseAnItem()), nullptr);
+				auto item = ou->theFactory->createItem(baseData, hand(0, 0, NULL_ITEM, 0, 0), nullptr, nullptr, KEP::functions->convertRarityToLevel(crossbowGrade), nullptr);
 				if (item == nullptr)
 				{
 					Logger::logMessage("[CharacterHuman::setupInventorySections] Item '" + baseData->name + "' does not exist.", Logger::Warning);

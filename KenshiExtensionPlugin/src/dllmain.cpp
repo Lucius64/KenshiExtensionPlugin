@@ -47,6 +47,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <ResearchEx.h>
 #include <InventoryEx.h>
 #include <PlatoonEx.h>
+#include <VendorListEx.h>
 #include <kep.h>
 
 namespace fs = boost::filesystem;
@@ -58,7 +59,7 @@ namespace
 
 boost::scoped_ptr<FunctionPointers> KEP::functions(new FunctionPointers());
 
-__declspec(dllexport) void startPlugin()
+void startPlugin()
 {
 	DebugLog("kep 0.18.0");
 
@@ -117,6 +118,7 @@ __declspec(dllexport) void startPlugin()
 	KEP::ResearchEx::init();
 	KEP::InventoryEx::init();
 	KEP::PlatoonEx::init();
+	KEP::VendorListEx::init();
 	KenshiLib::ApplyQueuedHooks();
 	DebugLog("Installed");
 }

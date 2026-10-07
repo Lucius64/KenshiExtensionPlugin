@@ -272,17 +272,13 @@ namespace
 	void (*RobotLimbItem___loadFromSerialise_orig)(RobotLimbItem*, GameDataContainer*, GameData*);
 	void RobotLimbItem___loadFromSerialise_hook(RobotLimbItem* self, GameDataContainer* container, GameData* state)
 	{
-		if (!KEP::settings._fixRobotLimbItemSerialise)
+		RobotLimbItem___loadFromSerialise_orig(self, container, state);
+		if (KEP::settings._fixRobotLimbItemSerialise)
 		{
-			RobotLimbItem___loadFromSerialise_orig(self, container, state);
-			return;
+			self->currentDamage = state->fdata["dam"];
+			self->stunDamage = state->fdata["stun"];
+			self->wearDamage = state->fdata["wear"];
 		}
-		
-		self->Gear::_loadFromSerialise(container, state);
-
-		self->currentDamage = state->fdata["dam"];
-		self->stunDamage = state->fdata["stun"];
-		self->wearDamage = state->fdata["wear"];
 	}
 
 	void (*RobotLimbs_load_orig)(RobotLimbs*, GameData*);

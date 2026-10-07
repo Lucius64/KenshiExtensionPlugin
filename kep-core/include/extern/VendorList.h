@@ -7,28 +7,23 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 #pragma once
+#include <ogre/OgrePrerequisites.h>
+#include <kenshi/util/OgreUnordered.h>
+#include <kenshi/FitnessSelector.h>
 
-enum DialogConditionEnumExtend
-{
-	DC_IS_SAME_SUBRACE_AS_ME = 21000,
-	DC_IS_ANIMAL_RACE,
-	DC_IS_ROBOT_RACE,
-	DC_SQUAD_MONEY
-};
+class GameData;
+enum itemType;
 
-enum DialogActionEnumExtend
+class VendorList
 {
-	DA_DECREASE_FACTION_RANK = 21000,
-	DA_TALK_TO_ME
-};
+public:
+	GameData* data;
+	FitnessSelector<GameData*> itemSelector;
+	Ogre::vector<std::pair<GameData*, float>>::type _0x68;
+	FitnessSelector<GameData*> weaponLevelSelector;
+	FitnessSelector<uint32_t> armorLevelSelector;
+	Ogre::set<itemType> _0x148;
+	ogre_unordered_set<GameData*>::type _0x170;
+private:
 
-enum EventTriggerEnumExtend
-{
-	EV_HEALING_MYSELF_START = 100,
-	EV_HEALING_MYSELF_FINISHED
-};
-
-enum TalkerEnumExtend
-{
-	T_TARGET_IF_ANIMAL = 20
 };

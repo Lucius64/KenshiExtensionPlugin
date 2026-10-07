@@ -206,14 +206,49 @@ namespace
 		Dialogue__doActons_orig(self, dialogLine);
 		if (KEP::settings._dialogueActionEx)
 		{
+			auto actionTarget = self->conversationTarget.getCharacter();
+			if (actionTarget == self->me && self->conversationMaster != actionTarget->getHandle())
+			{
+				auto swapTarget = self->conversationMaster.getCharacter();
+				if (swapTarget != nullptr)
+					actionTarget = swapTarget;
+			}
+
+			auto clearBounty = dialogLine->data->getReferenceListIfExists("clear bounty");
+			if (clearBounty != nullptr)
+			{
+				for (auto iter = clearBounty->begin(); iter != clearBounty->end(); ++iter)
+				{
+					auto faction = ou->factionMgr->getFactionByStringID(iter->sid);
+					if (faction != nullptr)
+						actionTarget->crimes.clearBounty(faction->getLawEnforcementFaction());
+				}
+			}
+			
 			for (auto iter = dialogLine->actions.begin(); iter != dialogLine->actions.end(); ++iter)
 			{
 				auto action = *iter;
-				if (action->key == DA_DECREASE_FACTION_RANK)
+				auto key = action->key;
+				if (key == DA_DECREASE_FACTION_RANK)
 				{
-					auto myFaction = self->me->getFaction();
-					if (action->value < myFaction->relations->playerRank)
-						--myFaction->relations->playerRank;
+					auto relations = self->me->getFaction()->relations;
+					if (action->value < relations->playerRank)
+						--relations->playerRank;
+				}
+				else if (key == DA_TALK_TO_ME)
+				{
+					if (actionTarget->isPlayerCharacter())
+						self->me->addOrder(nullptr, SEEK_AND_TALK_AND_SEND_SIGNAL, actionTarget, false, true, Ogre::Vector3::ZERO);
+				}
+				else if (key == DA_GIVE_MONEY)
+				{
+					if (!actionTarget->isPlayerCharacter())
+						actionTarget->getOwnerships()->addMoney(action->value);
+				}
+				else if (key == DA_TAKE_MONEY)
+				{
+					if (!actionTarget->isPlayerCharacter())
+						actionTarget->getOwnerships()->takeMoney(action->value);
 				}
 			}
 		}

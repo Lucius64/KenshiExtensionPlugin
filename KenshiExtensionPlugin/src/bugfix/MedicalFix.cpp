@@ -434,6 +434,15 @@ namespace
 		if (KEP::settings._fixTheBloodWhenSpawning)
 			self->medical->blood = self->medical->getMaxBlood();
 	}
+
+	bool (*MedicalSystem_HealthPartStatus_update_orig)(MedicalSystem::HealthPartStatus*, float, float, float, float, float, float);
+	bool MedicalSystem_HealthPartStatus_update_hook(MedicalSystem::HealthPartStatus* self, float frameTIME, float healMultFlesh, float healMultRobot, float degenerationRate, float _age, float robotWear)
+	{
+		if (KEP::settings._fixTheInjuryCalculation && self->getRobotLimbState() == LIMB_STUMP)
+			self->wearDamage = 0.0f;
+
+		return MedicalSystem_HealthPartStatus_update_orig(self, frameTIME, healMultFlesh, healMultRobot, degenerationRate, _age, robotWear);
+	}
 }
 
 void KEP::MedicalFix::init()
@@ -452,4 +461,7 @@ void KEP::MedicalFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&CharStats::_NV_init), &CharStats_init_hook, &CharStats_init_orig))
 		ErrorLog("[CharStats::init] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&MedicalSystem::HealthPartStatus::update), &MedicalSystem_HealthPartStatus_update_hook, &MedicalSystem_HealthPartStatus_update_orig))
+		ErrorLog("[MedicalSystem::HealthPartStatus::update] could not install hook!");
 }

@@ -25,6 +25,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/Gear.h>
 #include <kenshi/SensoryData.h>
 
+#include <kep/functions.h>
 #include <kep/translation.h>
 #include <UtilityFunction.h>
 #include <ExternalFunctions.h>
@@ -94,7 +95,7 @@ namespace
 			else if (What == CharStats::ATTACK_MISSED)
 				expMult = 0.25f;
 
-			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * expMult * xpBonusSkillDiff * skillBonusRace[combatStatsEnum] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * expMult * xpBonusSkillDiff * skillBonusRace[combatStatsEnum] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 
 			increaseStat(*pSkill, exp, 101.0f);
 
@@ -130,7 +131,7 @@ namespace
 				else if (What == CharStats::ATTACK_MISSED)
 					weaponExpMult = 0.1f;
 
-				exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * weaponExpMult * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+				exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * weaponExpMult * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 				increaseStat(*self->pCurrentWeaponSkill, exp, 101.0f);
 			}
 			else
@@ -151,19 +152,19 @@ namespace
 				if (KEP::settings._fixDexterityXP)
 					xpBonusSkillDiffForDexterity = self->getSkillDifferenceRatio(self->dexterityActual(), target->stats->getMeleeDefence(false));
 
-				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiffForDexterity * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+				exp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * expMult * xpBonusSkillDiffForDexterity * dexExpRate * skillBonusRace[STAT_DEXTERITY] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 				increaseStat(self->_dexterity, exp, 101.0f);
 			}
 		}
 		else if (What == CharStats::BLOCKED_IT)
 		{
 			float xpBonusSkillDiff = self->getSkillDifferenceRatio(self->getMeleeDefence(false), target->stats->getMeleeAttack());
-			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.25f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+			float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.25f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 			increaseStat(self->_meleeDefence, exp, 101.0f);
 
 			float xpBonusSkillDiffForWeapon = self->getSkillDifferenceRatio(self->getEquippedWeaponSkill(), target->stats->getMeleeAttack());
 
-			exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.1f * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+			exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 0.1f * xpBonusSkillDiffForWeapon * skillBonusRace[getStatsEnumeratedFromWeaponCategory(self->currentWeaponType)] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 			increaseStat(*self->pCurrentWeaponSkill, exp, 101.0f);
 
 			strengthExp *= 0.4f;
@@ -178,14 +179,14 @@ namespace
 			{
 				float xpBonusSkillDiff = self->getSkillDifferenceRatio(self->getMeleeDefence(false), target->stats->getMeleeAttack());
 
-				float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 2.0f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+				float exp = KEP::externalGlobals->_gBaseXpCombat->_skillXp * 2.0f * xpBonusSkillDiff * skillBonusRace[STAT_MELEE_DEFENCE] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 
 				increaseStat(self->_meleeDefence, exp, 101.0f);
 			}
 
 			float xpBonusSkillDiffForToughness = self->getSkillDifferenceRatio(self->ageMult * self->_toughness, damage.blunt + damage.cut + damage.pierce + damage.extraStun);
 
-			float toughnessExp = con->XP_TOUGHNESS * KEP::externalGlobals->_gBaseXpCombat->_skillXp * xpBonusSkillDiffForToughness * skillBonusRace[STAT_TOUGHNESS] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+			float toughnessExp = con->XP_TOUGHNESS * KEP::externalGlobals->_gBaseXpCombat->_skillXp * xpBonusSkillDiffForToughness * skillBonusRace[STAT_TOUGHNESS] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 
 			increaseStat(self->_toughness, toughnessExp, 101.0f);
 
@@ -205,7 +206,7 @@ namespace
 			strengthExp = KEP::externalGlobals->_gBaseXpCombat->_attributeXp * 0.55f * strengthExp * self->weaponWeightXPMult;
 		}
 
-		strengthExp = strengthExp * skillBonusRace[STAT_STRENGTH] * KEP::externalGlobals->_optionsAdvanced->globalDamageMultiplier;
+		strengthExp = strengthExp * skillBonusRace[STAT_STRENGTH] * KEP::functions->getGameplayOptions()->globalDamageMultiplier;
 
 		increaseStat(self->_strength, strengthExp, 101.0f);
 		return;

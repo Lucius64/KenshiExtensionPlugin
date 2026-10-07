@@ -8,27 +8,10 @@ You should have received a copy of the GNU General Public License along with thi
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 #pragma once
 
-enum DialogConditionEnumExtend
+namespace KEP
 {
-	DC_IS_SAME_SUBRACE_AS_ME = 21000,
-	DC_IS_ANIMAL_RACE,
-	DC_IS_ROBOT_RACE,
-	DC_SQUAD_MONEY
-};
-
-enum DialogActionEnumExtend
-{
-	DA_DECREASE_FACTION_RANK = 21000,
-	DA_TALK_TO_ME
-};
-
-enum EventTriggerEnumExtend
-{
-	EV_HEALING_MYSELF_START = 100,
-	EV_HEALING_MYSELF_FINISHED
-};
-
-enum TalkerEnumExtend
-{
-	T_TARGET_IF_ANIMAL = 20
-};
+	namespace VendorListEx
+	{
+		void init();
+	}
+}

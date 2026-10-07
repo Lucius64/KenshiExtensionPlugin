@@ -261,6 +261,7 @@ void KEP::tools::PlatoonTool::_triggerDialog(DataPanelLine* line)
 
 	DialogChoiceList list;
 	list.add(gamedata, nullptr);
+	character->dialogue->conversationMaster = character->getHandle();
 	auto dialogLine = character->dialogue->_chooseDialog(&list, nearestTarget, false);
 	character->dialogue->startConversation(nearestTarget, dialogLine, EV_I_SEE_NEUTRAL_SQUAD, true);
 }
@@ -319,6 +320,7 @@ void KEP::tools::PlatoonTool::_triggerPlayerConversation(DataPanelLine* line)
 
 	DialogChoiceList list;
 	list.add(gamedata, nullptr);
+	character->dialogue->conversationMaster = character->getHandle();
 	auto dialogLine = character->dialogue->_chooseDialog(&list, nearestTarget, false);
 	character->dialogue->startPlayerConversation(nearestTarget, dialogLine);
 }

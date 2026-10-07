@@ -111,6 +111,9 @@
     <ClInclude Include="include\EnumExtended.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\VendorListEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ExternalFunctions.cpp">
@@ -203,5 +206,13 @@
     <ClCompile Include="src\DialogueActionEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\VendorListEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="kep.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

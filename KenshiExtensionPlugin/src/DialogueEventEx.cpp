@@ -120,10 +120,23 @@ namespace
 
 			if (who->isUnconcious())
 			{
-				if (!self->me->isInCombatMode(true, true))
+				if (!self->me->isInCombatMode(true, true) && who->inSomething != IN_BED && !who->_isBeingCarried)
 					self->me->sendDialogEvent(who, EV_I_SEE_RAGDOLL);
 				return;
 			}
+		}
+	}
+	
+	void (*Task_FirstAid_startAction_orig)(Task_FirstAid*, CharBody*);
+	void Task_FirstAid_startAction_hook(Task_FirstAid* self, CharBody* body)
+	{
+		Task_FirstAid_startAction_orig(self, body);
+		if (KEP::settings._dialogueEventEx)
+		{
+			auto target = self->subject.getCharacter();
+			auto me = body->getCharacter();
+			if (target == me)
+				me->sendDialogEvent(target, static_cast<EventTriggerEnum>(EV_HEALING_MYSELF_START));
 		}
 	}
 }
@@ -144,4 +157,7 @@ void KEP::DialogueEventEx::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SensoryData::assessNeutral), &SensoryData_assessNeutral_hook, &SensoryData_assessNeutral_orig))
 		ErrorLog("[SensoryData::assessNeutral] could not install hook!");
+		
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KEP::functions->Task_FirstAid_startAction, &Task_FirstAid_startAction_hook, &Task_FirstAid_startAction_orig))
+		ErrorLog("[Task_FirstAid::startAction] could not install hook!");
 }

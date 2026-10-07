@@ -1,0 +1,23 @@
+﻿LIBRARY
+EXPORTS
+?startPlugin@@YAXXZ @1
+DialogLineData_checkOneAtATime=?checkOneAtATime@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @2
+DialogLineData_checkTown=?checkTown@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @3
+DialogLineData_checkMyFaction=?checkMyFaction@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @4
+DialogLineData_checkTargetFaction=?checkTargetFaction@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @5
+DialogLineData_checkDialoguePackage=?checkDialoguePackage@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @6
+DialogLineData_checkSpecificCharacter=?checkSpecificCharacter@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @7
+DialogLineData_checkTargetCarryingCharacter=?checkTargetCarryingCharacter@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3@Z @8
+DialogLineData_checkWorldState=?checkWorldState@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @9
+DialogLineData_checkTargetHasItem=?checkTargetHasItem@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3@Z @10
+DialogLineData_checkTargetRace=?checkTargetRace@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3@Z @11
+DialogLineData_checkTargetSubRace=?checkTargetSubRace@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3@Z @12
+DialogLineData_checkMyRace=?checkMyRace@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @13
+DialogLineData_checkMySubRace=?checkMySubRace@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @14
+DialogLineData_checkTargetType=?checkTargetType@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N@Z @15
+DialogLineData_checkDialogCondition=?checkDialogCondition@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@W4DialogConditionEnum@@W4ComparisonEnum@@W4TalkerEnum@@HPEAVCharacter@@5@Z @16
+DialogLineData_checkTargetDialoguePackage=?checkTargetDialoguePackage@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3AEBV?$lektor@PEAVGameData@@@@@Z @17
+DialogLineData_checkTargetSpecificCharacter=?checkTargetSpecificCharacter@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_N3AEBV?$lektor@PEAVGameData@@@@@Z @18
+DialogLineData_checkArea=?checkArea@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_NAEBV?$lektor@PEAVGameData@@@@@Z @19
+DialogLineData_checkSpecificTown=?checkSpecificTown@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_NAEBV?$lektor@PEAVGameData@@@@@Z @20
+DialogLineData_checkReplacementTown=?checkReplacementTown@DialogueConditionEx@KEP@@YA_NPEAVDialogLineData@@PEAVDialogue@@PEAVCharacter@@_NAEBV?$lektor@PEAVGameData@@@@@Z @21

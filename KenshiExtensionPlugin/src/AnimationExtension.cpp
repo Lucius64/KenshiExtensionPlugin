@@ -296,26 +296,33 @@ namespace
 	{
 		if (KEP::settings._combatTechniquesEx)
 		{
+			auto attacker = self->me;
 			float encumbranceMult = (1.0f - self->encumbranceMult) * 100.0f;
+			Weapon* weapon = attacker->isAnimal() == nullptr ? attacker->getCurrentWeapon() : attacker->naturalWeapon;
 
-			auto weapon = self->me->getCurrentWeapon();
-			if (weapon != nullptr && specialWeaponAttacks.count(weapon->data))
+			if (weapon != nullptr)
 			{
-				auto& attacks = specialWeaponAttacks[weapon->data];
-				for (auto iter = attacks.begin(); iter != attacks.end(); ++iter)
+				auto weaponAttackIt = specialWeaponAttacks.find(weapon->data);
+				if (weaponAttackIt != specialWeaponAttacks.end())
 				{
-					_addAttack(*iter, self, possibleAttacks, range, weaponReach, lastAttack, opponentIsStationary, skipMedicals, _weaponType, _weaponSkill, encumbranceMult);
-				}
+					const auto& attacks = weaponAttackIt->second;
+					auto endAttacks = attacks.end();
+					for (auto iter = attacks.begin(); iter != endAttacks; ++iter)
+					{
+						_addAttack(*iter, self, possibleAttacks, range, weaponReach, lastAttack, opponentIsStationary, skipMedicals, _weaponType, _weaponSkill, encumbranceMult);
+					}
 
-				if (possibleAttacks.size() != 0)
-					return;
+					if (possibleAttacks.size() != 0)
+						return;
+				}
 			}
 
-			for (auto iter = specialAttacks.begin(); iter != specialAttacks.end(); ++iter)
+			auto endSpecialAttacks = specialAttacks.end();
+			for (auto attackIt = specialAttacks.begin(); attackIt != endSpecialAttacks; ++attackIt)
 			{
-				if (iter->second.count(self->me->getGameData()) || iter->second.count(self->me->getFaction()->data) || iter->second.count(self->me->getRace()->data))
-					if (iter->first->skillTypes[_weaponType])
-						_addAttack(iter->first, self, possibleAttacks, range, weaponReach, lastAttack, opponentIsStationary, skipMedicals, _weaponType, _weaponSkill, encumbranceMult);
+				if (attackIt->second.count(attacker->getGameData()) || attackIt->second.count(attacker->getFaction()->data) || attackIt->second.count(attacker->getRace()->data))
+					if (attackIt->first->skillTypes[_weaponType])
+						_addAttack(attackIt->first, self, possibleAttacks, range, weaponReach, lastAttack, opponentIsStationary, skipMedicals, _weaponType, _weaponSkill, encumbranceMult);
 			}
 		}
 		CharStats__chooseAttacks_orig(self, possibleAttacks, range, weaponReach, lastAttack, opponentIsStationary, skipMedicals, _weaponType, _weaponSkill);
@@ -537,8 +544,7 @@ namespace
 						self->animation->layer[1]->stopActionAnimations();
 						self->combatState = BLOCK;
 						self->nextMove = BLOCK;
-						if (!blockFailed)
-							self->stats->xpDodgeEvent(opponentAttackSkill, true);
+						self->stats->xpDodgeEvent(opponentAttackSkill, true);
 						self->animation->startCombatAnimation(technique, self->stats->blockSpeed * technique->animSpeedMultiplier, "");
 						self->stateTimer = 0.2f;
 						self->techniqueIntegrityCheckTimer = self->stats->calculateTechniqueInegrityCheckTimer();

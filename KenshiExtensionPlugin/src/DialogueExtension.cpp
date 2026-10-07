@@ -13,12 +13,17 @@ You should have received a copy of the GNU General Public License along with thi
 #include <core/Functions.h>
 #include <Debug.h>
 
+#include <kenshi/Globals.h>
+#include <kenshi/GameWorld.h>
+#include <kenshi/PlayerInterface.h>
 #include <kenshi/GameData.h>
 #include <kenshi/Faction.h>
 #include <kenshi/Dialogue.h>
 #include <kenshi/FactionRelations.h>
+#include <kenshi/Character.h>
 
 #include <kep/utility.h>
+#include <kep/translation.h>
 #include <Settings.h>
 #include <DialogueExtension.h>
 
@@ -81,6 +86,55 @@ namespace
 		}
 		return (this->*Dialogue_getWordSwap_orig)(key, _target, _swapMeYou, _line);
 	}
+	
+	void (*Dialogue_listPlayerReplies_orig)(Dialogue* self);
+	void Dialogue_listPlayerReplies_hook(Dialogue* self)
+	{
+		if (!KEP::settings._wordSwapEx)
+		{
+			Dialogue_listPlayerReplies_orig(self);
+			return;
+		}
+
+		self->replyIds.clear();
+		self->clearResponesGUI();
+		auto target = self->conversationTarget.getCharacter();
+		if (target != nullptr && target->dialogue->conversationTarget != self->conversationTarget)
+			target->dialogue->conversationTarget = self->conversationTarget;
+
+		lektor<DialogLineData*> replies;
+		const auto& conversationChoices =  self->currentLine->children->conversationChoices;
+		for (auto iter = conversationChoices.begin(); iter != conversationChoices.end(); ++iter)
+		{
+			if ((*iter)->checkConditions(self, target, false))
+				replies.push_back(*iter);
+		}
+
+		self->responses.clear();
+		for (auto iter = replies.begin(); iter != replies.end(); ++iter)
+		{
+			auto line = *iter;
+			if (line->speaker == T_ME)
+			{
+				self->replyIds.push_back(self->currentLine->getStringID());
+				self->responses.push_back("[...]");
+				break;
+			}
+			std::string text = "";
+			line->getText(text, false);
+			if (!text.empty())
+			{
+				target->dialogue->insertWordSwaps(text, self->me, true, line);
+				self->responses.push_back(text);
+				self->replyIds.push_back(line->getStringID());
+			}
+		}
+
+		if (self->replyIds.size() == 0)
+			self->endDialogue(true);
+		else
+			self->setResponesGUI();
+	}
 }
 
 void KEP::DialogueExtension::init()
@@ -95,4 +149,7 @@ void KEP::DialogueExtension::init()
 	auto pfuncOrig = &Dialogue_getWordSwap_orig;
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Dialogue::getWordSwap), *(void**)&pfuncTarget, *(void***)&pfuncOrig))
 		ErrorLog("[Dialogue::getWordSwap] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&Dialogue::listPlayerReplies), &Dialogue_listPlayerReplies_hook, &Dialogue_listPlayerReplies_orig))
+		ErrorLog("[Dialogue::listPlayerReplies] could not install hook!");
 }

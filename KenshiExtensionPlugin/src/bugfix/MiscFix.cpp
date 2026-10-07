@@ -38,6 +38,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <kenshi/gui/ProspectingWindow.h>
 #include <kenshi/SaveManager.h>
 #include <kenshi/AI/Blackboard.h>
+#include <kenshi/RaceData.h>
 
 #include <extern/TownBase.h>
 #include <extern/BasePopulationManager.h>
@@ -218,6 +219,45 @@ namespace
 			character->setPrisonMode(false, nullptr);
 	}
 
+	float (*AI_findCorpse_includingCages_orig)(AI* self, const hand& in, hand& out, bool justAsking);
+	float AI_findCorpse_includingCages_hook(AI* self, const hand& in, hand& out, bool justAsking)
+	{
+		if (!KEP::settings._fixTortureBuilding)
+			return AI_findCorpse_includingCages_orig(self, in, out, justAsking);
+
+		lektor<Building*> cages;
+		self->getAllLocalMachines(cages, 0x100);
+		for (uint32_t i = 0; i < cages.size(); ++i)
+		{
+			auto cage = static_cast<UseableStuff*>(cages[i]);
+			if (cage->getSpecialFunction() == BF_CAGE)
+			{
+				auto prodBuilding = cage->getProductionBuilding();
+				if (prodBuilding != nullptr && prodBuilding->isThePlayer())
+					continue;
+
+				int count = self->getBlackboard()->howManyGuysWorkingOnThisSubTarget(self->me->getHandle(), cage->handle);
+				if (count < 1)
+				{
+					Character* occupant = cage->getOccupant().getCharacter();
+					if (occupant == nullptr)
+						continue;
+
+					if (!occupant->getRace()->robot && occupant->isDead())
+					{
+						out = occupant->handle;
+						return 1.0f;
+					}
+				}
+			}
+			else
+			{
+				cage->findAllFurnitureWithFunction(cages, BF_CAGE);
+			}
+		}
+		return self->findCorpse_onGround_detail(in, out, justAsking, true, false);
+	}
+
 	void (*UtilityT_getResourceFilePath_orig)(const std::string&, std::string&);
 	void UtilityT_getResourceFilePath_hook(const std::string& filename, std::string& filepath)
 	{
@@ -354,4 +394,7 @@ void KEP::MiscFix::init()
 
 	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&SaveManager::importGame), &SaveManager_importGame_hook, &SaveManager_importGame_orig))
 		ErrorLog("[SaveManager::importGame] could not install hook!");
+
+	if (KenshiLib::SUCCESS != KenshiLib::QueueHook(KenshiLib::GetRealAddress(&AI::findCorpse_includingCages), &AI_findCorpse_includingCages_hook, &AI_findCorpse_includingCages_orig))
+		ErrorLog("[AI::findCorpse_includingCages] could not install hook!");
 }
